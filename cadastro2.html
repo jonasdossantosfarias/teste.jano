@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/cadrastro.css"> <!-- Link para o arquivo CSS modificado -->
+    <title>Cadastro</title>
+</head>
+<body>
+    <main class="container"> <!-- Adiciona a classe "container" para aplicar os estilos CSS -->
+        <h2>Cadastro</h2>
+        <input type="text" id="name" placeholder="Nome Completo"> <!-- Adiciona o campo para o nome de usuário -->
+        <div class="input-email">
+            <input type="email" id="email" placeholder="Email">
+            <i class="bi bi-envelope-fill icon"></i>
+        </div>
+        <input type="text" id="city" placeholder="Cidade">
+        <input type="text" id="state" placeholder="Estado">
+        <div class="input-group">
+            <input type="password" id="password" placeholder="Senha">
+            <!-- Adiciona o ícone do olho ao lado do campo de senha -->
+            <i class="bi bi-eye-fill icon" id="btn-senha" onclick="mostrarSenha()"></i>
+        </div>
+        <input type="date" id="birthdate" placeholder="Data de Nascimento">
+        <button onclick="register()">Registrar</button>
+        <p id="message" class="aviso"></p> <!-- Adiciona a classe "aviso" para o estilo de mensagem de aviso -->
+        <!-- Adiciona o link para redirecionar para index.html -->
+        <a href="index2.html">Login</a>
+    </main>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script> <!-- Adicionando o script do Firestore -->
+
+    <!-- Seus arquivos JS -->
+    <script src="js/config.js"></script>
+    <script src="js/cadastro.js"></script>
+</body>
+</html>

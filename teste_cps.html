@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <link rel="icon" href="imagens/favicon.png" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Quati</title>
+    <link rel="stylesheet" href="css/aula16.css" />
+    <style>
+        /* Estilos CSS aqui */
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        #tela-principal {
+            text-align: center;
+            padding-top: 20px;
+        }
+
+        .opcoes-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .opcao {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .opcao label {
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .opcao input[type="checkbox"] {
+            margin-right: 5px;
+            transform: scale(1.2);
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+    <main id='tela-principal'>
+        <div id="nome-usuario"></div>
+        <!-- Div para exibir o nome do usuário -->
+        <p class="data"></p>
+        <!-- Alterado para classe -->
+        <button onclick="terminar()">Terminar</button>
+
+    </main>
+
+    <div class="opcoes-container" id="opcoes-container">
+        <!-- As opções serão geradas aqui dinamicamente -->
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <!-- Adicionando o script do Firestore -->
+
+    <script src="js/config.js"></script>
+    <!-- Inclui o arquivo de configuração do Firebase -->
+    <script src="js/script_menu.js"></script>
+
+    <script>
+        var selectedSquares = {}; // Objeto para armazenar os quadrados selecionados e seus valores
+
+        // Verifica se o usuário está autenticado
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (!user) {
+                // Se o usuário não estiver autenticado, redireciona para o index.html
+                window.location.href = "index.html";
+            } else {
+                // Se o usuário estiver autenticado, recupera seu nome e exibe
+                firebase.firestore().collection("usuarios").doc(user.uid).get()
+                    .then(function (doc) {
+                        if (doc.exists) {
+                            const userData = doc.data();
+                            const userName = userData.name;
+                            document.getElementById("nome-usuario").innerText = "Olá, " + userName;
+                        } else {
+                            console.log("Usuário não encontrado");
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log("Erro ao recuperar o nome do usuário:", error);
+                    });
+            }
+        });
+
+        // Função para obter a data atual
+        function getDataAtual() {
+            var dataAtual = new Date();
+            var dia = dataAtual.getDate();
+            var mes = dataAtual.getMonth() + 1;
+            // Os meses são indexados de 0 a 11, então é necessário adicionar 1
+            var ano = dataAtual.getFullYear();
+            var dataFormatada = dia + '/' + mes + '/' + ano;
+            return dataFormatada;
+        }
+
+        // Exibir a data atual na página
+        var dataElements = document.querySelectorAll('.data');
+        dataElements.forEach(function (element) {
+            element.innerText = "Data atual: " + getDataAtual();
+        });
+
+        function terminar() {
+
+             // Captura de tela
+             html2canvas(document.body, {
+                onrendered: function (canvas) {
+                    var image = canvas.toDataURL("image/jpeg"); // Convertendo para formato JPEG
+                    var link = document.createElement('a');
+                    link.href = image;
+                    link.download = 'screenshot.jpeg'; // Definindo o nome do arquivo como screenshot.jpeg
+                    link.click();
+
+                    // Redirecionar para test_ac_apl.html após salvar a captura de tela
+                    window.location.href = 'test_personalidade.html';
+                }
+            });
+
+        }
+
+        function toggleSelection(id) {
+            var square = document.getElementById('quadrado_ac' + id);
+            var value = 1; // Valor do quadrado
+
+            // Verifica se o quadrado já está selecionado
+            if (selectedSquares[id]) {
+                // Se estiver selecionado, remove a marcação e subtrai o valor do total
+                square.removeChild(square.querySelector('.selected'));
+                delete selectedSquares[id];
+            } else {
+                // Se não estiver selecionado, adiciona a marcação e adiciona o valor ao total
+                var cross = document.createElement('span');
+                cross.textContent = '/';
+                cross.className = 'selected';
+                square.appendChild(cross);
+                selectedSquares[id] = value;
+            }
+
+        }
+
+        // Função para criar as opções dinamicamente
+        function criarOpcoes(numOpcoes) {
+            var container = document.getElementById('opcoes-container');
+            container.innerHTML = ''; // Limpa o conteúdo atual do container
+
+            // Loop para criar as opções
+            for (var i = 0; i < numOpcoes; i++) {
+                var opcao = document.createElement('div');
+                opcao.className = 'opcao';
+
+                // Adiciona o número da opção
+                var labelNumero = document.createElement('label');
+                labelNumero.textContent = (i + 1) + ')';
+                opcao.appendChild(labelNumero);
+
+                // Adiciona as opções de checkbox e seus labels
+                var opcoes = ["NUNCA", "MUITO RARAMENTE", "RARAMENTE", "POSSIVELMENTE", "PROVAVELMENTE SIM", "MUITO FREQÜENTEMENTE", "SEMPRE"];
+                for (var j = 0; j < opcoes.length; j++) {
+                    var labelOpcao = document.createElement('label');
+                    labelOpcao.textContent = opcoes[j];
+                    var inputOpcao = document.createElement('input');
+                    inputOpcao.type = 'checkbox';
+                    inputOpcao.id = 'opcao-' + (i + 1) + '-' + (j + 1);
+                    inputOpcao.name = 'opcao-' + (i + 1);
+                    inputOpcao.value = String.fromCharCode(97 + j); // Valor de 'a' a 'g' para cada opção
+                    inputOpcao.addEventListener('change', function () {
+                        updateCheck(this);
+                    });
+                    labelOpcao.setAttribute('for', 'opcao-' + (i + 1) + '-' + (j + 1));
+                    var divCheckbox = document.createElement('div');
+                    divCheckbox.appendChild(inputOpcao);
+                    divCheckbox.appendChild(labelOpcao);
+                    opcao.appendChild(divCheckbox);
+                }
+
+                // Adiciona a opção ao container
+                container.appendChild(opcao);
+            }
+        }
+
+        // Chamada da função com o número desejado de opções
+        criarOpcoes(100); // Pode ser substituído por qualquer número de opções desejado
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuração do Teste de Inteligência</title>
+    <link rel="stylesheet" href="css/estilo_configTI.css">
+</head>
+<body>
+    <h1>Configuração do Teste de Inteligência</h1>
+    <p>Selecione o número de dados para o teste:</p>
+    <select id="numDados">
+        <option value="2">2</option>
+        <option value="4">4</option>
+        <option value="9">9</option>
+    </select>
+    <button onclick="iniciarTeste()">Iniciar</button>
+
+    <script>
+        function iniciarTeste() {
+            // Obter o valor selecionado no seletor
+            var numDados = document.getElementById("numDados").value;
+
+            // Redirecionar para a página CUBO1.html com o número de dados como parâmetro na URL
+            window.location.href = "CUBO1.html?numDados=" + numDados;
+        }
+    </script>
+</body>
+</html>

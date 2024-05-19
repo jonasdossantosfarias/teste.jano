@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <link rel="icon" href="imagens/favicon.png" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 16 de JS</title>
+    <link rel="stylesheet" href="css/aula16.css" />
+    <style>
+        #tela-principal {
+            margin-top: 10px; /* Adiciona espaçamento acima do elemento */
+        }
+
+        .linha {
+            margin-top: 1px;
+            display: flex;
+            justify-content: center; /* Centraliza os cubos na linha */
+            margin-bottom: 1px; /* Espaçamento entre as linhas */
+        }
+
+        .conteudo {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centraliza os elementos dentro do conteúdo */
+            margin: 1px; /* Espaçamento horizontal entre os cubos */
+        }
+
+        .conteudo img {
+            width: 100px; /* Tamanho do dado */
+        }
+    </style>
+</head>
+<body>
+<main id='tela-principal'>
+    <h1 id="titulo">Dados</h1>
+    <!-- Cronômetro -->
+    <div id="cronometro">00:00</div>
+    <!-- Botões de iniciar, parar e reiniciar -->
+    <button id="btnIniciar" onclick="iniciarCronometro()" style="background-color: rgb(3, 253, 3);">Iniciar</button>
+    <button id="btnParar" onclick="pararCronometro()" style="background-color: red; display: none;">Parar</button>
+    <button id="btnReiniciar" onclick="reiniciarCronometro()" style="background-color: yellow;">Reiniciar</button>
+    <!-- Script para obter parâmetros da URL -->
+    <script>
+        function obterParametroUrl(parametro) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(parametro);
+        }
+    </script>
+    <!-- Script para criar os cubos com base no número selecionado -->
+    <script>
+        function criarCubos() {
+            var numDados = obterParametroUrl("numDados");
+            var telaPrincipal = document.getElementById("tela-principal");
+
+            // Criar as linhas e adicionar os cubos nelas conforme especificado
+            for (var i = 0; i < numDados; i++) {
+                if (i % Math.sqrt(numDados) === 0) {
+                    var linha = document.createElement("div");
+                    linha.className = "linha";
+                    telaPrincipal.appendChild(linha);
+                }
+
+                var section = document.createElement("section");
+                section.className = "conteudo";
+                section.setAttribute("onclick", "");
+
+                var p = document.createElement("p");
+                p.className = "centro";
+                var span = document.createElement("span");
+                span.className = "numero";
+                p.appendChild(span);
+                section.appendChild(p);
+
+                var figure = document.createElement("figure");
+                var img = document.createElement("img");
+                img.className = "imgDado dado"; // Adicionando a classe .dado aqui
+                img.setAttribute("src", "imagens/dado/0.png");
+                img.setAttribute("alt", "Dado");
+                figure.appendChild(img);
+                section.appendChild(figure);
+
+                var linhaAtual = document.querySelector(".linha:last-child");
+                linhaAtual.appendChild(section);
+            }
+        }
+
+        // Chamada para criar os cubos ao carregar a página
+        window.onload = function() {
+            criarCubos();
+            atualizarTitulo(); // Chamada para atualizar o título
+        };
+    </script>
+
+    <!-- Botão "voltar" -->
+    <button onclick="voltar()">Voltar</button>
+</main>
+
+<audio id='dadoRolando' src="assets/dado-rolando.mp3" type="audio/mpeg"></audio>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+<script src="js/aula16.js"></script>
+
+<script>
+    var intervalo; // Variável para armazenar o intervalo do cronômetro
+    var dadoRolando = document.getElementById('dadoRolando');
+
+    function iniciarCronometro() {
+        intervalo = setInterval(atualizarCronometro, 1000);
+        playDadoRolando(); // Inicia o som do dado
+        document.getElementById('btnIniciar').style.display = 'none';
+        document.getElementById('btnParar').style.display = 'inline-block';
+        habilitarCubos(); // Habilita a função de sortear nos cubos
+    }
+
+    function pararCronometro() {
+        clearInterval(intervalo);
+        pauseDadoRolando(); // Pausa o som do dado
+        document.getElementById('btnIniciar').style.display = 'inline-block';
+        document.getElementById('btnParar').style.display = 'none';
+        desabilitarCubos(); // Desabilita a função de sortear nos cubos
+    }
+
+    function reiniciarCronometro() {
+        clearInterval(intervalo);
+        pauseDadoRolando(); // Pausa o som do dado
+        document.getElementById('cronometro').textContent = '00:00'; // Reinicia o cronômetro
+        document.getElementById('btnIniciar').style.display = 'inline-block';
+        document.getElementById('btnParar').style.display = 'none';
+        reiniciarPagina(); // Reinicia a página
+    }
+
+    function atualizarCronometro() {
+        var cronometro = document.getElementById('cronometro');
+        var segundos = parseInt(cronometro.textContent.split(':')[1]);
+        var minutos = parseInt(cronometro.textContent.split(':')[0]);
+        segundos++;
+        if (segundos == 60) {
+            minutos++;
+            segundos = 0;
+        }
+        var segundosFormatados = segundos < 10 ? '0' + segundos : segundos;
+        var minutosFormatados = minutos < 10 ? '0' + minutos : minutos;
+        cronometro.textContent = minutosFormatados + ':' + segundosFormatados;
+    }
+
+    function voltar() {
+        html2canvas(document.body, {
+            onrendered: function(canvas) {
+                var image = canvas.toDataURL("image/jpeg"); // Convertendo para formato JPEG
+                var link = document.createElement('a');
+                link.href = image;
+                link.download = 'screenshot.jpeg'; // Definindo o nome do arquivo como screenshot.jpeg
+                link.click();
+                
+                // Redirecionar para configIT.html após salvar a captura de tela
+                window.location.href = 'configTI.html';
+            }
+        });
+    }
+
+    // Função para reiniciar a página
+    function reiniciarPagina() {
+        window.location.reload();
+    }
+
+    // Função para reproduzir o som do dado
+    function playDadoRolando() {
+        dadoRolando.play();
+    }
+
+    // Função para pausar o som do dado
+    function pauseDadoRolando() {
+        dadoRolando.pause();
+    }
+
+    // Função para habilitar a função de sortear nos cubos
+    function habilitarCubos() {
+        var cubos = document.querySelectorAll('.conteudo');
+        cubos.forEach(function(cubo) {
+            cubo.setAttribute('onclick', 'sortear(this)');
+        });
+    }
+
+    // Função para desabilitar a função de sortear nos cubos
+    function desabilitarCubos() {
+        var cubos = document.querySelectorAll('.conteudo');
+        cubos.forEach(function(cubo) {
+            cubo.removeAttribute('onclick');
+        });
+    }
+
+    // Função para atualizar o título com o nome do usuário e a data e hora atuais
+    function atualizarTitulo() {
+        // Nome do usuário (suponho que você o tenha armazenado em uma variável chamada "nomeUsuario")
+        var nomeUsuario = "Jonas"; // Substitua "Jonas" pelo nome do usuário
+
+        // Obter a data e hora atuais
+        var dataHoraAtual = new Date();
+        var dia = String(dataHoraAtual.getDate()).padStart(2, '0');
+        var mes = String(dataHoraAtual.getMonth() + 1).padStart(2, '0'); // +1 porque os meses começam em zero
+        var ano = dataHoraAtual.getFullYear();
+        var horas = String(dataHoraAtual.getHours()).padStart(2, '0');
+        var minutos = String(dataHoraAtual.getMinutes()).padStart(2, '0');
+
+        // Formatar a data e hora no formato desejado
+        var dataHoraFormatada = dia + '/' + mes + '/' + ano + ' ' + horas + ':' + minutos;
+
+        // Atualizar o conteúdo do elemento h1 com o nome do usuário e a data e hora atuais
+        document.getElementById("titulo").innerHTML = nomeUsuario + ' - ' + dataHoraFormatada;
+    }
+</script>
+</body>
+</html>

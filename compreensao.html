@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <link rel="icon" href="imagens/favicon.png" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compreensão</title>
+    <style>
+        /* Estilos CSS */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            position: relative;
+        }
+
+        #nome-usuario {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        #fechar {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background-color: #333;
+            color: white;
+            font-size: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        #fechar:hover {
+            background-color: red; /* Altera a cor de fundo quando o mouse passa sobre o botão */
+        }
+
+        #tela-principal {
+            display: flex;
+            flex-wrap: wrap; /* Permite que os elementos quebrem para a próxima linha */
+            padding: 20px; /* Adiciona espaço interno */
+            justify-content: space-between; /* Distribui os elementos igualmente */
+        }
+
+        .container_ac
+         {
+            width: 100%; /* Define a largura dos elementos */
+            margin-bottom: 10px; /* Adiciona espaço entre os elementos */
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+            text-align: center; /* Centraliza o conteúdo */
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        p {
+            font-size: 10px; /* Alteração no tamanho da fonte para 10 pixels */
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #ffffff;
+            color: #333;
+            border: 2px solid #333;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #333;
+            color: #ffffff;
+        }
+
+        /* Estilos para as caixas de entrada */
+        input {
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            width: calc(100% - 22px);
+        }
+
+        .aviso {
+            color: red;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="nome-usuario"></div> <!-- Div para exibir o nome do usuário -->
+    <p class="data"></p> <!-- Alterado para classe -->
+    <!-- Botão para voltar para a página index.html -->
+    <div id="fechar" onclick="window.location.href = 'test_was3.html'">X</div>
+
+    <div id='tela-principal'>
+
+        <div class="container_ac">
+            <h1>1 PORQUE AS PESSOAS USAM RELÓGIOS?</h1>
+            <input type="text" placeholder="Digite aqui...">
+        </div>
+        <div class="container_ac">
+            <h1>2 PORQUE AS PESSOAS LAVAM AS ROUPAS?</h1>
+            <input type="text" placeholder="Digite aqui...">
+        </div>
+        <div class="container_ac">
+            <h1>3 PARA QUE AS PESSOAS USAM DINHEIRO?</h1>
+            <input type="text" placeholder="Digite aqui...">
+        </div>
+        <div class="container_ac">
+            <h1>4 O QUE VOCÊ DEVE FAZER SE ENCONTRAR NA RUA UM ENVELOPE FECHADO,
+                QUE ESTEJA ENDEREÇADO E SELADO COM UM SELO NOVO?</h1>
+            <input type="text" placeholder="Digite aqui...">
+        </div>
+        <div class="container_ac">
+            <h1>5 POR QUE MUITOS ALIMNTOS NECESSITAM SER COZIDOS? DIGA ALGUMAS
+                RAZÕES.</h1>
+            <input type="text" placeholder="Digite aqui...">
+        </div>
+        <div class="container_ac">
+            <h1>6 POR QUE PESSOAS QUE NASCEM SURDAS TÊM PR0BLEMAS EM APRENDER A
+                FALAR?</h1>
+            <input type="text" placeholder="Digite aqui...">
+        </div>
+        <div class="container_ac">
+            <h1>7 0 QUE ESTE DITAD0 QUER DIZER: "CÃO QUE LADRA NÃO MORDE."</h1>
+            <input type="text" placeholder="Digite aqui...">
+        </div>
+        <div class="container_ac">
+            <h1>8 O QUE ESTE DITADO QUER DIZER: "UMA ANDORINHA SÓ NÃO FAZ O VERÃO"</h1>
+            <input type="text" placeholder="Digite aqui...">
+        </div>
+        <div class="container_ac">
+            <h1>9 POR QUE AS LEIS SOBRE 0 TRABALHO INFANTIL SÃO NECESSÁRIAS? DIGA
+                ALGUMAS RAZÕES.</h1>
+            <input type="text" placeholder="Digite aqui...">
+        </div>
+        <div class="container_ac">
+            <h1>10 POR QUE AS PESSOAS DEVEM PAGAR IMPOSTOS?</h1>
+            <input type="text" placeholder="Digite aqui...">
+        </div>
+        <div class="container_ac">
+            <h1>11 POR QUE TERRENO NA CIDADE CUSTA MAIS DO QUE NO CAMPO?</h1>
+            <input type="text" placeholder="Digite aqui...">
+        </div>
+        <div class="container_ac">
+            <h1>12 DIGAALGUMAs RAZÕES PELAS QUAIS É IMPORTANTE ESTUDAR HISTÓRIA?</h1>
+            <input type="text" placeholder="Digite aqui...">
+        </div>
+        <div class="container_ac">
+            <h1>13 CASO VOCÊ SE PERDESSE EM UMA FLORESTA, DURANTE O DIA, O QUE VOCÊ
+                FARIA PARA ENCONTRAR A SAÍDA?</h1>
+            <input type="text" placeholder="Digite aqui...">
+        </div>
+        <div class="container_ac">
+            <h1>14 POR QUE O GOVERNO EXIGE O CASAMENTO EM CARTÓRIO?</h1>
+            <input type="text" placeholder="Digite aqui...">
+        </div>
+        <div class="container_ac">
+            <h1>15 POR QUE A LIBERDADE DE IMPRENSA É IMPORTANTE EM UMA DEMOCRACIA?</h1>
+            <input type="text" placeholder="Digite aqui...">
+        </div>
+        <div class="container_ac">
+            <h1>16 POR QUE TEMOS UM SISTEMA DE LIBERDADE CONDICIONAL PARA
+                CONDENADOS? DIGA ALGUMAS RAZÕES.</h1>
+            <input type="text" placeholder="Digite aqui...">
+        </div>
+        <div class="container_ac">
+            <h1>17 POR QUE O GOVERNO EXIGE QUE ALGUNS PROFISSIONAIS OBTENHAM LICENÇA ANTES DE PRESTAR SERVIÇOS AO PÚBLICO?</h1>
+            <input type="text" placeholder="Digite aqui...">
+        </div>
+        <div class="container_ac">
+            <h1>18 POR QUE UM ACUSADO PODERIA CONSIDERAR MELHOR SER JULGADO POR UM JÚRI POPULAR? DIGA ALGUMAS RAZÕES.</h1>
+            <input type="text" placeholder="Digite aqui...">
+        </div>
+        
+    </div>
+
+    <button onclick="terminar()">Terminar</button>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script> <!-- Adicionando o script do Firestore -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+
+    <script src="js/config.js"></script> <!-- Inclui o arquivo de configuração do Firebase -->
+    <script src="js/script_menu.js"></script>
+    <script>
+        // Verifica se o usuário está autenticado
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (!user) {
+                // Se o usuário não estiver autenticado, redireciona para o index.html
+                window.location.href = "index.html";
+            } else {
+                // Se o usuário estiver autenticado, recupera seu nome e exibe
+                firebase.firestore().collection("usuarios").doc(user.uid).get()
+                .then(function(doc) {
+                    if (doc.exists) {
+                        const userData = doc.data();
+                        const userName = userData.name;
+                        document.getElementById("nome-usuario").innerText = "Olá, " + userName;
+                    } else {
+                        console.log("Usuário não encontrado");
+                    }
+                })
+                .catch(function(error) {
+                    console.log("Erro ao recuperar o nome do usuário:", error);
+                });
+            }
+        });
+
+        // Função para obter a data atual
+        function getDataAtual() {
+            var dataAtual = new Date();
+            var dia = dataAtual.getDate();
+            var mes = dataAtual.getMonth() + 1; // Os meses são indexados de 0 a 11, então é necessário adicionar 1
+            var ano = dataAtual.getFullYear();
+            var dataFormatada = dia + '/' + mes + '/' + ano;
+            return dataFormatada;
+        }
+    
+        // Exibir a data atual na página
+        var dataElements = document.querySelectorAll('.data');
+        dataElements.forEach(function(element) {
+            element.innerText = "Data atual: " + getDataAtual();
+        });
+
+        function terminar() {
+            // Captura de tela
+            html2canvas(document.body, {
+                onrendered: function (canvas) {
+                    var image = canvas.toDataURL("image/jpeg"); // Convertendo para formato JPEG
+                    var link = document.createElement('a');
+                    link.href = image;
+                    link.download = 'screenshot.jpeg'; // Definindo o nome do arquivo como screenshot.jpeg
+                    link.click();
+
+                    // Redirecionar para test_ac_apl.html após salvar a captura de tela
+                    window.location.href = 'test_was3.html';
+                }
+            });
+        }
+
+    </script>
+</body>
+</html>
