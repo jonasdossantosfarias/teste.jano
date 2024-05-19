@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="imagens/favicon.png" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>RV</title>
+    <link rel="stylesheet" href="css/aula16.css" />  
+    <style>
+        /* Estilos modernos e responsivos */
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; 
+            margin: 0;
+        }
+
+        main {
+            flex: 1; 
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #tela-principal {
+            width: 90%; 
+            max-width: 800px; 
+            background-color: #f4f4f4;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        #nome-usuario {
+        text-align: center;
+        font-size: 2.5rem;
+        font-weight: 600;
+        margin-top: 20px;
+        position: relative;
+        color: #444;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .input-container {
+            margin-bottom: 20px;
+        }
+
+        .input-field {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .btn-salvar {
+            background-color: #007bff; 
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+         /* Estilos para o contêiner da seção de exemplo */
+         .perguntas-container {
+            display: none; /* Inicialmente invisível */
+            border: 1px solid #b3b2b2;  /* Borda sólida cinza claro */
+            padding: 20px;           /* Espaçamento interno */
+            border-radius: 8px;      /* Bordas arredondadas */
+            margin-top: 10px;
+            margin-bottom: 20px;     /* Espaçamento externo inferior */
+        }
+
+        /* Estilos para o contêiner da seção de exemplo */
+        .exemplo-container {
+            background-color: #fbfbfc; 
+            border: 1px solid #ccc9c9;  /* Borda sólida cinza claro */
+            padding: 20px;           /* Espaçamento interno */
+            border-radius: 8px;      /* Bordas arredondadas */
+            margin-bottom: 20px;     /* Espaçamento externo inferior */
+            text-align: left;
+        }
+
+        .exemplo li {
+            background-color: #fbfbfc; 
+            list-style: none; /* Remove os marcadores da lista */
+            margin: 0;        /* Remove as margens padrão */
+        }
+
+
+        #cronometro {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+
+        #btnTerminar {
+        display: none; /* Inicialmente invisível */
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    
+    </style>
+</head>
+<body>
+    <main id='tela-principal'>
+        <div id="nome-usuario" class="input-container">
+            <input type="text" id="input-nome" class="input-field" placeholder="Insira seu Nome Completo">
+            <button onclick="salvarNome()" class="btn-salvar">
+                <i class="bi bi-floppy-fill" style="color: white;"></i>
+            </button>
+        </div>
+        <p class="data"></p>
+        <h1 id="titulo">RV</h1>
+        <p>Esta prova é constituída por frases onde falta a última palavra. É necessário encontrar essa palavra de modo a completar a frase.</p>
+        <div class="exemplo-container">
+            <div class="exemplo">
+                <h2>Exemplo A</h2>
+                <p>DIA está para NOITE como CLARO está para:</p>
+                <ul>
+                    <li><label for="exemploA_a"><span data-letra="A">A)</span> Luz</label> <input type="radio" name="exemploA" id="exemploA_a" value="a"></li>
+                    <li><label for="exemploA_b"><span data-letra="B">B)</span> Energia</label> <input type="radio" name="exemploA" id="exemploA_b" value="b"></li>
+                    <li><label for="exemploA_c"><span data-letra="C">C)</span> Escuro</label> <input type="radio" name="exemploA" id="exemploA_c" value="c"></li>
+                    <li><label for="exemploA_d"><span data-letra="D">D)</span> Claridade</label> <input type="radio" name="exemploA" id="exemploA_d" value="d"></li>
+                    <li><label for="exemploA_e"><span data-letra="E">E)</span> Nuvem</label> <input type="radio" name="exemploA" id="exemploA_e" value="e"></li>
+                </ul>
+            </div>
+            <div id="feedback-exemploA"></div>
+        </div>
+        <div class="exemplo-container">
+                <div class="exemplo">
+                    <h2>Exemplo B</h2>
+                    <p>CALÇADO está para COURO como VESTÚARIO está para:</p>
+                    <ul>
+                        <li><label for="exemploB_a"><span data-letra="A">A)</span> Tecido</label> <input type="radio" name="exemploB" id="exemploB_a" value="a"></li>
+                        <li><label for="exemploB_b"><span data-letra="B">B)</span> Camisola</label> <input type="radio" name="exemploB" id="exemploB_b" value="b"></li>
+                        <li><label for="exemploB_c"><span data-letra="C">C)</span> Têxtil</label> <input type="radio" name="exemploB" id="exemploB_c" value="c"></li>
+                        <li><label for="exemploB_d"><span data-letra="D">D)</span> Roupa</label> <input type="radio" name="exemploB" id="exemploB_d" value="d"></li>
+                        <li><label for="exemploB_e"><span data-letra="E">E)</span> Algodão</label> <input type="radio" name="exemploB" id="exemploB_e" value="e"></li>
+                    </ul>
+                </div>
+                <div id="feedback-exemploB"></div>
+            </div>
+
+            <div class="exemplo-container">
+                <div class="exemplo">
+                    <h2>Exemplo C</h2>
+                    <p>ALMOÇO está para REFEIÇÃO como AUTOMÓVEL está para:</p>
+                    <ul>
+                        <li><label for="exemploC_a"><span data-letra="A">A)</span> Auto-Estrada</label> <input type="radio" name="exemploC" id="exemploC_a" value="a"></li>
+                        <li><label for="exemploC_b"><span data-letra="B">B)</span> Motor</label> <input type="radio" name="exemploC" id="exemploC_b" value="b"></li>
+                        <li><label for="exemploC_c"><span data-letra="C">C)</span> Piloto</label> <input type="radio" name="exemploC" id="exemploC_c" value="c"></li>
+                        <li><label for="exemploC_d"><span data-letra="D">D)</span> Veículo</label> <input type="radio" name="exemploC" id="exemploC_d" value="d"></li>
+                        <li><label for="exemploC_e"><span data-letra="E">E)</span> Viagem</label> <input type="radio" name="exemploC" id="exemploC_e" value="e"></li>
+                    </ul>
+                </div>
+                <div id="feedback-exemploC"></div>
+            </div>
+
+        <button id="btnIniciar" onclick="iniciarTeste(),iniciarCronometro()" style="background-color: rgb(3, 253, 3);">Iniciar</button>
+     
+            <div id="perguntas-container" class="perguntas-container">
+                <div id="cronometro">10:00</div>
+                <div class="exemplo">
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <div class="pergunta1">
+                                <p><strong>1. </strong>Tapete está para Chão como Quadro está para:</p>
+                                <ul>
+                                    <li><label for="pergunta1_a"><span data-letra="A">A)</span> Muro</label> <input type="radio" name="pergunta1" id="pergunta1_a" value="a"></li>
+                                    <li><label for="pergunta1_b"><span data-letra="B">B)</span> Museu</label> <input type="radio" name="pergunta1" id="pergunta1_b" value="b"></li>
+                                    <li><label for="pergunta1_c"><span data-letra="C">C)</span> Parede</label> <input type="radio" name="pergunta1" id="pergunta1_c" value="c"></li>
+                                    <li><label for="pergunta1_d"><span data-letra="D">D)</span> Sala</label> <input type="radio" name="pergunta1" id="pergunta1_d" value="d"></li>
+                                    <li><label for="pergunta1_e"><span data-letra="E">E)</span> Frente</label> <input type="radio" name="pergunta1" id="pergunta1_e" value="e"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <div class="pergunta2">
+                                <p><strong>2. </strong>Quartel está para Soldado como Fábrica está para:</p>
+                                <ul>
+                                    <li><label for="pergunta2_a"><span data-letra="A">A)</span> Trabalho</label> <input type="radio" name="pergunta2" id="pergunta2_a" value="a"></li>
+                                    <li><label for="pergunta2_b"><span data-letra="B">B)</span> Indústria</label> <input type="radio" name="pergunta2" id="pergunta2_b" value="b"></li>
+                                    <li><label for="pergunta2_c"><span data-letra="C">C)</span> Esforço</label> <input type="radio" name="pergunta2" id="pergunta2_c" value="c"></li>
+                                    <li><label for="pergunta2_d"><span data-letra="D">D)</span> Material</label> <input type="radio" name="pergunta2" id="pergunta2_d" value="d"></li>
+                                    <li><label for="pergunta2_e"><span data-letra="E">E)</span> Operário</label> <input type="radio" name="pergunta2" id="pergunta2_e" value="e"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <div class="pergunta3">
+                                <p><strong>3. </strong>Hora está para Dia como Mês está para:</p>
+                                <ul>
+                                    <li><label for="pergunta3_a"><span data-letra="A">A)</span> Semana</label> <input type="radio" name="pergunta3" id="pergunta3_a" value="a"></li>
+                                    <li><label for="pergunta3_b"><span data-letra="B">B)</span> Tempo</label> <input type="radio" name="pergunta3" id="pergunta3_b" value="b"></li>
+                                    <li><label for="pergunta3_c"><span data-letra="C">C)</span> Calendário</label> <input type="radio" name="pergunta3" id="pergunta3_c" value="c"></li>
+                                    <li><label for="pergunta3_d"><span data-letra="D">D)</span> Ano</label> <input type="radio" name="pergunta3" id="pergunta3_d" value="d"></li>
+                                    <li><label for="pergunta3_e"><span data-letra="E">E)</span> Século</label> <input type="radio" name="pergunta3" id="pergunta3_e" value="e"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <div class="pergunta4">
+                                <p><strong>4. </strong>Anel está para Dedo como Gravata está para:</p>
+                                <ul>
+                                    <li><label for="pergunta4_a"><span data-letra="A">A)</span> Pescoço</label> <input type="radio" name="pergunta4" id="pergunta4_a" value="a"></li>
+                                    <li><label for="pergunta4_b"><span data-letra="B">B)</span> Festa</label> <input type="radio" name="pergunta4" id="pergunta4_b" value="b"></li>
+                                    <li><label for="pergunta4_c"><span data-letra="C">C)</span> Camisa</label> <input type="radio" name="pergunta4" id="pergunta4_c" value="c"></li>
+                                    <li><label for="pergunta4_d"><span data-letra="D">D)</span> Cerimônia</label> <input type="radio" name="pergunta4" id="pergunta4_d" value="d"></li>
+                                    <li><label for="pergunta4_e"><span data-letra="E">E)</span> Paletó</label> <input type="radio" name="pergunta4" id="pergunta4_e" value="e"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <div class="pergunta5">
+                                <p><strong>5. </strong>Passado está para Presente como Ontem está para:</p>
+                                <ul>
+                                    <li><label for="pergunta5_a"><span data-letra="A">A)</span> Futuro</label> <input type="radio" name="pergunta5" id="pergunta5_a" value="a"></li>
+                                    <li><label for="pergunta5_b"><span data-letra="B">B)</span> Hoje</label> <input type="radio" name="pergunta5" id="pergunta5_b" value="b"></li>
+                                    <li><label for="pergunta5_c"><span data-letra="C">C)</span> Após</label> <input type="radio" name="pergunta5" id="pergunta5_c" value="c"></li>
+                                    <li><label for="pergunta5_d"><span data-letra="D">D)</span> Amanhã</label> <input type="radio" name="pergunta5"id="pergunta5_d" value="d"></li>
+                                    <li><label for="pergunta5_e"><span data-letra="E">E)</span> Dia</label> <input type="radio" name="pergunta5" id="pergunta5_e" value="e"></li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+            
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <div class="pergunta6">
+                                <p><strong>6. </strong>Médico está para Doente como Vendedor está para:</p>
+                                <ul>
+                                    <li><label for="pergunta6_a"><span data-letra="A">A)</span> Feirante</label> <input type="radio" name="pergunta6" id="pergunta6_a" value="a"></li>
+                                    <li><label for="pergunta6_b"><span data-letra="B">B)</span> Cobrador</label> <input type="radio" name="pergunta6" id="pergunta6_b" value="b"></li>
+                                    <li><label for="pergunta6_c"><span data-letra="C">C)</span> Imposto</label> <input type="radio" name="pergunta6" id="pergunta6_c" value="c"></li>
+                                    <li><label for="pergunta6_d"><span data-letra="D">D)</span> Cliente</label> <input type="radio" name="pergunta6" id="pergunta6_d" value="d"></li>
+                                    <li><label for="pergunta6_e"><span data-letra="E">E)</span> Comerciante</label> <input type="radio" name="pergunta6" id="pergunta6_e" value="e"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <div class="pergunta7">
+                                <p><strong>7. </strong>Nunca está para Jamais como Sempre está para:</p>
+                                <ul>
+                                    <li><label for="pergunta7_a"><span data-letra="A">A)</span> Futuro</label> <input type="radio" name="pergunta7" id="pergunta7_a" value="a"></li>
+                                    <li><label for="pergunta7_b"><span data-letra="B">B)</span> Hoje</label> <input type="radio" name="pergunta7" id="pergunta7_b" value="b"></li>
+                                    <li><label for="pergunta7_c"><span data-letra="C">C)</span> Eterno</label> <input type="radio" name="pergunta7" id="pergunta7_c" value="c"></li>
+                                    <li><label for="pergunta7_d"><span data-letra="D">D)</span> Logo</label> <input type="radio" name="pergunta7" id="pergunta7_d" value="d"></li>
+                                    <li><label for="pergunta7_e"><span data-letra="E">E)</span> Prazo</label> <input type="radio" name="pergunta7" id="pergunta7_e" value="e"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+            
+                        <div class="exemplo-container">
+                            <div class="exemplo">
+                                <div class="pergunta8">
+                                    <p><strong>8. </strong>Piano está para Música como Voz está para:</p>
+                                    <ul>
+                                        <li><label for="pergunta8_a"><span data-letra="A">A)</span> Cantor</label> <input type="radio" name="pergunta8" id="pergunta8_a" value="a"></li>
+                                        <li><label for="pergunta8_b"><span data-letra="B">B)</span> Canto</label> <input type="radio" name="pergunta8" id="pergunta8_b" value="b"></li>
+                                        <li><label for="pergunta8_c"><span data-letra="C">C)</span> Disco</label> <input type="radio" name="pergunta8" id="pergunta8_c" value="c"></li>
+                                        <li><label for="pergunta8_d"><span data-letra="D">D)</span> Melodia</label> <input type="radio" name="pergunta8" id="pergunta8_d" value="d"></li>
+                                        <li><label for="pergunta8_e"><span data-letra="E">E)</span> Rádio</label> <input type="radio" name="pergunta8" id="pergunta8_e" value="e"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+            
+                        <div class="exemplo-container">
+                            <div class="exemplo">
+                                <div class="pergunta9">
+                                    <p><strong>9. </strong>Bússola está para Navegador como Semáforo está para:</p>
+                                    <ul>
+                                        <li><label for="pergunta9_a"><span data-letra="A">A)</span> Motorista</label> <input type="radio" name="pergunta9" id="pergunta9_a" value="a"></li>
+                                        <li><label for="pergunta9_b"><span data-letra="B">B)</span> Polícia</label> <input type="radio" name="pergunta9" id="pergunta9_b" value="b"></li>
+                                        <li><label for="pergunta9_c"><span data-letra="C">C)</span> Carro</label> <input type="radio" name="pergunta9" id="pergunta9_c" value="c"></li>
+                                        <li><label for="pergunta9_d"><span data-letra="D">D)</span> Sinaleiro</label> <input type="radio" name="pergunta9" id="pergunta9_d" value="d"></li>
+                                        <li><label for="pergunta9_e"><span data-letra="E">E)</span> Código</label> <input type="radio" name="pergunta9" id="pergunta9_e" value="e"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exemplo-container">
+                            <div class="exemplo">
+                                <div class="pergunta10">
+                                    <p><strong>10. </strong>Porta está para Casa como Título está para:</p>
+                                    <ul>
+                                        <li><label for="pergunta10_a"><span data-letra="A">A)</span> Entrada</label> <input type="radio" name="pergunta10" id="pergunta10_a" value="a"></li>
+                                        <li><label for="pergunta10_b"><span data-letra="B">B)</span> Livro</label> <input type="radio" name="pergunta10" id="pergunta10_b" value="b"></li>
+                                        <li><label for="pergunta10_c"><span data-letra="C">C)</span> Capítulo</label> <input type="radio" name="pergunta10" id="pergunta10_c" value="c"></li>
+                                        <li><label for="pergunta10_d"><span data-letra="D">D)</span> Prefácio</label> <input type="radio" name="pergunta10" id="pergunta10_d" value="d"></li>
+                                        <li><label for="pergunta10_e"><span data-letra="E">E)</span> Sumário</label> <input type="radio" name="pergunta10" id="pergunta10_e" value="e"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exemplo-container">
+                            <div class="exemplo">
+                                <div class="pergunta11">
+                                    <p><strong>11. </strong>Exceder está para Ultrapassar como Medir está para:</p>
+                                    <ul>
+                                        <li><label for="pergunta11_a"><span data-letra="A">A)</span> Distinguir</label> <input type="radio" name="pergunta11" id="pergunta11_a" value="a"></li>
+                                        <li><label for="pergunta11_b"><span data-letra="B">B)</span> Observar</label> <input type="radio" name="pergunta11" id="pergunta11_b" value="b"></li>
+                                        <li><label for="pergunta11_c"><span data-letra="C">C)</span> Analisar</label> <input type="radio" name="pergunta11" id="pergunta11_c" value="c"></li>
+                                        <li><label for="pergunta11_d"><span data-letra="D">D)</span> Ordenar</label> <input type="radio" name="pergunta11" id="pergunta11_d" value="d"></li>
+                                        <li><label for="pergunta11_e"><span data-letra="E">E)</span> Avaliar</label> <input type="radio" name="pergunta11" id="pergunta11_e" value="e"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exemplo-container">
+                            <div class="exemplo">
+                                <div class="pergunta12">
+                                    <p><strong>12. </strong>Praia está para Mar como Margem está para:</p>
+                                    <ul>
+                                        <li><label for="pergunta12_a"><span data-letra="A">A)</span> Baía</label> <input type="radio" name="pergunta12" id="pergunta12_a" value="a"></li>
+                                        <li><label for="pergunta12_b"><span data-letra="B">B)</span> Terra</label> <input type="radio" name="pergunta12" id="pergunta12_b" value="b"></li>
+                                        <li><label for="pergunta12_c"><span data-letra="C">C)</span> Rio</label> <input type="radio" name="pergunta12" id="pergunta12_c" value="c"></li>
+                                        <li><label for="pergunta12_d"><span data-letra="D">D)</span> Porto</label> <input type="radio" name="pergunta12" id="pergunta12_d" value="d"></li>
+                                        <li><label for="pergunta12_e"><span data-letra="E">E)</span> Leito</label> <input type="radio" name="pergunta12" id="pergunta12_e" value="e"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exemplo-container">
+                            <div class="exemplo">
+                                <div class="pergunta13">
+                                    <p><strong>13. </strong>Experimentar está para Ensaiar como Persistir está para:</p>
+                                    <ul>
+                                        <li><label for="pergunta13_a"><span data-letra="A">A)</span> Permanecer</label> <input type="radio" name="pergunta13" id="pergunta13_a" value="a"></li>
+                                        <li><label for="pergunta13_b"><span data-letra="B">B)</span> Aguentar</label> <input type="radio" name="pergunta13" id="pergunta13_b" value="b"></li>
+                                        <li><label for="pergunta13_c"><span data-letra="C">C)</span> Incentivar</label> <input type="radio" name="pergunta13" id="pergunta13_c" value="c"></li>
+                                        <li><label for="pergunta13_d"><span data-letra="D">D)</span> Progredir</label> <input type="radio" name="pergunta13" id="pergunta13_d" value="d"></li>
+                                        <li><label for="pergunta13_e"><span data-letra="E">E)</span> Analisar</label> <input type="radio" name="pergunta13" id="pergunta13_e" value="e"></li>
+                                    </ul>
+                                </div>            
+                            </div>
+                        </div>
+                        <div class="exemplo-container">
+                            <div class="exemplo">
+                                <div class="pergunta14">
+                                    <p><strong>14. </strong>Moldura está para Quadro como Fronteira está para:</p>
+                                    <ul>
+                                        <li><label for="pergunta14_a"><span data-letra="A">A)</span> Arredores</label> <input type="radio" name="pergunta14" id="pergunta14_a" value="a"></li>
+                                        <li><label for="pergunta14_b"><span data-letra="B">B)</span> Contorno</label> <input type="radio" name="pergunta14" id="pergunta14_b" value="b"></li>
+                                        <li><label for="pergunta14_c"><span data-letra="C">C)</span> Terra</label> <input type="radio" name="pergunta14" id="pergunta14_c" value="c"></li>
+                                        <li><label for="pergunta14_d"><span data-letra="D">D)</span> País</label> <input type="radio" name="pergunta14" id="pergunta14_d" value="d"></li>
+                                        <li><label for="pergunta14_e"><span data-letra="E">E)</span> Alfândega</label> <input type="radio" name="pergunta14" id="pergunta14_e" value="e"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exemplo-container">
+                            <div class="exemplo">
+                                <div class="pergunta15">
+                                    <p><strong>15. </strong>Sinônimo está para Antônimo como Igual está para:</p>
+                                    <ul>
+                                        <li><label for="pergunta15_a"><span data-letra="A">A)</span> Diferente</label> <input type="radio" name="pergunta15" id="pergunta15_a" value="a"></li>
+                                        <li><label for="pergunta15_b"><span data-letra="B">B)</span> Parecido</label> <input type="radio" name="pergunta15" id="pergunta15_b" value="b"></li>
+                                        <li><label for="pergunta15_c"><span data-letra="C">C)</span> Contrário</label> <input type="radio" name="pergunta15" id="pergunta15_c" value="c"></li>
+                                        <li><label for="pergunta15_d"><span data-letra="D">D)</span> Inverso</label> <input type="radio" name="pergunta15" id="pergunta15_d" value="d"></li>
+                                        <li><label for="pergunta15_e"><span data-letra="E">E)</span> Idêntico</label> <input type="radio" name="pergunta15" id="pergunta15_e" value="e"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exemplo-container">
+                            <div class="exemplo">
+                                <div class="pergunta16">
+                                    <p><strong>16. </strong>Muito está para Nada como Sempre está para:</p>
+                                    <ul>
+                                        <li><label for="pergunta16_a"><span data-letra="A">A)</span> Agora</label> <input type="radio" name="pergunta16" id="pergunta16_a" value="a"></li>
+                                        <li><label for="pergunta16_b"><span data-letra="B">B)</span> Todos</label> <input type="radio" name="pergunta16" id="pergunta16_b" value="b"></li>
+                                        <li><label for="pergunta16_c"><span data-letra="C">C)</span> Frequente</label> <input type="radio" name="pergunta16" id="pergunta16_c" value="c"></li>
+                                        <li><label for="pergunta16_d"><span data-letra="D">D)</span> Às vezes</label> <input type="radio" name="pergunta16" id="pergunta16_d" value="d"></li>
+                                        <li><label for="pergunta16_e"><span data-letra="E">E)</span> Nunca</label> <input type="radio" name="pergunta16" id="pergunta16_e" value="e"></li>
+                                    </ul>
+                                </div>   
+                            </div>
+                        </div>
+                        <div class="exemplo-container">
+                            <div class="exemplo">
+                                <div class="pergunta17">
+                                    <p><strong>17. </strong>Esperança está para o Futuro como Arrepedimento está para:</p>
+                                    <ul>
+                                        <li><label for="pergunta17_a"><span data-letra="A">A)</span> Posterior</label> <input type="radio" name="pergunta17" id="pergunta17_a" value="a"></li>
+                                        <li><label for="pergunta17_b"><span data-letra="B">B)</span> Hoje</label> <input type="radio" name="pergunta17" id="pergunta17_b" value="b"></li>
+                                        <li><label for="pergunta17_c"><span data-letra="C">C)</span> Passado</label> <input type="radio" name="pergunta17" id="pergunta17_c" value="c"></li>
+                                        <li><label for="pergunta17_d"><span data-letra="D">D)</span> Correção</label> <input type="radio" name="pergunta17" id="pergunta17_d" value="d"></li>
+                                        <li><label for="pergunta17_e"><span data-letra="E">E)</span> Culpa</label> <input type="radio" name="pergunta17" id="pergunta17_e" value="e"></li>
+                                    </ul>
+                                </div>   
+                            </div>
+                        </div>
+                        <div class="exemplo-container">
+                            <div class="exemplo">
+                                <div class="pergunta18">
+                                    <p><strong>18. </strong>Revista está para Leitura como Bola está para:</p>
+                                    <ul>
+                                        <li><label for="pergunta18_a"><span data-letra="A">A)</span> Atleta</label> <input type="radio" name="pergunta18" id="pergunta18_a" value="a"></li>
+                                        <li><label for="pergunta18_b"><span data-letra="B">B)</span> Descanso</label> <input type="radio" name="pergunta18" id="pergunta18_b" value="b"></li>
+                                        <li><label for="pergunta18_c"><span data-letra="C">C)</span> Futebol</label> <input type="radio" name="pergunta18" id="pergunta18_c" value="c"></li>
+                                        <li><label for="pergunta18_d"><span data-letra="D">D)</span> Ginástica</label> <input type="radio" name="pergunta18" id="pergunta18_d" value="d"></li>
+                                        <li><label for="pergunta18_e"><span data-letra="E">E)</span> Desporto</label> <input type="radio" name="pergunta18" id="pergunta18_e" value="e"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exemplo-container">
+                            <div class="exemplo">
+                                <div class="pergunta19">
+                                    <p><strong>19. </strong>Escultura está para Arte como Poesia está para:</p>
+                                    <ul>
+                                        <li><label for="pergunta19_a"><span data-letra="A">A)</span> Poema</label> <input type="radio" name="pergunta19" id="pergunta19_a" value="a"></li>
+                                        <li><label for="pergunta19_b"><span data-letra="B">B)</span> Literatura</label> <input type="radio" name="pergunta19" id="pergunta19_b" value="b"></li>
+                                        <li><label for="pergunta19_c"><span data-letra="C">C)</span> Livro</label> <input type="radio" name="pergunta19" id="pergunta19_c" value="c"></li>
+                                        <li><label for="pergunta19_d"><span data-letra="D">D)</span> Canção</label> <input type="radio" name="pergunta19" id="pergunta19_d" value="d"></li>
+                                        <li><label for="pergunta19_e"><span data-letra="E">E)</span> Escritor</label> <input type="radio" name="pergunta19" id="pergunta19_e" value="e"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exemplo-container">
+                            <div class="exemplo">
+                                <div class="pergunta20">
+                                    <p><strong>20. </strong>Aprovar está para Contradizer como Avançar está para:</p>
+                                    <ul>
+                                        <li><label for="pergunta20_a"><span data-letra="A">A)</span> Correr</label> <input type="radio" name="pergunta20" id="pergunta20_a" value="a"></li>
+                                        <li><label for="pergunta20_b"><span data-letra="B">B)</span> Parar</label> <input type="radio" name="pergunta20" id="pergunta20_b" value="b"></li>
+                                        <li><label for="pergunta20_c"><span data-letra="C">C)</span> Impedir</label> <input type="radio" name="pergunta20" id="pergunta20_c" value="c"></li>
+                                        <li><label for="pergunta20_d"><span data-letra="D">D)</span> Mudar</label> <input type="radio" name="pergunta20" id="pergunta20_d" value="d"></li>
+                                        <li><label for="pergunta20_e"><span data-letra="E">E)</span> Retroceder</label> <input type="radio" name="pergunta20" id="pergunta20_e" value="e"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exemplo-container">
+                            <div class="exemplo">
+                                <div class="pergunta21">
+                                    <p><strong>21. </strong>Antecedente está para Consequente como Presente está para:</p>
+                                    <ul>
+                                        <li><label for="pergunta21_a"><span data-letra="A">A)</span> Futuro</label> <input type="radio" name="pergunta21" id="pergunta21_a" value="a"></li>
+                                        <li><label for="pergunta21_b"><span data-letra="B">B)</span> Agora</label> <input type="radio" name="pergunta21" id="pergunta21_b" value="b"></li>
+                                        <li><label for="pergunta21_c"><span data-letra="C">C)</span> Hoje</label> <input type="radio" name="pergunta21" id="pergunta21_c" value="c"></li>
+                                        <li><label for="pergunta21_d"><span data-letra="D">D)</span> Desenvolvimento</label> <input type="radio" name="pergunta21" id="pergunta21_d" value="d"></li>
+                                        <li><label for="pergunta21_e"><span data-letra="E">E)</span> Atualidade</label> <input type="radio" name="pergunta21" id="pergunta21_e" value="e"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exemplo-container">
+                            <div class="exemplo">
+                                <div class="pergunta22">
+                                    <p><strong>22. </strong>Permanente está para Constante como Habitual está para:</p>
+                                    <ul>
+                                        <li><label for="pergunta22_a"><span data-letra="A">A)</span> Sempre</label> <input type="radio" name="pergunta22" id="pergunta22_a" value="a"></li>
+                                        <li><label for="pergunta22_b"><span data-letra="B">B)</span> Inconstante</label> <input type="radio" name="pergunta22" id="pergunta22_b" value="b"></li>
+                                        <li><label for="pergunta22_c"><span data-letra="C">C)</span> Frequente</label> <input type="radio" name="pergunta22" id="pergunta22_c" value="c"></li>
+                                        <li><label for="pergunta22_d"><span data-letra="D">D)</span> Repetitivo</label> <input type="radio" name="pergunta22" id="pergunta22_d" value="d"></li>
+                                        <li><label for="pergunta22_e"><span data-letra="E">E)</span> Raro</label> <input type="radio" name="pergunta22" id="pergunta22_e" value="e"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exemplo-container">
+                            <div class="exemplo">
+                                <div class="pergunta23">
+                                    <p><strong>23. </strong>Tarde está para Cedo como Tardio está para:</p>
+                                    <ul>
+                                        <li><label for="pergunta23_a"><span data-letra="A">A)</span> Passado</label> <input type="radio" name="pergunta23" id="pergunta23_a" value="a"></li>
+                                        <li><label for="pergunta23_b"><span data-letra="B">B)</span> Nunca</label> <input type="radio" name="pergunta23" id="pergunta23_b" value="b"></li>
+                                        <li><label for="pergunta23_c"><span data-letra="C">C)</span> Pontual</label> <input type="radio" name="pergunta23" id="pergunta23_c" value="c"></li>
+                                        <li><label for="pergunta23_d"><span data-letra="D">D)</span> Precoce</label> <input type="radio" name="pergunta23" id="pergunta23_d" value="d"></li>
+                                        <li><label for="pergunta23_e"><span data-letra="E">E)</span> Rápido</label> <input type="radio" name="pergunta23" id="pergunta23_e" value="e"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exemplo-container">
+                            <div class="exemplo">
+                                <div class="pergunta24">
+                                    <p><strong>24. </strong>Ouvido está para Música como Olfato está para:</p>
+                                    <ul>
+                                        <li><label for="pergunta24_a"><span data-letra="A">A)</span> Gosto</label> <input type="radio" name="pergunta24" id="pergunta24_a" value="a"></li>
+                                        <li><label for="pergunta24_b"><span data-letra="B">B)</span> Perfume</label> <input type="radio" name="pergunta24" id="pergunta24_b" value="b"></li>
+                                        <li><label for="pergunta24_c"><span data-letra="C">C)</span> Ar</label> <input type="radio" name="pergunta24" id="pergunta24_c" value="c"></li>
+                                        <li><label for="pergunta24_d"><span data-letra="D">D)</span> Cheiro</label> <input type="radio" name="pergunta24" id="pergunta24_d" value="d"></li>
+                                        <li><label for="pergunta24_e"><span data-letra="E">E)</span> Ritmo</label> <input type="radio" name="pergunta24" id="pergunta24_e" value="e"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="exemplo-container">
+                            <div class="exemplo">
+                                <div class="pergunta25">
+                                    <p><strong>25. </strong>Meditar está para Concentração como Julgar está para:</p>
+                                    <ul>
+                                        <li><label for="pergunta25_a"><span data-letra="A">A)</span> Afirmação</label> <input type="radio" name="pergunta25" id="pergunta25_a" value="a"></li>
+                                        <li><label for="pergunta25_b"><span data-letra="B">B)</span> Justiça</label> <input type="radio" name="pergunta25" id="pergunta25_b" value="b"></li>
+                                        <li><label for="pergunta25_c"><span data-letra="C">C)</span> Atenção</label> <input type="radio" name="pergunta25" id="pergunta25_c" value="c"></li>
+                                        <li><label for="pergunta25_d"><span data-letra="D">D)</span> Ponderação</label> <input type="radio" name="pergunta25" id="pergunta25_d" value="d"></li>
+                                        <li><label for="pergunta25_e"><span data-letra="E">E)</span> Julgamento</label> <input type="radio" name="pergunta25" id="pergunta25_e" value="e"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <button id="btnTerminar" onclick="terminar()" style="background-color: rgb(3, 253, 3);">Terminar</button> 
+
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <script src="js/script_menu.js"></script>
+<script>
+    var intervalo; 
+    var selectedSquares = {}; 
+
+    function getDataAtual() {
+        var dataAtual = new Date();
+        var dia = dataAtual.getDate();
+        var mes = dataAtual.getMonth() + 1; 
+        var ano = dataAtual.getFullYear();
+        var dataFormatada = dia + '/' + mes + '/' + ano;
+        return dataFormatada;
+    }
+
+    var dataElements = document.querySelectorAll('.data');
+    dataElements.forEach(function(element) {
+        element.innerText = "Data atual: " + getDataAtual();
+    });
+
+    function iniciarCronometro() {
+        var segundos = 600; 
+        document.getElementById('cronometro').textContent = '10:00'; 
+        intervalo = setInterval(function () {
+            atualizarCronometro(segundos);
+            segundos--;
+            if (segundos < 0) {
+                clearInterval(intervalo);
+                alert('Tempo esgotado!');
+                terminar
+            }
+        }, 1000);
+        document.getElementById('btnIniciar').style.display = 'none';
+    }
+
+    function salvarNome() {
+        var nomeUsuario = document.getElementById('input-nome').value;
+        if (nomeUsuario.trim() === '') {
+            alert('Por favor, insira seu nome.');
+            return;
+        }
+        localStorage.setItem('nomeUsuario', nomeUsuario);
+        var nomeDiv = document.getElementById('nome-usuario');
+        if (nomeDiv) {
+            nomeDiv.textContent = nomeUsuario;
+        }
+    }
+
+    function atualizarCronometro(segundos) {
+        var cronometro = document.getElementById('cronometro');
+        var minutos = Math.floor(segundos / 60);
+        var segundosRestantes = segundos % 60;
+        var segundosFormatados = segundosRestantes < 10 ? '0' + segundosRestantes : segundosRestantes;
+        var minutosFormatados = minutos < 10 ? '0' + minutos : minutos;
+        cronometro.textContent = minutosFormatados + ':' + segundosFormatados;
+
+        if (segundos === 0) {
+            clearInterval(intervalo); 
+            alert('Tempo esgotado! clique em Terminar.');
+        }
+    }
+
+    const respostasCorretas = {
+        exemploA: 'c', // Resposta correta para o exemplo A é a opção 'c' (Escuro)
+        exemploB: 'a', 
+        exemploC: 'd' 
+    };
+
+    const radios = document.querySelectorAll('input[type="radio"]');
+    radios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            const nomeExemplo = this.name; 
+            const respostaSelecionada = this.value; 
+
+            const feedbackElement = document.getElementById(`feedback-${nomeExemplo}`);
+
+            if (respostaSelecionada === respostasCorretas[nomeExemplo]) {
+                feedbackElement.textContent = "RESPOSTA CERTA!!!";
+                feedbackElement.style.color = "darkblue";  // Cor definida como azul escuro
+                feedbackElement.style.fontWeight = "bold"; // Estilo de fonte em negrito
+            } else {
+                // Adicione as observações aqui, personalizadas para cada exemplo:
+                let observacao = "";
+                switch (nomeExemplo) {
+                    case 'exemploA':
+                        observacao = "A relação é de oposição: dia/noite, claro/escuro.";
+                        break;
+                    case 'exemploB':
+                        observacao = "A relação é de material: calçado/couro, vestuário/tecido.";
+                        break;
+                    case 'exemploC':
+                        observacao = "A relação é de categoria: almoço/refeição, automóvel/veículo.";
+                        break;
+                }
+                feedbackElement.textContent = `RESPOSTA ERRADA!!! A resposta correta é: ${respostasCorretas[nomeExemplo]}. ${observacao}`;
+                feedbackElement.style.color = "red";       // Cor definida como vermelho
+                feedbackElement.style.fontWeight = "bold"; // Estilo de fonte em negrito
+            }
+        });
+    });
+
+    // Função para iniciar o teste
+    function iniciarTeste() {
+        document.getElementById('perguntas-container').style.display = 'block';
+        document.getElementById('btnTerminar').style.display = 'block';
+        document.getElementById('btnIniciar').style.display = 'none';
+    }
+
+    // Adiciona um ouvinte de evento para cada opção de rádio
+    var exemploContainers = document.querySelectorAll('.exemplo-container');
+
+    exemploContainers.forEach(function(container) {
+        var radioOptions = container.querySelectorAll('input[type=radio]');
+        radioOptions.forEach(function(radio) {
+            radio.addEventListener('change', function() {
+                // Remove o negrito de todas as opções
+                var spans = container.querySelectorAll('.exemplo span');
+                spans.forEach(function(span) {
+                    span.style.fontWeight = 'normal';
+                });
+                // Adiciona negrito à opção selecionada
+                var selectedSpan = this.parentNode.querySelector('span');
+                if (selectedSpan) {
+                    selectedSpan.style.fontWeight = 'bold';
+                    selectedSpan.style.color = '#00008B'; // Azul escuro
+                }
+            });
+        });
+    });
+
+
+    function terminar() {
+        var nomeUsuario = localStorage.getItem('nomeUsuario');
+        if (!nomeUsuario) {
+            alert('Por favor, insira seu nome completo antes de terminar.');
+            return; 
+        }
+
+        html2canvas(document.body, {
+            onrendered: function (canvas) {
+                var image = canvas.toDataURL("image/jpeg"); 
+                var link = document.createElement('a');
+                link.href = image;
+                link.download = 'screenshot.jpeg'; 
+                link.click();
+
+                window.location.href = 'fim_test.html';
+            }
+        });
+    }
+
+</script>
+
+</body>
+
+</html>

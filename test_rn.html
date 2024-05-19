@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="imagens/favicon.png" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>RN</title>
+    <link rel="stylesheet" href="css/aula16.css" />  
+    <style>
+        /* Estilos modernos e responsivos */
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; 
+            margin: 0;
+        }
+
+        main {
+            flex: 1; 
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #tela-principal {
+            width: 90%; 
+            max-width: 800px; 
+            background-color: #f4f4f4;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        #nome-usuario {
+        text-align: center;
+        font-size: 2.5rem;
+        font-weight: 600;
+        margin-top: 20px;
+        position: relative;
+        color: #444;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .input-container {
+            margin-bottom: 20px;
+        }
+
+        .input-field {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .btn-salvar {
+            background-color: #007bff; 
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+         /* Estilos para o contêiner da seção de exemplo */
+         .perguntas-container {
+            display: none; /* Inicialmente invisível */
+            border: 1px solid #b3b2b2;  /* Borda sólida cinza claro */
+            padding: 20px;           /* Espaçamento interno */
+            border-radius: 8px;      /* Bordas arredondadas */
+            margin-top: 10px;
+            margin-bottom: 20px;     /* Espaçamento externo inferior */
+        }
+
+        /* Estilos para o contêiner da seção de exemplo */
+        .exemplo-container {
+            background-color: #fbfbfc; 
+            border: 1px solid #ccc9c9;  /* Borda sólida cinza claro */
+            padding: 20px;           /* Espaçamento interno */
+            border-radius: 8px;      /* Bordas arredondadas */
+            margin-bottom: 20px;     /* Espaçamento externo inferior */
+            text-align: left;
+        }
+
+        .exemplo li {
+            background-color: #fbfbfc; 
+            list-style: none; /* Remove os marcadores da lista */
+            margin: 0;        /* Remove as margens padrão */
+        }
+
+
+        #cronometro {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+
+        input[type="text"] {
+            width: 40px; /* Ajuste a largura conforme necessário */
+            text-align: center;
+            font-weight: bold;
+            color: darkblue; /* Azul escuro */
+        }
+        
+        #btnTerminar {
+        display: none; /* Inicialmente invisível */
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    
+    </style>
+</head>
+<body>
+    <main id='tela-principal'>
+        <div id="nome-usuario" class="input-container">
+            <input type="text2" id="input-nome" class="input-field" placeholder="Insira seu Nome Completo">
+            <button onclick="salvarNome()" class="btn-salvar">
+                <i class="bi bi-floppy-fill" style="color: white;"></i>
+            </button>
+        </div>
+        <p class="data"></p>
+        <h1 id="titulo">RN</h1>
+        <p>Nesta prova você irá continuar uma série de números. Em cada série, os números aparecem de acordo com uma determinada ordem. Em primeiro lugar você deverá descobrir qual é essa ordem, isto é, o modo como os números se sucedem. Em segundo, deverá encontrar os dois números que viriam logo a seguir e que completam a série apresentada.
+            Veja o exemplo abaixo. Analise a série de números e descubra quais os dois números que viriam a seguir nos locais marcados com pontos de interrogação (??):</p>
+        <div class="exemplo-container">
+            <div class="exemplo">
+                <h2>Exemplo A</h2>
+                <p>1 - 3 - 5 - 7 - 9 - <input type="text" id="resposta-a1"> <input type="text" id="resposta-a2"></p>
+            </div>
+            <div id="feedback-exemploA"></div>
+        </div>
+        <div class="exemplo-container">
+                <div class="exemplo">
+                    <h2>Exemplo B</h2>
+                    <p>1 - 2 - 4 - 8 - 16 - <input type="text" id="resposta-a1"> <input type="text" id="resposta-a2"></p>
+                </div>
+                <div id="feedback-exemploB"></div>
+            </div>
+
+            <div class="exemplo-container">
+                <div class="exemplo">
+                    <h2>Exemplo C</h2>
+                    <p>4 - 7 - 6 - 10 - 8 - 13 - 10 - <input type="text" id="resposta-a1"> <input type="text" id="resposta-a2"></p>
+                </div>
+                <div id="feedback-exemploC"></div>
+            </div>
+
+        <button id="btnIniciar" onclick="iniciarTeste(),iniciarCronometro()" style="background-color: rgb(3, 253, 3);">Iniciar</button>
+     
+            <div id="perguntas-container" class="perguntas-container">
+                <div id="cronometro">18:00</div>
+                <div class="exemplo">
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <p><strong>1.</strong></p>
+                            <div class="pergunta1">
+                                <p>3 - 6 - 9 - 12 - 15 - <input type="text" id="resposta-a1"> <input type="text" id="resposta-a2"></p>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <p><strong>2.</strong></p>
+                            <div class="pergunta2">
+                                <p>26 - 31 - 36 - 41 - 46 - <input type="text" id="resposta-a1"> <input type="text" id="resposta-a2"></p>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <p><strong>3.</strong></p>
+                            <div class="pergunta3">
+                                <p>8 - 3 - 9 - 3 - 10 - 3 - <input type="text" id="resposta-a1"> <input type="text" id="resposta-a2"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <p><strong>4.</strong></p>
+                            <div class="pergunta4">
+                                <p>96 - 48 - 24 - 12 - <input type="text" id="resposta-a1"> <input type="text" id="resposta-a2"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <p><strong>5.</strong></p>
+                            <div class="pergunta5">
+                                <p>5 - 50 - 10 - 40 - 15 - 30 - 20 - <input type="text" id="resposta-a1"> <input type="text" id="resposta-a2"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <p><strong>6.</strong></p>
+                            <div class="pergunta6">
+                                <p>45 - 38 - 31 - 24 - 17 - <input type="text" id="resposta-a1"> <input type="text" id="resposta-a2"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <p><strong>7.</strong></p>
+                            <div class="pergunta7">
+                                <p>4 - 5 - 8 - 5 - 16 - 5 - 32 <input type="text" id="resposta-a1"> <input type="text" id="resposta-a2"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <p><strong>8.</strong></p>
+                            <div class="pergunta8">
+                                <p>5 - 7 - 8 - 11 - 12 - 16 - 17 - 22 - <input type="text" id="resposta-a1"> <input type="text" id="resposta-a2"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <p><strong>9.</strong></p>
+                            <div class="pergunta9">
+                                <p>14 - 15 - 16 - 30 - 20 - 45 -  22 -  60 -  26 -  <input type="text" id="resposta-a1"> <input type="text" id="resposta-a2"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <p><strong>10.</strong></p>
+                            <div class="pergunta10">
+                                <p>26 - 27 - 29 - 30 - 33 - 34 -  38 -  39 - <input type="text" id="resposta-a1"> <input type="text" id="resposta-a2"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <p><strong>11.</strong></p>
+                            <div class="pergunta11">
+                                <p>7 - 7 - 9 - 10 - 13 - 16 - 16 - 21 - <input type="text" id="resposta-a1"> <input type="text" id="resposta-a2"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <p><strong>12.</strong></p>
+                            <div class="pergunta12">
+                                <p>25 - 26 - 24 - 27 - 21 - 26 - 20 - 27 - 17 - <input type="text" id="resposta-a1"> <input type="text" id="resposta-a2"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <p><strong>13.</strong></p>
+                            <div class="pergunta13">
+                                <p>3 - 3 - 6 - 7 - 12 - 11 - 24 - 15 - <input type="text" id="resposta-a1"> <input type="text" id="resposta-a2"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <p><strong>14.</strong></p>
+                            <div class="pergunta14">
+                                <p>21 - 7 - 6 - 17 - 5 - 4 - 14 - 3 - 2 - <input type="text" id="resposta-a1"> <input type="text" id="resposta-a2"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <p><strong>15.</strong></p>
+                            <div class="pergunta15">
+                                <p>9 - 37 - 11 - 28 - 15 - 20 - 21 - 13 - 29 - <input type="text" id="resposta-a1"> <input type="text" id="resposta-a2"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <p><strong>16.</strong></p>
+                            <div class="pergunta16">
+                                <p>17 - 18 - 19 - 21 - 23 - 26 - 29 - 33 - <input type="text" id="resposta-a1"> <input type="text" id="resposta-a2"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <p><strong>17.</strong></p>
+                            <div class="pergunta17">
+                                <p>15 - 20 - 30 - 45 - 50 - 60 - 75 - 80 - 90 - <input type="text" id="resposta-a1"> <input type="text" id="resposta-a2"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <p><strong>18.</strong></p>
+                            <div class="pergunta18">
+                                <p>17 - 18 - 20 - 15 - 16 - 18 - 13 - 14 - 16 - <input type="text" id="resposta-a1"> <input type="text" id="resposta-a2"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <p><strong>19.</strong></p>
+                            <div class="pergunta19">
+                                <p>18 - 6 - 9 - 27 - 9 - 12 - 36 - <input type="text" id="resposta-a1"> <input type="text" id="resposta-a2"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <p><strong>20.</strong></p>
+                            <div class="pergunta20">
+                                <p>1 - 1 - 2 - 6 - 24 - <input type="text" id="resposta-a1"> <input type="text" id="resposta-a2"></p>
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+
+        <button id="btnTerminar" onclick="terminar()" style="background-color: rgb(3, 253, 3);">Terminar</button> 
+
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <script src="js/script_menu.js"></script>
+<script>
+    var intervalo; 
+    var selectedSquares = {}; 
+
+    function getDataAtual() {
+        var dataAtual = new Date();
+        var dia = dataAtual.getDate();
+        var mes = dataAtual.getMonth() + 1; 
+        var ano = dataAtual.getFullYear();
+        var dataFormatada = dia + '/' + mes + '/' + ano;
+        return dataFormatada;
+    }
+
+    var dataElements = document.querySelectorAll('.data');
+    dataElements.forEach(function(element) {
+        element.innerText = "Data atual: " + getDataAtual();
+    });
+
+    function iniciarCronometro() {
+        var segundos = 1080; 
+        document.getElementById('cronometro').textContent = '18:00'; 
+        intervalo = setInterval(function () {
+            atualizarCronometro(segundos);
+            segundos--;
+            if (segundos < 0) {
+                clearInterval(intervalo);
+                alert('Tempo esgotado!');
+                terminar
+            }
+        }, 1000);
+        document.getElementById('btnIniciar').style.display = 'none';
+    }
+
+    function salvarNome() {
+        var nomeUsuario = document.getElementById('input-nome').value;
+        if (nomeUsuario.trim() === '') {
+            alert('Por favor, insira seu nome.');
+            return;
+        }
+        localStorage.setItem('nomeUsuario', nomeUsuario);
+        var nomeDiv = document.getElementById('nome-usuario');
+        if (nomeDiv) {
+            nomeDiv.textContent = nomeUsuario;
+        }
+    }
+
+    function atualizarCronometro(segundos) {
+        var cronometro = document.getElementById('cronometro');
+        var minutos = Math.floor(segundos / 60);
+        var segundosRestantes = segundos % 60;
+        var segundosFormatados = segundosRestantes < 10 ? '0' + segundosRestantes : segundosRestantes;
+        var minutosFormatados = minutos < 10 ? '0' + minutos : minutos;
+        cronometro.textContent = minutosFormatados + ':' + segundosFormatados;
+
+        if (segundos === 0) {
+            clearInterval(intervalo); 
+            alert('Tempo esgotado! clique em Terminar.');
+        }
+    }
+
+    // Função para iniciar o teste
+    function iniciarTeste() {
+        document.getElementById('perguntas-container').style.display = 'block';
+        document.getElementById('btnTerminar').style.display = 'block';
+        document.getElementById('btnIniciar').style.display = 'none';
+    }
+
+    function terminar() {
+        var nomeUsuario = localStorage.getItem('nomeUsuario');
+        if (!nomeUsuario) {
+            alert('Por favor, insira seu nome completo antes de terminar.');
+            return; 
+        }
+
+        html2canvas(document.body, {
+            onrendered: function (canvas) {
+                var image = canvas.toDataURL("image/jpeg"); 
+                var link = document.createElement('a');
+                link.href = image;
+                link.download = 'screenshot.jpeg'; 
+                link.click();
+
+                window.location.href = 'fim_test.html';
+            }
+        });
+    }
+
+</script>
+
+</body>
+
+</html>

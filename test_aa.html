@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <link rel="icon" href="imagens/favicon.png" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap Icons CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <title>Atenção Alternada</title>
+    <link rel="stylesheet" href="css/aula16.css" />
+    <style>
+        /* Estilos adicionais podem ser colocados aqui */
+        #tela-principal {
+            position: relative;
+        }
+
+        #nome-usuario {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .linha-quadrados {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+            /* Espaçamento acima do quadrado */
+            margin-bottom: 10px;
+            /* Espaçamento entre as linhas de quadrados */
+        }
+
+        .quadrado-ac {
+            width: 50px;
+            height: 50px;
+            background-color: #ccc;
+            /* Cor de fundo padrão */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 5px;
+            /* Espaçamento entre os quadrados */
+            cursor: pointer;
+            /* Cursor ao passar sobre o quadrado */
+        }
+
+        .quadrado-ac img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .selected {
+            position: absolute;
+            color: red;
+            font-size: 34px;
+            font-weight: bold;
+            /* Adicionando negrito */
+        }
+
+        p {
+            font-size: 10px; /* Alteração no tamanho da fonte para 10 pixels */
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        /* Estilo para o contêiner do campo de nome e do botão */
+        .input-container {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Estilo para o campo de entrada de texto */
+        .input-field {
+            padding: 10px;
+            border-radius: 20px; /* Bordas arredondadas */
+            border: 1px solid #ccc;
+            font-size: 16px;
+            outline: none;
+            flex: 1; /* Ocupa o espaço restante */
+        }
+
+        /* Estilo para o botão de salvar */
+            .btn-salvar {
+                background-color: #4CAF50; /* Cor de fundo verde */
+                color: white;
+                padding: 12px 12px;
+                border: none;
+                border-radius: 30px; /* Bordas arredondadas */
+                cursor: pointer;
+                transition: background-color 0.3s; /* Transição suave de cor ao passar o mouse */
+                font-size: 16px;
+                font-weight: bold;
+                text-transform: uppercase; /* Transforma o texto em maiúsculas */
+                letter-spacing: 1px; /* Espaçamento entre as letras */
+            }
+
+            /* Estilo para o ícone dentro do botão */
+            .btn-salvar i {
+                margin-right: 0px;
+            }
+
+            /* Estilo para o botão de salvar ao passar o mouse */
+            .btn-salvar:hover {
+                background-color: #45a049; /* Cor de fundo verde ligeiramente mais escura */
+            }
+
+    </style>
+</head>
+
+<body>
+    <main id='tela-principal'>
+        <h1 id="titulo">ATENÇÃO ALTERNADA TREINAMENTO</h1>
+        <p class="data"></p> <!-- Alterado para classe -->
+        <div id="nome-usuario" class="input-container">
+            <input type="text" id="input-nome" class="input-field" placeholder="Insira seu Nome Completo">
+            <button onclick="salvarNome()" class="btn-salvar">
+                <i class="bi bi-floppy-fill" style="color: white;"></i>
+            </button>            
+            
+        </div>              
+        <!-- Cronômetro -->
+        <div id="cronometro">02:30</div>
+        <!-- Botões de iniciar, parar e reiniciar -->
+        <button id="btnIniciar" onclick="iniciarCronometro()" style="background-color: rgb(3, 253, 3);">Iniciar</button>
+        <!-- Botão "Terminar" -->
+        <button onclick="terminar()">Terminar</button>
+    </main>
+
+    <!-- Linha 1 -->
+<div class="linha-quadrados">
+    <div class="quadrado-ac" id="quadrado_ac0"><img src="imagens/atencao/ac11.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac0"><img src="imagens/atencao/ac18.png"></div>
+    <!--linhas-->
+    <div class="quadrado-ac" id="quadrado_ac2" onclick="toggleSelection(2)"><img src="imagens/atencao/ac11.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac3" onclick="toggleSelection(3)"><img src="imagens/atencao/ac12.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac4" onclick="toggleSelection(4)"><img src="imagens/atencao/ac11.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac5" onclick="toggleSelection(5)"><img src="imagens/atencao/ac16.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac6" onclick="toggleSelection(6)"><img src="imagens/atencao/ac17.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac7" onclick="toggleSelection(7)"><img src="imagens/atencao/ac2.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac8" onclick="toggleSelection(8)"><img src="imagens/atencao/ac3.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac9" onclick="toggleSelection(9)"><img src="imagens/atencao/ac11.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac10" onclick="toggleSelection(10)"><img src="imagens/atencao/ac7.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac11" onclick="toggleSelection(11)"><img src="imagens/atencao/ac15.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac12" onclick="toggleSelection(12)"><img src="imagens/atencao/ac12.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac13" onclick="toggleSelection(13)"><img src="imagens/atencao/ac6.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac14" onclick="toggleSelection(14)"><img src="imagens/atencao/ac13.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac15" onclick="toggleSelection(15)"><img src="imagens/atencao/ac14.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac16" onclick="toggleSelection(16)"><img src="imagens/atencao/ac11.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac17" onclick="toggleSelection(17)"><img src="imagens/atencao/ac5.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac18" onclick="toggleSelection(18)"><img src="imagens/atencao/ac10.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac19" onclick="toggleSelection(19)"><img src="imagens/atencao/ac11.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac20" onclick="toggleSelection(20)"><img src="imagens/atencao/ac11.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac21" onclick="toggleSelection(21)"><img src="imagens/atencao/ac7.png"></div>
+</div>
+
+<!-- Linha 2 -->
+<div class="linha-quadrados">
+    <div class="quadrado-ac" id="quadrado_ac0"><img src="imagens/atencao/ac3.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac0"><img src="imagens/atencao/ac18.png"></div>
+    <!--linhas-->
+    <div class="quadrado-ac" id="quadrado_ac22" onclick="toggleSelection(22)"><img src="imagens/atencao/ac17.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac23" onclick="toggleSelection(23)"><img src="imagens/atencao/ac2.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac24" onclick="toggleSelection(24)"><img src="imagens/atencao/ac12.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac25" onclick="toggleSelection(25)"><img src="imagens/atencao/ac15.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac26" onclick="toggleSelection(26)"><img src="imagens/atencao/ac14.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac27" onclick="toggleSelection(27)"><img src="imagens/atencao/ac3.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac28" onclick="toggleSelection(28)"><img src="imagens/atencao/ac8.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac29" onclick="toggleSelection(29)"><img src="imagens/atencao/ac12.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac30" onclick="toggleSelection(30)"><img src="imagens/atencao/ac13.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac31" onclick="toggleSelection(31)"><img src="imagens/atencao/ac14.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac32" onclick="toggleSelection(32)"><img src="imagens/atencao/ac7.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac33" onclick="toggleSelection(33)"><img src="imagens/atencao/ac3.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac34" onclick="toggleSelection(34)"><img src="imagens/atencao/ac5.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac35" onclick="toggleSelection(35)"><img src="imagens/atencao/ac10.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac36" onclick="toggleSelection(36)"><img src="imagens/atencao/ac7.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac37" onclick="toggleSelection(37)"><img src="imagens/atencao/ac16.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac38" onclick="toggleSelection(38)"><img src="imagens/atencao/ac3.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac39" onclick="toggleSelection(39)"><img src="imagens/atencao/ac3.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac40" onclick="toggleSelection(40)"><img src="imagens/atencao/ac6.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac41" onclick="toggleSelection(41)"><img src="imagens/atencao/ac3.png"></div>
+</div>
+
+<!-- Linha 3 -->
+<div class="linha-quadrados">
+    <div class="quadrado-ac" id="quadrado_ac0"><img src="imagens/atencao/ac8.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac0"><img src="imagens/atencao/ac18.png"></div>
+    <!--linhas-->
+    <div class="quadrado-ac" id="quadrado_ac42" onclick="toggleSelection(42)"><img src="imagens/atencao/ac2.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac43" onclick="toggleSelection(43)"><img src="imagens/atencao/ac7.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac44" onclick="toggleSelection(44)"><img src="imagens/atencao/ac17.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac45" onclick="toggleSelection(45)"><img src="imagens/atencao/ac8.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac46" onclick="toggleSelection(46)"><img src="imagens/atencao/ac8.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac47" onclick="toggleSelection(47)"><img src="imagens/atencao/ac10.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac48" onclick="toggleSelection(48)"><img src="imagens/atencao/ac13.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac49" onclick="toggleSelection(49)"><img src="imagens/atencao/ac12.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac50" onclick="toggleSelection(50)"><img src="imagens/atencao/ac3.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac51" onclick="toggleSelection(51)"><img src="imagens/atencao/ac5.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac52" onclick="toggleSelection(52)"><img src="imagens/atencao/ac8.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac53" onclick="toggleSelection(53)"><img src="imagens/atencao/ac16.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac54" onclick="toggleSelection(54)"><img src="imagens/atencao/ac6.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac55" onclick="toggleSelection(55)"><img src="imagens/atencao/ac12.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac56" onclick="toggleSelection(56)"><img src="imagens/atencao/ac14.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac57" onclick="toggleSelection(57)"><img src="imagens/atencao/ac7.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac58" onclick="toggleSelection(58)"><img src="imagens/atencao/ac14.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac59" onclick="toggleSelection(59)"><img src="imagens/atencao/ac13.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac60" onclick="toggleSelection(60)"><img src="imagens/atencao/ac8.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac61" onclick="toggleSelection(61)"><img src="imagens/atencao/ac15.png"></div>
+</div>
+
+    <div id="resultado">
+        <p>Acertos: <span id="acertos">0</span></p>
+        <p>Erros: <span id="erros">0</span></p>
+        <p>Omissões: <span id="omissoes">15</span></p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+     <!-- Firebase SDK -->
+     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script> <!-- Adicionando o script do Firestore -->
+ 
+     <script src="js/config.js"></script> <!-- Inclui o arquivo de configuração do Firebase -->
+     <script src="js/script_menu.js"></script>
+
+    <script>
+        var intervalo; // Variável para armazenar o intervalo do cronômetro
+        var selectedSquares = {}; // Objeto para armazenar os quadrados selecionados e seus valore
+
+        // Função para obter a data atual
+        function getDataAtual() {
+            var dataAtual = new Date();
+            var dia = dataAtual.getDate();
+            var mes = dataAtual.getMonth() + 1; // Os meses são indexados de 0 a 11, então é necessário adicionar 1
+            var ano = dataAtual.getFullYear();
+            var dataFormatada = dia + '/' + mes + '/' + ano;
+            return dataFormatada;
+        }
+    
+        // Exibir a data atual na página
+        var dataElements = document.querySelectorAll('.data');
+        dataElements.forEach(function(element) {
+            element.innerText = "Data atual: " + getDataAtual();
+        });
+        
+        function iniciarCronometro() {
+            var segundos = 150; // 2:30 minutos em segundos
+            document.getElementById('cronometro').textContent = '02:30'; // Define o cronômetro para 2:30 minutos
+            intervalo = setInterval(function () {
+                atualizarCronometro(segundos);
+                segundos--;
+                if (segundos < 0) {
+                    clearInterval(intervalo);
+                    alert('Tempo esgotado!');
+                }
+            }, 1000);
+            document.getElementById('btnIniciar').style.display = 'none';
+        }
+
+        function terminar() {
+            // Verifica se o nome do usuário foi salvo
+            var nomeUsuario = localStorage.getItem('nomeUsuario');
+            if (!nomeUsuario) {
+                alert('Por favor, insira seu nome completo antes de terminar.');
+                return; // Retorna para evitar que o código continue executando
+            }
+
+            // Captura de tela...
+            html2canvas(document.body, {
+                onrendered: function (canvas) {
+                    var image = canvas.toDataURL("image/jpeg"); // Convertendo para formato JPEG
+                    var link = document.createElement('a');
+                    link.href = image;
+                    link.download = 'screenshot.jpeg'; // Definindo o nome do arquivo como screenshot.jpeg
+                    link.click();
+
+                    // Redirecionar para test_ac_apl.html após salvar a captura de tela
+                    window.location.href = 'test_aa_apl.html';
+                }
+            });
+        }
+
+
+        function salvarNome() {
+            var nomeUsuario = document.getElementById('input-nome').value;
+            if (nomeUsuario.trim() === '') {
+                alert('Por favor, insira seu nome.');
+                return;
+            }
+            localStorage.setItem('nomeUsuario', nomeUsuario);
+            // Adiciona o nome do usuário ao campo de nome em outro HTML
+            var nomeDiv = document.getElementById('nome-usuario');
+            if (nomeDiv) {
+                nomeDiv.textContent = nomeUsuario;
+            }
+        }
+
+
+        function reiniciarCronometro() {
+            clearInterval(intervalo);
+            iniciarCronometro();
+        }
+
+        function atualizarCronometro(segundos) {
+            var cronometro = document.getElementById('cronometro');
+            var minutos = Math.floor(segundos / 60);
+            var segundosRestantes = segundos % 60;
+            var segundosFormatados = segundosRestantes < 10 ? '0' + segundosRestantes : segundosRestantes;
+            var minutosFormatados = minutos < 10 ? '0' + minutos : minutos;
+            cronometro.textContent = minutosFormatados + ':' + segundosFormatados;
+
+            if (segundos === 0) {
+                clearInterval(intervalo); // Para o cronômetro
+                // Mostrar mensagem ao usuário
+                alert('Tempo esgotado! Por favor, arrume os quadrados e clique em Terminar.');
+            }
+        }
+
+        function toggleSelection(id) {
+            // Verifica se o cronômetro está em execução antes de permitir a seleção
+            var cronometro = document.getElementById('cronometro');
+            if (cronometro.textContent !== '02:30') {
+                var square = document.getElementById('quadrado_ac' + id);
+                var value = 1; // Valor do quadrado
+
+                // Verifica se o quadrado já está selecionado
+                if (selectedSquares[id]) {
+                    // Se estiver selecionado, remove a marcação e subtrai o valor do total
+                    square.removeChild(square.querySelector('.selected'));
+                    delete selectedSquares[id];
+                } else {
+                    // Se não estiver selecionado, adiciona a marcação e adiciona o valor ao total
+                    var cross = document.createElement('span');
+                    cross.textContent = '/';
+                    cross.className = 'selected';
+                    square.appendChild(cross);
+                    selectedSquares[id] = value;
+                }
+
+                // Atualiza os valores de Acertos, Erros e Omissões
+                document.getElementById('acertos').textContent = calculateHits();
+                document.getElementById('erros').textContent = calculateErrors();
+                document.getElementById('omissoes').textContent = calculateOmission();
+            } else {
+                // Se o cronômetro não estiver em execução, alerta o usuário para iniciar o cronômetro primeiro
+                alert('Por favor, inicie o cronômetro antes de iniciar o teste!');
+            }
+        }
+
+        function calculateHits() {
+            var hits = 0;
+            // Conta o número de quadrados marcados como acertos
+            for (var key in selectedSquares) {
+                var id = parseInt(key);
+                // Verifica se o quadrado está na lista de quadrados corretos
+                if ([2, 4, 9, 16, 19, 20, 27, 33, 38, 39, 41, 45, 46, 52, 60].includes(id)) {
+                    hits++;
+                }
+            }
+            return hits;
+        }
+
+        function calculateErrors() {
+            var errors = 0;
+            // Conta o número de quadrados marcados como erros
+            for (var key in selectedSquares) {
+                var id = parseInt(key);
+                // Verifica se o quadrado não está na lista de quadrados corretos
+                if (![2, 4, 9, 16, 19, 20, 27, 33, 38, 39, 41, 45, 46, 52, 60].includes(id)) {
+                    errors++;
+                }
+            }
+            return errors;
+        }
+
+        function calculateOmission() {
+            // Lista dos quadrados que devem diminuir 1 da omissão se estiverem marcados
+            var subtractList = [2, 4, 9, 16, 19, 20, 27, 33, 38, 39, 41, 45, 46, 52, 60];
+
+            // Inicializa o valor total de omissões como 15
+            var totalOmissions = 15;
+
+            // Verifica se algum dos quadrados na lista de subtração está marcado e subtrai 1 da omissão total se estiver
+            for (var i = 0; i < subtractList.length; i++) {
+                var squareId = subtractList[i];
+                if (selectedSquares[squareId]) {
+                    totalOmissions--;
+                }
+            }
+
+            return totalOmissions;
+        }
+    </script>
+</body>
+
+</html>
