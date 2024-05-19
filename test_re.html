@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="imagens/favicon.png" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>RE</title>
+    <link rel="stylesheet" href="css/aula16.css" />  
+    <style>
+        /* Estilos modernos e responsivos */
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; 
+            margin: 0;
+        }
+
+        main {
+            flex: 1; 
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #tela-principal {
+            width: 90%; 
+            max-width: 90%; 
+            background-color: #f4f4f4;
+            margin-top: 10px;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        #nome-usuario {
+        text-align: center;
+        font-size: 2.5rem;
+        font-weight: 600;
+        margin-top: 20px;
+        position: relative;
+        color: #444;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .input-container {
+            margin-bottom: 20px;
+        }
+
+        .input-field {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .btn-salvar {
+            background-color: #007bff; 
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+         /* Estilos para o contêiner da seção de exemplo */
+         .perguntas-container {
+            display: none; /* Inicialmente invisível */
+            border: 1px solid #b3b2b2;  /* Borda sólida cinza claro */
+            width: 90%; /* Define a largura dos elementos */
+            height: 90%;
+            margin-bottom: 10px; /* Adiciona espaço entre os elementos */
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+        }
+
+        /* Estilos para o contêiner da seção de exemplo */
+        .exemplo-container {
+            background-color: #fbfbfc; 
+            border: 1px solid #ccc9c9;  /* Borda sólida cinza claro */
+            margin-bottom: 10px; /* Adiciona espaço entre os elementos */
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+        }
+
+        .exemplo li {
+            background-color: #fbfbfc; 
+            list-style: none; /* Remove os marcadores da lista */
+            margin: 0;        /* Remove as margens padrão */
+        }
+
+        .exemplo-container1 {
+            background-color: #fbfbfc; 
+            border: 1px solid #ccc9c9;  /* Borda sólida cinza claro */
+            width: 50%; /* Define a largura dos elementos */
+            height: 50%;
+            margin-bottom: 10px; /* Adiciona espaço entre os elementos */
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+        }
+
+        .exemplo1 li {
+            background-color: #fbfbfc; 
+            list-style: none; /* Remove os marcadores da lista */
+            margin: 0;        /* Remove as margens padrão */
+        }
+
+        #cronometro {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+
+        input[type="text"] {
+            width: 40px; /* Ajuste a largura conforme necessário */
+            text-align: center;
+            font-weight: bold;
+            color: darkblue; /* Azul escuro */
+        }
+        
+        #btnTerminar {
+        display: none; /* Inicialmente invisível */
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .pergunta {
+            display: flex;
+            flex-direction: column; /* Imagem em cima, alternativas em baixo */
+            align-items: center;
+        }
+
+        .imagem-grande {
+            width: 50%; /* Define a largura dos elementos */
+            height: 50%;
+            margin-bottom: 20px;
+        }
+
+        .alternativas {
+            width: 50%; /* Define a largura dos elementos */
+            height: 50%;
+            justify-content: space-around; /* Distribui as alternativas uniformemente */
+            width: 100%;
+        }
+
+        .letra-alternativa {
+            margin-right: 5px;
+        }
+
+        input[type="radio"]:checked + .letra-alternativa { /* Alteração aqui */
+            font-weight: bold;
+            color: darkblue;
+        }
+    
+    </style>
+</head>
+<body>
+    <main id='tela-principal'>
+        <div id="nome-usuario" class="input-container">
+            <input type="text2" id="input-nome" class="input-field" placeholder="Insira seu Nome Completo">
+            <button onclick="salvarNome()" class="btn-salvar">
+                <i class="bi bi-floppy-fill" style="color: white;"></i>
+            </button>
+        </div>
+        <p class="data"></p>
+        <h1 id="titulo">RE</h1>
+        <p>Em cada exercício você vai encontrar um cubo que está em movimento. Conforme ele vai rodando, as posições das suas faces vão mudando. Seu trabalho consiste em descobrir para que lado o cubo gira, para depois completar a série de cubos já iniciada. Veja este exemplo (ex. A): Que cubo (A, B, C, D, E) virá no local assinalado com um ponto de interrogação (?), completando a série?</p>
+        <div class="exemplo-container1">
+            <div class="exemplo1">
+                <div class="pergunta">
+                    <img src="imagens/bpr5/img_re_1.jpeg" alt="Imagem da Pergunta" class="imagem-grande">
+                    <div class="alternativas">
+                        <label>
+                            <input type="radio" name="alternativa" value="a">
+                            <span class="letra-alternativa">A</span> 
+                        </label>
+                        <label>
+                            <input type="radio" name="alternativa" value="b">
+                            <span class="letra-alternativa">B</span> 
+                        </label>
+                        <label>
+                            <input type="radio" name="alternativa" value="c">
+                            <span class="letra-alternativa">C</span> 
+                        </label>
+                        <label>
+                            <input type="radio" name="alternativa" value="d">
+                            <span class="letra-alternativa">D</span> 
+                        </label>
+                        <label>
+                            <input type="radio" name="alternativa" value="e">
+                            <span class="letra-alternativa">E</span> 
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>        
+        
+        <div class="exemplo-container1">
+                <div class="exemplo1">
+                    <div class="pergunta">
+                        <img src="imagens/bpr5/img_re_2.jpeg" alt="Imagem da Pergunta" class="imagem-grande">
+                        <div class="alternativas">
+                            <label>
+                                <input type="radio" name="alternativa1" value="a">
+                                <span class="letra-alternativa">A</span> 
+                            </label>
+                            <label>
+                                <input type="radio" name="alternativa1" value="b">
+                                <span class="letra-alternativa">B</span> 
+                            </label>
+                            <label>
+                                <input type="radio" name="alternativa1" value="c">
+                                <span class="letra-alternativa">C</span> 
+                            </label>
+                            <label>
+                                <input type="radio" name="alternativa1" value="d">
+                                <span class="letra-alternativa">D</span> 
+                            </label>
+                            <label>
+                                <input type="radio" name="alternativa1" value="e">
+                                <span class="letra-alternativa">E</span> 
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exemplo-container1">
+                <div class="exemplo1">
+                    <div class="pergunta">
+                        <img src="imagens/bpr5/img_re_3.jpeg" alt="Imagem da Pergunta" class="imagem-grande">
+                        <div class="alternativas">
+                            <label>
+                                <input type="radio" name="alternativa2" value="a">
+                                <span class="letra-alternativa">A</span> 
+                            </label>
+                            <label>
+                                <input type="radio" name="alternativa2" value="b">
+                                <span class="letra-alternativa">B</span> 
+                            </label>
+                            <label>
+                                <input type="radio" name="alternativa2" value="c">
+                                <span class="letra-alternativa">C</span> 
+                            </label>
+                            <label>
+                                <input type="radio" name="alternativa2" value="d">
+                                <span class="letra-alternativa">D</span> 
+                            </label>
+                            <label>
+                                <input type="radio" name="alternativa2" value="e">
+                                <span class="letra-alternativa">E</span> 
+                            </label>
+                        </div>
+                    </div>
+                
+                </div>
+            </div>
+
+        <button id="btnIniciar" onclick="iniciarTeste(),iniciarCronometro()" style="background-color: rgb(3, 253, 3);">Iniciar</button>
+     
+            <div id="perguntas-container" class="perguntas-container">
+                <div id="cronometro">18:00</div>
+            
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <div class="pergunta">
+                                <img src="imagens/bpr5/img_re_4.jpeg" alt="Imagem da Pergunta" class="imagem-grande">
+                                <div class="alternativas">
+                                    <label>
+                                        <input type="radio" name="alternativa3" value="a">
+                                        <span class="letra-alternativa">A</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa3" value="b">
+                                        <span class="letra-alternativa">B</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa3" value="c">
+                                        <span class="letra-alternativa">C</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa3" value="d">
+                                        <span class="letra-alternativa">D</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa3" value="e">
+                                        <span class="letra-alternativa">E</span> 
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <div class="pergunta">
+                                <img src="imagens/bpr5/img_re_5.jpeg" alt="Imagem da Pergunta" class="imagem-grande">
+                                <div class="alternativas">
+                                    <label>
+                                        <input type="radio" name="alternativa4" value="a">
+                                        <span class="letra-alternativa">A</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa4" value="b">
+                                        <span class="letra-alternativa">B</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa4" value="c">
+                                        <span class="letra-alternativa">C</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa4" value="d">
+                                        <span class="letra-alternativa">D</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa4" value="e">
+                                        <span class="letra-alternativa">E</span> 
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <div class="pergunta">
+                                <img src="imagens/bpr5/img_re_6.jpeg" alt="Imagem da Pergunta" class="imagem-grande">
+                                <div class="alternativas">
+                                    <label>
+                                        <input type="radio" name="alternativa5" value="a">
+                                        <span class="letra-alternativa">A</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa5" value="b">
+                                        <span class="letra-alternativa">B</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa5" value="c">
+                                        <span class="letra-alternativa">C</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa5" value="d">
+                                        <span class="letra-alternativa">D</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa5" value="e">
+                                        <span class="letra-alternativa">E</span> 
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <div class="pergunta">
+                                <img src="imagens/bpr5/img_re_7.jpeg" alt="Imagem da Pergunta" class="imagem-grande">
+                                <div class="alternativas">
+                                    <label>
+                                        <input type="radio" name="alternativa6" value="a">
+                                        <span class="letra-alternativa">A</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa6" value="b">
+                                        <span class="letra-alternativa">B</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa6" value="c">
+                                        <span class="letra-alternativa">C</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa6" value="d">
+                                        <span class="letra-alternativa">D</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa6" value="e">
+                                        <span class="letra-alternativa">E</span> 
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <div class="pergunta">
+                                <img src="imagens/bpr5/img_re_8.jpeg" alt="Imagem da Pergunta" class="imagem-grande">
+                                <div class="alternativas">
+                                    <label>
+                                        <input type="radio" name="alternativa7" value="a">
+                                        <span class="letra-alternativa">A</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa7" value="b">
+                                        <span class="letra-alternativa">B</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa7" value="c">
+                                        <span class="letra-alternativa">C</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa7" value="d">
+                                        <span class="letra-alternativa">D</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa7" value="e">
+                                        <span class="letra-alternativa">E</span> 
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <div class="pergunta">
+                                <img src="imagens/bpr5/img_re_9.jpeg" alt="Imagem da Pergunta" class="imagem-grande">
+                                <div class="alternativas">
+                                    <label>
+                                        <input type="radio" name="alternativa8" value="a">
+                                        <span class="letra-alternativa">A</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa8" value="b">
+                                        <span class="letra-alternativa">B</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa8" value="c">
+                                        <span class="letra-alternativa">C</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa8" value="d">
+                                        <span class="letra-alternativa">D</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa8" value="e">
+                                        <span class="letra-alternativa">E</span> 
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <div class="pergunta">
+                                <img src="imagens/bpr5/img_re_10.jpeg" alt="Imagem da Pergunta" class="imagem-grande">
+                                <div class="alternativas">
+                                    <label>
+                                        <input type="radio" name="alternativa9" value="a">
+                                        <span class="letra-alternativa">A</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa9" value="b">
+                                        <span class="letra-alternativa">B</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa9" value="c">
+                                        <span class="letra-alternativa">C</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa9" value="d">
+                                        <span class="letra-alternativa">D</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa9" value="e">
+                                        <span class="letra-alternativa">E</span> 
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <div class="pergunta">
+                                <img src="imagens/bpr5/img_re_11.jpeg" alt="Imagem da Pergunta" class="imagem-grande">
+                                <div class="alternativas">
+                                    <label>
+                                        <input type="radio" name="alternativa10" value="a">
+                                        <span class="letra-alternativa">A</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa10" value="b">
+                                        <span class="letra-alternativa">B</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa10" value="c">
+                                        <span class="letra-alternativa">C</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa10" value="d">
+                                        <span class="letra-alternativa">D</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa10" value="e">
+                                        <span class="letra-alternativa">E</span> 
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <div class="pergunta">
+                                <img src="imagens/bpr5/img_re_12.jpeg" alt="Imagem da Pergunta" class="imagem-grande">
+                                <div class="alternativas">
+                                    <label>
+                                        <input type="radio" name="alternativa11" value="a">
+                                        <span class="letra-alternativa">A</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa11" value="b">
+                                        <span class="letra-alternativa">B</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa11" value="c">
+                                        <span class="letra-alternativa">C</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa11" value="d">
+                                        <span class="letra-alternativa">D</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa11" value="e">
+                                        <span class="letra-alternativa">E</span> 
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <div class="pergunta">
+                                <img src="imagens/bpr5/img_re_13.jpeg" alt="Imagem da Pergunta" class="imagem-grande">
+                                <div class="alternativas">
+                                    <label>
+                                        <input type="radio" name="alternativa12" value="a">
+                                        <span class="letra-alternativa">A</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa12" value="b">
+                                        <span class="letra-alternativa">B</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa12" value="c">
+                                        <span class="letra-alternativa">C</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa12" value="d">
+                                        <span class="letra-alternativa">D</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa12" value="e">
+                                        <span class="letra-alternativa">E</span> 
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <div class="pergunta">
+                                <img src="imagens/bpr5/img_re_14.jpeg" alt="Imagem da Pergunta" class="imagem-grande">
+                                <div class="alternativas">
+                                    <label>
+                                        <input type="radio" name="alternativa13" value="a">
+                                        <span class="letra-alternativa">A</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa13" value="b">
+                                        <span class="letra-alternativa">B</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa13" value="c">
+                                        <span class="letra-alternativa">C</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa13" value="d">
+                                        <span class="letra-alternativa">D</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa13" value="e">
+                                        <span class="letra-alternativa">E</span> 
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <div class="pergunta">
+                                <img src="imagens/bpr5/img_re_15.jpeg" alt="Imagem da Pergunta" class="imagem-grande">
+                                <div class="alternativas">
+                                    <label>
+                                        <input type="radio" name="alternativa14" value="a">
+                                        <span class="letra-alternativa">A</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa14" value="b">
+                                        <span class="letra-alternativa">B</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa14" value="c">
+                                        <span class="letra-alternativa">C</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa14" value="d">
+                                        <span class="letra-alternativa">D</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa14" value="e">
+                                        <span class="letra-alternativa">E</span> 
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <div class="pergunta">
+                                <img src="imagens/bpr5/img_re_16.jpeg" alt="Imagem da Pergunta" class="imagem-grande">
+                                <div class="alternativas">
+                                    <label>
+                                        <input type="radio" name="alternativa15" value="a">
+                                        <span class="letra-alternativa">A</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa15" value="b">
+                                        <span class="letra-alternativa">B</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa15" value="c">
+                                        <span class="letra-alternativa">C</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa15" value="d">
+                                        <span class="letra-alternativa">D</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa15" value="e">
+                                        <span class="letra-alternativa">E</span> 
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <div class="pergunta">
+                                <img src="imagens/bpr5/img_re_17.jpeg" alt="Imagem da Pergunta" class="imagem-grande">
+                                <div class="alternativas">
+                                    <label>
+                                        <input type="radio" name="alternativa16" value="a">
+                                        <span class="letra-alternativa">A</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa16" value="b">
+                                        <span class="letra-alternativa">B</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa16" value="c">
+                                        <span class="letra-alternativa">C</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa16" value="d">
+                                        <span class="letra-alternativa">D</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa16" value="e">
+                                        <span class="letra-alternativa">E</span> 
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <div class="pergunta">
+                                <img src="imagens/bpr5/img_re_18.jpeg" alt="Imagem da Pergunta" class="imagem-grande">
+                                <div class="alternativas">
+                                    <label>
+                                        <input type="radio" name="alternativa17" value="a">
+                                        <span class="letra-alternativa">A</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa17" value="b">
+                                        <span class="letra-alternativa">B</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa17" value="c">
+                                        <span class="letra-alternativa">C</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa17" value="d">
+                                        <span class="letra-alternativa">D</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa17" value="e">
+                                        <span class="letra-alternativa">E</span> 
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <div class="pergunta">
+                                <img src="imagens/bpr5/img_re_19.jpeg" alt="Imagem da Pergunta" class="imagem-grande">
+                                <div class="alternativas">
+                                    <label>
+                                        <input type="radio" name="alternativa18" value="a">
+                                        <span class="letra-alternativa">A</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa18" value="b">
+                                        <span class="letra-alternativa">B</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa18" value="c">
+                                        <span class="letra-alternativa">C</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa18" value="d">
+                                        <span class="letra-alternativa">D</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa18" value="e">
+                                        <span class="letra-alternativa">E</span> 
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <div class="pergunta">
+                                <img src="imagens/bpr5/img_re_20.jpeg" alt="Imagem da Pergunta" class="imagem-grande">
+                                <div class="alternativas">
+                                    <label>
+                                        <input type="radio" name="alternativa19" value="a">
+                                        <span class="letra-alternativa">A</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa19" value="b">
+                                        <span class="letra-alternativa">B</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa19" value="c">
+                                        <span class="letra-alternativa">C</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa19" value="d">
+                                        <span class="letra-alternativa">D</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa19" value="e">
+                                        <span class="letra-alternativa">E</span> 
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <div class="pergunta">
+                                <img src="imagens/bpr5/img_re_21.jpeg" alt="Imagem da Pergunta" class="imagem-grande">
+                                <div class="alternativas">
+                                    <label>
+                                        <input type="radio" name="alternativa20" value="a">
+                                        <span class="letra-alternativa">A</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa20" value="b">
+                                        <span class="letra-alternativa">B</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa20" value="c">
+                                        <span class="letra-alternativa">C</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa20" value="d">
+                                        <span class="letra-alternativa">D</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa20" value="e">
+                                        <span class="letra-alternativa">E</span> 
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <div class="pergunta">
+                                <img src="imagens/bpr5/img_re_22.jpeg" alt="Imagem da Pergunta" class="imagem-grande">
+                                <div class="alternativas">
+                                    <label>
+                                        <input type="radio" name="alternativa21" value="a">
+                                        <span class="letra-alternativa">A</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa21" value="b">
+                                        <span class="letra-alternativa">B</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa21" value="c">
+                                        <span class="letra-alternativa">C</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa21" value="d">
+                                        <span class="letra-alternativa">D</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa21" value="e">
+                                        <span class="letra-alternativa">E</span> 
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exemplo-container">
+                        <div class="exemplo">
+                            <div class="pergunta">
+                                <img src="imagens/bpr5/img_re_23.jpeg" alt="Imagem da Pergunta" class="imagem-grande">
+                                <div class="alternativas">
+                                    <label>
+                                        <input type="radio" name="alternativa22" value="a">
+                                        <span class="letra-alternativa">A</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa22" value="b">
+                                        <span class="letra-alternativa">B</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa22" value="c">
+                                        <span class="letra-alternativa">C</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa22" value="d">
+                                        <span class="letra-alternativa">D</span> 
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="alternativa22" value="e">
+                                        <span class="letra-alternativa">E</span> 
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   
+            </div>
+        </div>
+
+        <button id="btnTerminar" onclick="terminar()" style="background-color: rgb(3, 253, 3);">Terminar</button> 
+
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <script src="js/script_menu.js"></script>
+<script>
+    var intervalo; 
+    var selectedSquares = {}; 
+
+    function getDataAtual() {
+        var dataAtual = new Date();
+        var dia = dataAtual.getDate();
+        var mes = dataAtual.getMonth() + 1; 
+        var ano = dataAtual.getFullYear();
+        var dataFormatada = dia + '/' + mes + '/' + ano;
+        return dataFormatada;
+    }
+
+    var dataElements = document.querySelectorAll('.data');
+    dataElements.forEach(function(element) {
+        element.innerText = "Data atual: " + getDataAtual();
+    });
+
+    function iniciarCronometro() {
+        var segundos = 1080; 
+        document.getElementById('cronometro').textContent = '18:00'; 
+        intervalo = setInterval(function () {
+            atualizarCronometro(segundos);
+            segundos--;
+            if (segundos < 0) {
+                clearInterval(intervalo);
+                alert('Tempo esgotado!');
+                terminar
+            }
+        }, 1000);
+        document.getElementById('btnIniciar').style.display = 'none';
+    }
+
+    function salvarNome() {
+        var nomeUsuario = document.getElementById('input-nome').value;
+        if (nomeUsuario.trim() === '') {
+            alert('Por favor, insira seu nome.');
+            return;
+        }
+        localStorage.setItem('nomeUsuario', nomeUsuario);
+        var nomeDiv = document.getElementById('nome-usuario');
+        if (nomeDiv) {
+            nomeDiv.textContent = nomeUsuario;
+        }
+    }
+
+    function atualizarCronometro(segundos) {
+        var cronometro = document.getElementById('cronometro');
+        var minutos = Math.floor(segundos / 60);
+        var segundosRestantes = segundos % 60;
+        var segundosFormatados = segundosRestantes < 10 ? '0' + segundosRestantes : segundosRestantes;
+        var minutosFormatados = minutos < 10 ? '0' + minutos : minutos;
+        cronometro.textContent = minutosFormatados + ':' + segundosFormatados;
+
+        if (segundos === 0) {
+            clearInterval(intervalo); 
+            alert('Tempo esgotado! clique em Terminar.');
+        }
+    }
+
+    // Função para iniciar o teste
+    function iniciarTeste() {
+        document.getElementById('perguntas-container').style.display = 'block';
+        document.getElementById('btnTerminar').style.display = 'block';
+        document.getElementById('btnIniciar').style.display = 'none';
+    }
+
+    function terminar() {
+        var nomeUsuario = localStorage.getItem('nomeUsuario');
+        if (!nomeUsuario) {
+            alert('Por favor, insira seu nome completo antes de terminar.');
+            return; 
+        }
+
+        html2canvas(document.body, {
+            onrendered: function (canvas) {
+                var image = canvas.toDataURL("image/jpeg"); 
+                var link = document.createElement('a');
+                link.href = image;
+                link.download = 'screenshot.jpeg'; 
+                link.click();
+
+                window.location.href = 'fim_test.html';
+            }
+        });
+    }
+
+</script>
+
+</body>
+
+</html>
