@@ -1,0 +1,80 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    text-align: center;
+    font-weight: bold;
+}
+
+.date {
+    font-size: 16px;
+    color: cornflowerblue;
+    text-align: center;
+    font-weight: bold;
+}
+
+.checkbox-container {
+    text-align: left;
+}
+
+.checkbox-container input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    background-color: #fff;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.checkbox-container input[type="checkbox"]:checked {
+    background-color: #00BFFF;
+    border: none;
+}
+
+label {
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+.button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.next-button {
+    padding: 10px 20px;
+    background-color: #00BFFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.result {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+#symptomForm {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+#result,
+#physicalResult,
+#psychologicalResult,
+#physicalPhase,
+#psychologicalPhase {
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
+}

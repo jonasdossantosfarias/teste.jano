@@ -1,0 +1,46 @@
+/* Aula 16 Virtual Dice */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    background: #ececec;
+}
+
+main {
+    width: 100%;
+    max-width: 355px; /* Defina a largura máxima desejada */
+    padding: 1rem; /* Espaçamento interno */
+    margin: auto; /* Centraliza o elemento na página */
+    text-align: center; /* Centraliza o conteúdo dentro do elemento */
+}
+
+h1 {
+    font-size: 1.5rem;
+}
+
+/* Estilo para o botão "Próximo" */
+button {
+    background-color: white; /* Fundo branco */
+    color: black; /* Texto preto */
+    border: 1px solid black; /* Borda fina preta */
+    border-radius: 10px; /* Bordas arredondadas */
+    padding: 10px 20px; /* Espaçamento interno */
+    font-size: 16px; /* Tamanho da fonte */
+    font-weight: bold; /* Texto em negrito */
+    cursor: pointer; /* Altera o cursor para indicar que é clicável */
+    transition: background-color 0.3s, color 0.3s;
+}
+
+button:hover {
+    background-color: #333;
+    color: #ffffff;
+}

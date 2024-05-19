@@ -1,0 +1,39 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+h2 {
+    text-align: center;
+}
+
+.container, .container1, .container2, .container3, .container4, .container5, .container6 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20vh;
+}
+
+.circulo, .circulo1, .circulo2, .circulo3, .circulo4, .circulo5, .circulo6 {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    background: conic-gradient(
+        green 0%,
+        green var(--value, 0),
+        transparent var(--value, 0) 100%
+    );
+    border-radius: 50%;
+    text-align: center;
+}
+
+.valor, .valor1, .valor2, .valor3, .valor4, .valor5, .valor6 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    color: black;
+}

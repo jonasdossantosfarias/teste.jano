@@ -1,0 +1,119 @@
+/* Estilos CSS */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    position: relative;
+    width: 500px;
+    height: 460px;
+    text-align: center;
+    background-color: #ffffff;
+    padding: 80px;
+    border-radius: 50px 5px;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.container::before,
+.container::after {
+    content: '';
+    position: absolute;
+    top: -30px;
+    left: -30px;
+    width: calc(100% + 60px);
+    height: calc(100% + 60px);
+    border: 8px solid transparent; /* Largura da borda aumentada */
+    border-radius: 50px 5px;
+    z-index: -1;
+    animation: animate 10s linear infinite;
+}
+
+.container::before {
+    background: linear-gradient(60deg, transparent, #45f3ff, #45f3ff);
+    animation-direction: reverse;
+}
+
+.container::after {
+    background: linear-gradient(60deg, transparent, #d9138a, #d9138a);
+}
+
+@keyframes animate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+h2 {
+    font-size: 1.5rem; /* Reduz o tamanho do título */
+    color: #333;
+    margin-bottom: 20px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"] {
+    width: 480px; /* Defina a largura para 100% do contêiner */
+    margin: 10px 0; /* Adiciona margem em cima e embaixo */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+#name, #email, #password {
+    width: calc(100% - 22px); /* Define o mesmo comprimento para os campos de nome, email e senha */
+}
+
+button {
+    background-color: #ffffff;
+    color: #333;
+    border: 2px solid #333;
+    border-radius: 5px;
+    padding: 5px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #333;
+    color: #ffffff;
+}
+
+.aviso {
+    color: red;
+    margin-top: 10px;
+}
+
+.input-email {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.icon {
+    position: absolute;
+    right: 5px;
+    cursor: pointer;
+    color: #ccc;
+}
