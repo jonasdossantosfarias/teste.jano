@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <!-- Bootstrap Icons CSS -->
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>Matrix de Habilidades</title>
+    <link rel="stylesheet" href="css/aula16.css" />
+    <style>
+        /* Estilos padrão */
+        #container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+    
+        #nome-usuario {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+            margin-top: 20px;
+            position: relative;
+            color: #666;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+    
+        p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+    
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    
+        th,
+        td {
+            border: 1px solid black;
+            padding: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+    
+        th {
+            background-color: #4a90e2;
+            color: white;
+            font-weight: bold;
+        }
+    
+        td button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+    
+        td button:hover {
+            background-color: #276db8;
+        }
+    
+        /* Estilos para telas menores, como dispositivos móveis */
+        @media only screen and (max-width: 600px) {
+            #nome-usuario {
+                font-size: 1.5rem;
+            }
+            p {
+                font-size: 12px;
+            }
+            th,
+            td {
+                padding: 8px;
+                margin-left: 10px;
+                margin-right: 10px;
+            }
+            h2 {
+                font-size: 1.2rem;
+                text-align: center;
+            }
+        }
+    
+        .no-click {
+            pointer-events: none;
+        }
+    
+        .no-click,
+        #tabela th.no-click {
+            background-color: #4a90e2;
+            color: white;
+            font-weight: bold;
+        }
+    
+        .vermelho {
+            background-color: #ff4d4d;
+            color: white;
+        }
+    
+        .verde {
+            background-color: #4caf50;
+            color: white;
+        }
+    
+        .amarelo {
+            background-color: #ffd700;
+            color: white;
+        }
+    
+        .azul {
+            background-color: #4a90e2;
+            color: white;
+        }
+    
+        .rosa {
+            background-color: #ff69b4;
+            color: white;
+        }
+    
+        .laranja {
+            background-color: #ff8c00;
+            color: white;
+        }
+    
+        .selecionado-cinza {
+            background-color: #d3d3d3;
+            color: black;
+        }
+    
+        #botao-terminar {
+            margin-left: 10px;
+        }
+
+         /* Estilo para o contêiner do campo de nome e do botão */
+         .input-container {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Estilo para o campo de entrada de texto */
+        .input-field {
+            padding: 10px;
+            border-radius: 20px; /* Bordas arredondadas */
+            border: 1px solid #ccc;
+            font-size: 16px;
+            outline: none;
+            flex: 1; /* Ocupa o espaço restante */
+        }
+
+        /* Estilo para o botão de salvar */
+            .btn-salvar {
+                background-color: #4CAF50; /* Cor de fundo verde */
+                color: white;
+                padding: 12px 12px;
+                border: none;
+                border-radius: 30px; /* Bordas arredondadas */
+                cursor: pointer;
+                transition: background-color 0.3s; /* Transição suave de cor ao passar o mouse */
+                font-size: 16px;
+                font-weight: bold;
+                text-transform: uppercase; /* Transforma o texto em maiúsculas */
+                letter-spacing: 1px; /* Espaçamento entre as letras */
+            }
+
+            /* Estilo para o ícone dentro do botão */
+            .btn-salvar i {
+                margin-right: 0px;
+            }
+
+            /* Estilo para o botão de salvar ao passar o mouse */
+            .btn-salvar:hover {
+                background-color: #45a049; /* Cor de fundo verde ligeiramente mais escura */
+            }
+    </style>
+    
+
+</head>
+<body>
+    <div id="container">
+        <h2 id="titulo">MATRIZ DE HABILIDADES E INTERESSES PROFISSIONAIS</h2>
+        <div id="nome-usuario" class="input-container">
+            <input type="text" id="input-nome" class="input-field" placeholder="Insira seu Nome Completo">
+            <button onclick="salvarNome()" class="btn-salvar">
+                <i class="bi bi-floppy-fill" style="color: white;"></i>
+            </button></div>   
+            <p class="data"></p> <!-- Alterado para classe -->
+        <button id="botao-terminar" onclick="terminar()">Terminar</button>
+        <div style="text-align: center;">
+            <div style="float: left; margin-top: 15px; margin-bottom: 15px; margin-left: 15px;">
+                <button class="vermelho" onclick="preencherCelula('ADMINISTRAR DADOS')" title="Coletar, sistematizar e manter informações organizadas e disponíveis para acesso." onmousedown="mostrarTitulo(event)">ADMINISTRAR DADOS</button>
+                <button class="vermelho" onclick="preencherCelula('ANALISAR')" title="Examinar e discernir aspectos ou partes de eventos, dados, ideias ou objetos." onmousedown="mostrarTitulo(event)">ANALISAR</button>
+                <button class="vermelho" onclick="preencherCelula('CATEGORIZAR')" title="Organizar dados ou objetos em grupos de acordo com critérios específicos." onmousedown="mostrarTitulo(event)">CATEGORIZAR</button>
+                <button class="vermelho" onclick="preencherCelula('CONTROLAR')" title="Acompanhar e/ou corrigir a evolução de dados, pessoas ou coisas." onmousedown="mostrarTitulo(event)">CONTROLAR</button>
+                <button class="vermelho" onclick="preencherCelula('ESTRUTURAR ROTINAS')" title="Definir procediemtnos padronizados de verificação, registro ou controle de dados, pessoas ou coisas." onmousedown="mostrarTitulo(event)">ESTRUTURAR ROTINA</button>
+                <button class="vermelho" onclick="preencherCelula('FISCALIZAR')" title="Verificar o cumprimento de regras e procedimentos padronizados, ou a correspondência entre registros e fatos." onmousedown="mostrarTitulo(event)">FISCALIZAR</button>
+                <button class="vermelho" onclick="preencherCelula('LIDAR COM FINANÇAS')" title="Utilizar adequadamente dinheiro ou outros recursos, poupar, investir" onmousedown="mostrarTitulo(event)">LIDAR COM FINANÇAS</button>
+                <button class="vermelho" onclick="preencherCelula('MONITORAR')" title="Observar e regular procedimentos técnicos de acordo com critérios normativos." onmousedown="mostrarTitulo(event)">MONITORAR</button>
+                <button class="vermelho" onclick="preencherCelula('ORÇAR')" title="Estimar, planejar e agendar gastos ou custo em um determinado período." onmousedown="mostrarTitulo(event)">ORÇAR</button>
+                <button class="vermelho" onclick="preencherCelula('ORGANIZAR')" title="Ordenar elementos ou atividades para obter uma situação estruturada e funcional." onmousedown="mostrarTitulo(event)">ORGANIZAR</button>
+                <button class="vermelho" onclick="preencherCelula('COMERREVISAR, EDITAR')" title="Revisar, corrigir e melhorar texto escrito." onmousedown="mostrarTitulo(event)">COMERREVISAR, EDITAR</button>
+                <button class="vermelho" onclick="preencherCelula('TESTAR')" title="Medir qualidade ou validade de produtos através de metodologia objetiva." onmousedown="mostrarTitulo(event)">TESTAR</button>
+                <button class="verde" onclick="preencherCelula('MANIPULAR COM PRECISÃO')" title="Usar destreza e precisão na manipulação de objetos, ferramentas e máquinas." onmousedown="mostrarTitulo(event)">MANIPULAR COM PRECISÃO</button>
+                <button class="verde" onclick="preencherCelula('USAR FORÇA FÍSICA')" title="Usar força e resistência em atividades físicas, suportar desgaste físicos." onmousedown="mostrarTitulo(event)">USAR FORÇA FÍSICA</button>
+                <button class="verde" onclick="preencherCelula('REPARAR/CONSERTAR')" title="Diagnosticar e corrigir problemas no funcionamento de equipamentos mecânicos, eletrônicos, mecânicos, eletrônicos, ou organismos vivos." onmousedown="mostrarTitulo(event)">REPARAR/CONSERTAR</button>
+                <button class="verde" onclick="preencherCelula('USAR HABILIDADES MECÂNICAS')" title="Montar, ajustar, consertar, usando ferramentas e/ou o próprio corpo." onmousedown="mostrarTitulo(event)">USAR HABILIDADES MECÂNICAS</button>
+                <button class="verde" onclick="preencherCelula('EXECUTAR PROCEDIMENTOS TÉCNICOS')" title="Usar ferramentas eletrônicas ou mecânicas para obter resultados específicos em intervenções técnicas." onmousedown="mostrarTitulo(event)">EXECUTAR PROCEDIMENTOS TÉCNICOS</button>
+                <button class="verde" onclick="preencherCelula('UTILIZAR COORDERNAÇÃO CORPORAL')" title="Usar o corpo com destreza, equilíbrio e precisão de movimentos." onmousedown="mostrarTitulo(event)">UTILIZAR COORDERNAÇÃO CORPORAL</button>
+                <button class="verde" onclick="preencherCelula('LIDAR COM CARPINTARIA')" title="Construir, reformar ou fazer a manutenção de estruturas e objetos." onmousedown="mostrarTitulo(event)">LIDAR COM CARPINTARIA</button>
+                <button class="verde" onclick="preencherCelula('TRANSPORTAR')" title="Dirigir veículos transportando passageiros ou produtos." onmousedown="mostrarTitulo(event)">TRANSPORTAR</button>
+                <button class="verde" onclick="preencherCelula('CONSTRUIR')" title="Erguer estruturas de todo tipo, executar projetos de construção" onmousedown="mostrarTitulo(event)">CONSTRUIR</button>
+                <button class="verde" onclick="preencherCelula('CULTIVAR PLANTAS')" title="Cultivar vegetais para fins ornamentais ou de alimentação. Preparar o solo, semear,  fertilizar, eliminar pragas, colher, etc." onmousedown="mostrarTitulo(event)">CULTIVAR PLANTAS</button>
+                <button class="verde" onclick="preencherCelula('OPERAR EQUIPAMENTOS')" title="Operar equipamentos eletrônicos ou mecânicos." onmousedown="mostrarTitulo(event)">OPERAR EQUIPAMENTOS</button>
+                <button class="verde" onclick="preencherCelula('LIDAR COM ANIMAIS')" title="Alimentar, reproduzir, treinar ou expor animais domésticos ou do campo" onmousedown="mostrarTitulo(event)">LIDAR COM ANIMAIS</button>
+                <button class="laranja" onclick="preencherCelula('MOTIVAR')" title="Estimular individuos ou grupos a perseguir objetivos com entusiasmo." onmousedown="mostrarTitulo(event)">MOTIVAR</button>
+                <button class="laranja" onclick="preencherCelula('LIDERAR')" title="Iniciar processos de mudança, inspirar e conduzir outras pessoas na busca de novas possibilidades" onmousedown="mostrarTitulo(event)">LIDERAR</button>
+                <button class="laranja" onclick="preencherCelula('NEGOCIAR')" title="Barganhar e permutar vantagens para alcançar um acordo satifatório." onmousedown="mostrarTitulo(event)">NEGOCIAR</button>
+                <button class="laranja" onclick="preencherCelula('PROMOVER/DIVULGAR')" title="Fazer conhecer ou chamar a atenção sobre uma pessoa, produtos ou serviço através de meios de comunicação e/ou situações sociais" onmousedown="mostrarTitulo(event)">PROMOVER/DIVULGAR</button>
+                <button class="laranja" onclick="preencherCelula('DESPACHAR')" title="Desembaraçar processos de produção ou serviços, identificando e eliminando entraves." onmousedown="mostrarTitulo(event)">DESPACHAR</button>
+                <button class="laranja" onclick="preencherCelula('VENDER')" title="Mostrar o valor de um serviço ou produtos para atender necessidades de pessoas ou grupos, convencer a comprar." onmousedown="mostrarTitulo(event)">VENDER</button>
+                <button class="laranja" onclick="preencherCelula('PLANEJAR')" title="Estabelecer etapas e ações encadeadas para alcançar resultados, desenvolver projetos." onmousedown="mostrarTitulo(event)">PLANEJAR</button>
+                <button class="laranja" onclick="preencherCelula('DELEGAR')" title="Designar tarefas para outras pessoas de acordo com suas capacidades para cumpri-las a contento." onmousedown="mostrarTitulo(event)">DELEGAR</button>
+                <button class="laranja" onclick="preencherCelula('SUPERVISIONAR')" title="Observar e orientar o desempenho de outras pessoas." onmousedown="mostrarTitulo(event)">SUPERVISIONAR</button>
+                <button class="laranja" onclick="preencherCelula('COORDENAR')" title="Oruestrar a execução integrada de atividade de produção ou serviço." onmousedown="mostrarTitulo(event)">COORDENAR</button>
+                <button class="laranja" onclick="preencherCelula('INFLUENCIAR/PERSUADIR')" title="Convencer outras pessoas a mudar pensamentos ou atitudes ou a agir de modo especificos." onmousedown="mostrarTitulo(event)">INFLUENCIAR/PERSUADIR</button>
+                <button class="laranja" onclick="preencherCelula('IMPLEMENTAR')" title="Tomar as providências práticas necessárias para cumprir um planejamento." onmousedown="mostrarTitulo(event)">IMPLEMENTAR</button>
+                <button class="amarelo" onclick="preencherCelula('SINTETIZAR')" title="Articular fatos, conceitos ou ideias revelando seus padrões significativos de interação." onmousedown="mostrarTitulo(event)">SINTETIZAR</button>
+                <button class="amarelo" onclick="preencherCelula('CONCEITUAR')" title="Usar modelos teóricos para entender fenômenos humanos ou naturais." onmousedown="mostrarTitulo(event)">CONCEITUAR</button>
+                <button class="amarelo" onclick="preencherCelula('INOVAR')" title="Inovar procedimentos estabelecidos, desenvolver alternativas." onmousedown="mostrarTitulo(event)">INOVAR</button>
+                <button class="amarelo" onclick="preencherCelula('LER/ESTUDAR')" title="Pesquisar e explorar fontes escritas exaustivamente e aprofundar conhecimentos." onmousedown="mostrarTitulo(event)">LER/ESTUDAR</button>
+                <button class="amarelo" onclick="preencherCelula('INVESTIGAR')" title="Pesquisar, utilizando a observação, leitura ou entrevistas, para descobrir ou testar hipóteses científicas." onmousedown="mostrarTitulo(event)">INVESTIGAR</button>
+                <button class="amarelo" onclick="preencherCelula('VISUALIZAR')" title="Habilidade de perceber e antecipar futuras tendências e possibilidades." onmousedown="mostrarTitulo(event)">VISUALIZAR</button>
+                <button class="amarelo" onclick="preencherCelula('PRODUZIR IDEIAS')" title="Refletir, conceber novas e criativas ideias teorias ou processos." onmousedown="mostrarTitulo(event)">PRODUZIR IDEIAS</button>
+                <button class="amarelo" onclick="preencherCelula('CALCULAR')" title="Usar matemática para compreender e resolver problemas complexos." onmousedown="mostrarTitulo(event)">CALCULAR</button>
+                <button class="amarelo" onclick="preencherCelula('ESCREVER')" title="Demonstrar habilidades no uso da linguagem escrita para a explanação de conceitos complexos." onmousedown="mostrarTitulo(event)">ESCREVER</button>
+                <button class="amarelo" onclick="preencherCelula('RESOLVER PROBLEMAS LÓGICOS')" title="Identificar as causas de um problema prático ou teórico e propor uma solução." onmousedown="mostrarTitulo(event)">RESOLVER PROBLEMAS LÓGICOS</button>
+                <button class="amarelo" onclick="preencherCelula('OBSERVAR')" title="Estudar, escrutinar, examinar com atenção dados, pessoas ou coisas." onmousedown="mostrarTitulo(event)">OBSERVAR</button>
+                <button class="amarelo" onclick="preencherCelula('INVENTAR')" title="Criar um novo produto, conceito ou processos através do estudo teórico e/ou empírico." onmousedown="mostrarTitulo(event)">INVENTAR</button>
+                <button class="rosa" onclick="preencherCelula('UTILIZAR A INTUIÇÃO')" title="Contar com pressetimentos e outros estados subjetivos peculiares como base apara a percepção ou tomada de decisões." onmousedown="mostrarTitulo(event)">UTILIZAR A INTUIÇÃO</button>
+                <button class="rosa" onclick="preencherCelula('RETRATAR')" title="Expressar idéias ou estados subjetivos através de desenhos, pinturas, fotografias ou esculturas." onmousedown="mostrarTitulo(event)">RETRATAR</button>
+                <button class="rosa" onclick="preencherCelula('COMPOSIÇÃO MUSICAL')" title="Compor ou arranjar peças musicais." onmousedown="mostrarTitulo(event)">COMPOSIÇÃO MUSICAL</button>
+                <button class="rosa" onclick="preencherCelula('REDAÇÃO CRIATIVA')" title="Expressar-se criativamente através de produções literárias ou jornalísticas ( livros, contos, poesias)." onmousedown="mostrarTitulo(event)">REDAÇÃO CRIATIVA</button>
+                <button class="rosa" onclick="preencherCelula('ENTRETER')" title="apresentar obra artística, entreter o público com recursos cênicos e/ou de oratória." onmousedown="mostrarTitulo(event)">ENTRETER</button>
+                <button class="rosa" onclick="preencherCelula('DESIGN')" title="Conceber formas estéticas e funcionais para peças de todo tipo ( vestuário, móveis, objetos, etc.)." onmousedown="mostrarTitulo(event)">DESIGN</button>
+                <button class="rosa" onclick="preencherCelula('PRODUZIR ARTESANATOS')" title="Usar inventividade, motricidade fina e senso estético para produzir objetos belos e incomuns." onmousedown="mostrarTitulo(event)">PRODUZIR ARTESANATOS</button>
+                <button class="rosa" onclick="preencherCelula('ATUAR/DRAMATIZAR')" title="Interpretar papéis, dar vida a personagens, ideias ou problemas em diversos contextos (teatro, TV, propaganda, apresentações, etc.)." onmousedown="mostrarTitulo(event)">ATUAR/DRAMATIZAR</button>
+                <button class="rosa" onclick="preencherCelula('PRODUZIR FIGURINOS')" title="Produir e/ou escolher vestuário para personagens em produções cênicas (teatro, TV, cinema) ou para pessoas públicas." onmousedown="mostrarTitulo(event)">PRODUZIR FIGURINOS</button>
+                <button class="rosa" onclick="preencherCelula('EXIBIR/EXPOR')" title="Usar senso estéticco para apresentar ou representar ideias ou objetos em público." onmousedown="mostrarTitulo(event)">EXIBIR/EXPOR</button>
+                <button class="rosa" onclick="preencherCelula('DECORAR AMBIENTES')" title="Escolher e dispor objetos de modo a ornar, enfeitar, embelezar interiores." onmousedown="mostrarTitulo(event)">DECORAR AMBIENTES</button>
+                <button class="rosa" onclick="preencherCelula('IMAGINAR')" title="Fantasiar, inventar, conceber possibilidades, estar aberto ao novo." onmousedown="mostrarTitulo(event)">IMAGINAR</button>
+                <button class="azul" onclick="preencherCelula('LIDAR COM SENTIMENTOS')" title="facilitar a expressão, ouvir e mostrar sensibilidade e respeito a sentimentos, aplacar tensões, animar." onmousedown="mostrarTitulo(event)">LIDAR COM SENTIMENTOS</button>
+                <button class="azul" onclick="preencherCelula('RECEBER/HOSPEDAR')" title="Receber e oferecer conforto a pessoas." onmousedown="mostrarTitulo(event)">RECEBER/HOSPEDAR</button>
+                <button class="azul" onclick="preencherCelula('ESCUTAR')" title="concentrarse no discurso do interlocutor e compreender o que este comunica." onmousedown="mostrarTitulo(event)">ESCUTAR</button>
+                <button class="azul" onclick="preencherCelula('DIPLOMACIA')" title="Facilitar a interação entre partes em conflito e chegar a um acordo amigável." onmousedown="mostrarTitulo(event)">DIPLOMACIA</button>
+                <button class="azul" onclick="preencherCelula('FALAR PARA GRUPOS')" title="Expor ideias e informações a fim de esclarecer, orientar e ajudar." onmousedown="mostrarTitulo(event)">FALAR PARA GRUPOS</button>
+                <button class="azul" onclick="preencherCelula('TRATAR, CUIDAR')" title="Promover o ajustamento, saúde ou o bem-estar de outras pessoas." onmousedown="mostrarTitulo(event)">TRATAR, CUIDAR</button>
+                <button class="azul" onclick="preencherCelula('TREINAR/INSTRUIR')" title="Ensinar ou capacitar através de explicações e demostrações práticas." onmousedown="mostrarTitulo(event)">TREINAR/INSTRUIR</button>
+                <button class="azul" onclick="preencherCelula('CONECTAR PESSOAS')" title="Facilitar vínculos entre pessoas ou grupos, aprefeiçoar a comunicação promover cooperação" onmousedown="mostrarTitulo(event)">CONECTAR PESSOAS</button>
+                <button class="azul" onclick="preencherCelula('CONTATO COM O PÚBLICO')" title="Receber e saudar pessoas, dar informações, orientar." onmousedown="mostrarTitulo(event)">CONTATO COM O PÚBLICO</button>
+                <button class="azul" onclick="preencherCelula('EXPLICAR')" title="Comunicar informações ou ideias de forma organizada, clara e paciente." onmousedown="mostrarTitulo(event)">EXPLICAR</button>
+                <button class="azul" onclick="preencherCelula('ENTREVISTAR')" title="Obter opniões e informações através de conversa e questionamento." onmousedown="mostrarTitulo(event)">ENTREVISTAR</button>
+                <button class="azul" onclick="preencherCelula('ACONSELHAR')" title="Ouvir com empatia, facilitar o esclarecimento de estados subjetivos e auxiliar na tomada de decisões." onmousedown="mostrarTitulo(event)">ACONSELHAR</button>                
+            
+        </div>
+        
+        <table id="tabela" >
+            <tr>
+                <th class="no-click"></th>
+                <th>ALTAMENTE HABILIDOSO</th>
+                <th>HABILIDADE MÉDIA</th>
+                <th>POUCA OU NADA HABULIDOSO</th>
+            </tr>
+            <tr>
+                <td class="no-click">ADORO USAR</td>
+                <td id="baixaMuito"></td>
+                <td id="baixaGosto"></td>
+                <td id="baixaPouco"></td>
+            </tr>
+            <tr>
+                <td class="no-click">GOSTO MUITO DE USAR</td>
+                <td id="mediaMuito"></td>
+                <td id="mediaGosto"></td>
+                <td id="mediaPouco"></td>
+            </tr>
+            <tr>
+                <td class="no-click">GOSTO DE USAR</td>
+                <td id="altaMuito"></td>
+                <td id="altaGosto"></td>
+                <td id="altaPouco"></td>
+            </tr>
+            <tr>
+                <td class="no-click">NÃO GOSTO DE USAR</td>
+                <td id="AAMuito"></td>
+                <td id="AAGosto"></td>
+                <td id="AAPouco"></td>
+            </tr>
+            <tr>
+                <td class="no-click">DETESTA USAR</td>
+                <td id="BBMuito"></td>
+                <td id="BBGosto"></td>
+                <td id="BBPouco"></td>
+            </tr>
+        </table>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+     <!-- Firebase SDK -->
+     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script> <!-- Adicionando o script do Firestore -->
+ 
+     <script src="js/config.js"></script> <!-- Inclui o arquivo de configuração do Firebase -->
+     <script src="js/script_menu.js"></script>
+
+    <script>
+        
+        function salvarNome() {
+            var nomeUsuario = document.getElementById('input-nome').value;
+            if (nomeUsuario.trim() === '') {
+                alert('Por favor, insira seu nome.');
+                return;
+            }
+            localStorage.setItem('nomeUsuario', nomeUsuario);
+            // Adiciona o nome do usuário ao campo de nome em outro HTML
+            var nomeDiv = document.getElementById('nome-usuario');
+            if (nomeDiv) {
+                nomeDiv.textContent = nomeUsuario;
+            }
+        }
+
+        // Função para obter a data atual
+        function getDataAtual() {
+            var dataAtual = new Date();
+            var dia = dataAtual.getDate();
+            var mes = dataAtual.getMonth() + 1; // Os meses são indexados de 0 a 11, então é necessário adicionar 1
+            var ano = dataAtual.getFullYear();
+            var dataFormatada = dia + '/' + mes + '/' + ano;
+            return dataFormatada;
+        }
+    
+        // Exibir a data atual na página
+        var dataElements = document.querySelectorAll('.data');
+        dataElements.forEach(function(element) {
+            element.innerText = "Data atual: " + getDataAtual();
+        });
+
+        function preencherCelula(palavra) {
+            var celulasDados = document.querySelectorAll("#tabela td:not(.no-click)");
+            celulasDados.forEach(function(celula) {
+                celula.onmouseover = function() {
+                    mostrarExplicacao(palavra); // Função que mostra a janela de explicação
+                };
+                celula.onclick = function() {
+                    adicionarPalavra(this, palavra);
+                };
+            });
+        }
+
+        
+        function adicionarPalavra(celula, palavra) {
+        // Obtém as palavras atuais da célula e remove os espaços em branco em excesso
+        var palavrasAtuais = celula.innerHTML.split(",").map(p => p.trim());
+        
+        // Verifica se a palavra já existe na célula
+        var palavraExistente = palavrasAtuais.includes(palavra);
+        
+        // Seleciona todas as células da tabela que não têm a classe .no-click
+        var outrasCelulas = document.querySelectorAll("#tabela td:not(.no-click)");
+        
+        // Itera sobre cada outra célula
+        outrasCelulas.forEach(function(outraCelula) {
+            // Verifica se não é a mesma célula
+            if (outraCelula !== celula) {
+                // Obtém as palavras da outra célula e remove os espaços em branco em excesso
+                var palavrasOutraCelula = outraCelula.innerHTML.split(",").map(p => p.trim());
+                
+                // Verifica se a palavra existe na outra célula
+                if (palavrasOutraCelula.includes(palavra)) {
+                    // Define palavraExistente como true
+                    palavraExistente = true;
+                    
+                    // Remove a palavra da lista de palavras da outra célula
+                    palavrasOutraCelula = palavrasOutraCelula.filter(p => p !== palavra);
+                    
+                    // Atualiza o conteúdo da outra célula
+                    outraCelula.innerHTML = palavrasOutraCelula.join(", ");
+                }
+            }
+        });
+        
+        // Se a palavra ainda não existe, adiciona-a à célula
+        if (!palavraExistente) {
+            // Adiciona uma vírgula antes da palavra, se necessário
+            if (celula.innerHTML.trim() !== "") {
+                palavra = ", " + palavra;
+            }
+            
+            // Adiciona a palavra à célula
+            celula.innerHTML += palavra;
+        }
+
+        // Se a palavra for retirada, remove-a da célula
+        else {
+            // Remove a palavra da célula
+            celula.innerHTML = celula.innerHTML.replace(palavra, "").trim();
+        }
+
+    }
+
+
+        function terminar() {
+            // Verifica se o nome do usuário foi salvo
+            var nomeUsuario = localStorage.getItem('nomeUsuario');
+            if (!nomeUsuario) {
+                alert('Por favor, insira seu nome completo antes de terminar.');
+                return; // Retorna para evitar que o código continue executando
+            }
+
+            // Captura de tela...
+            html2canvas(document.body, {
+                onrendered: function (canvas) {
+                    var image = canvas.toDataURL("image/jpeg"); // Convertendo para formato JPEG
+                    var link = document.createElement('a');
+                    link.href = image;
+                    link.download = 'screenshot.jpeg'; // Definindo o nome do arquivo como screenshot.jpeg
+                    link.click();
+
+                    // Redirecionar para test_ac_apl.html após salvar a captura de tela
+                    window.location.href = 'fim_test.html';
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>

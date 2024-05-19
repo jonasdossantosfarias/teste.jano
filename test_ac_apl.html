@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <link rel="icon" href="imagens/favicon.png" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atenção Concentrada</title>
+    <link rel="stylesheet" href="css/aula16.css" />
+    <style>
+        /* Estilos adicionais podem ser colocados aqui */
+        #tela-principal {
+            position: relative;
+            margin-bottom: 60px;
+        }
+        #nome-usuario {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        #quadrado_ac1 {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            position: fixed;
+            top: 35%; /* Posiciona o contêiner no meio da tela verticalmente */
+            left: 50%; /* Posiciona o contêiner no meio da tela horizontalmente */
+            transform: translate(-50%, -50%); /* Centraliza o contêiner */
+            background-color: #0432fd; /* Cor de fundo azul */
+        }
+        
+        #quadrado_ac1 img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .linha-quadrados {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px; /* Espaçamento acima do quadrado */
+            margin-bottom: 10px; /* Espaçamento entre as linhas de quadrados */
+        }
+        
+        .quadrado-ac {
+            width: 50px;
+            height: 50px;
+            background-color: #ccc; /* Cor de fundo padrão */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 5px; /* Espaçamento entre os quadrados */
+            cursor: pointer; /* Cursor ao passar sobre o quadrado */
+        }
+        
+        .quadrado-ac img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .selected {
+            position: absolute;
+            color: red;
+            font-size: 34px;
+            font-weight: bold; /* Adicionando negrito */
+        }
+
+        p {
+            font-size: 10px; /* Alteração no tamanho da fonte para 10 pixels */
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<main id='tela-principal'>
+    <h1 id="titulo">ATENÇÃO CONCENTRADA</h1>
+    <p class="data"></p> <!-- Alterado para classe -->
+    <div id="nome-usuario"></div> <!-- Div para exibir o nome do usuário -->
+    <!-- Cronômetro -->
+    <div id="cronometro">02:00</div>
+    <!-- Botões de iniciar, parar e reiniciar -->
+    <button id="btnIniciar" onclick="iniciarCronometro()" style="background-color: rgb(3, 253, 3);">Iniciar</button>
+     <!-- Botão "voltar" -->
+    <button onclick="voltar()">TERMINAR</button>
+</main>
+
+
+
+<div id="container">
+    <div id="quadrado_ac1" class="quadrado-ac">
+        <img src="imagens/atencao/ac1.png">
+    </div>
+</div>
+
+<!-- Linha 1 -->
+<div class="linha-quadrados">
+    <div class="quadrado-ac" id="quadrado_ac2" onclick="toggleSelection(2)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac3" onclick="toggleSelection(3)"><img src="imagens/atencao/ac12.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac4" onclick="toggleSelection(4)"><img src="imagens/atencao/ac10.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac5" onclick="toggleSelection(5)"><img src="imagens/atencao/ac9.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac6" onclick="toggleSelection(6)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac7" onclick="toggleSelection(7)"><img src="imagens/atencao/ac2.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac8" onclick="toggleSelection(8)"><img src="imagens/atencao/ac4.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac9" onclick="toggleSelection(9)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac10" onclick="toggleSelection(10)"><img src="imagens/atencao/ac6.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac11" onclick="toggleSelection(11)"><img src="imagens/atencao/ac13.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac12" onclick="toggleSelection(12)"><img src="imagens/atencao/ac5.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac13" onclick="toggleSelection(13)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac14" onclick="toggleSelection(14)"><img src="imagens/atencao/ac8.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac15" onclick="toggleSelection(15)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac16" onclick="toggleSelection(16)"><img src="imagens/atencao/ac7.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac17" onclick="toggleSelection(17)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac18" onclick="toggleSelection(18)"><img src="imagens/atencao/ac14.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac19" onclick="toggleSelection(19)"><img src="imagens/atencao/ac11.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac20" onclick="toggleSelection(20)"><img src="imagens/atencao/ac15.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac21" onclick="toggleSelection(21)"><img src="imagens/atencao/ac1.png"></div>
+</div>
+
+<!-- Linha 2 -->
+<div class="linha-quadrados">
+    <div class="quadrado-ac" id="quadrado_ac22" onclick="toggleSelection(22)"><img src="imagens/atencao/ac6.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac23" onclick="toggleSelection(23)"><img src="imagens/atencao/ac10.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac24" onclick="toggleSelection(24)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac25" onclick="toggleSelection(25)"><img src="imagens/atencao/ac11.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac26" onclick="toggleSelection(26)"><img src="imagens/atencao/ac13.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac27" onclick="toggleSelection(27)"><img src="imagens/atencao/ac14.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac28" onclick="toggleSelection(28)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac29" onclick="toggleSelection(29)"><img src="imagens/atencao/ac8.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac30" onclick="toggleSelection(30)"><img src="imagens/atencao/ac7.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac31" onclick="toggleSelection(31)"><img src="imagens/atencao/ac16.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac32" onclick="toggleSelection(32)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac33" onclick="toggleSelection(33)"><img src="imagens/atencao/ac9.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac34" onclick="toggleSelection(34)"><img src="imagens/atencao/ac2.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac35" onclick="toggleSelection(35)"><img src="imagens/atencao/ac12.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac36" onclick="toggleSelection(36)"><img src="imagens/atencao/ac3.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac37" onclick="toggleSelection(37)"><img src="imagens/atencao/ac15.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac38" onclick="toggleSelection(38)"><img src="imagens/atencao/ac5.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac39" onclick="toggleSelection(39)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac40" onclick="toggleSelection(40)"><img src="imagens/atencao/ac4.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac41" onclick="toggleSelection(41)"><img src="imagens/atencao/ac1.png"></div>
+</div>
+
+<!-- Linha 3 -->
+<div class="linha-quadrados">
+    <div class="quadrado-ac" id="quadrado_ac42" onclick="toggleSelection(42)"><img src="imagens/atencao/ac7.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac43" onclick="toggleSelection(43)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac44" onclick="toggleSelection(44)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac45" onclick="toggleSelection(45)"><img src="imagens/atencao/ac8.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac46" onclick="toggleSelection(46)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac47" onclick="toggleSelection(47)"><img src="imagens/atencao/ac9.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac48" onclick="toggleSelection(48)"><img src="imagens/atencao/ac15.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac49" onclick="toggleSelection(49)"><img src="imagens/atencao/ac2.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac50" onclick="toggleSelection(50)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac51" onclick="toggleSelection(51)"><img src="imagens/atencao/ac12.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac52" onclick="toggleSelection(52)"><img src="imagens/atencao/ac6.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac53" onclick="toggleSelection(53)"><img src="imagens/atencao/ac11.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac54" onclick="toggleSelection(54)"><img src="imagens/atencao/ac10.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac55" onclick="toggleSelection(55)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac56" onclick="toggleSelection(56)"><img src="imagens/atencao/ac13.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac57" onclick="toggleSelection(57)"><img src="imagens/atencao/ac14.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac58" onclick="toggleSelection(58)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac59" onclick="toggleSelection(59)"><img src="imagens/atencao/ac4.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac60" onclick="toggleSelection(60)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac61" onclick="toggleSelection(61)"><img src="imagens/atencao/ac5.png"></div>
+</div>
+<!-- Linha 4 -->
+<div class="linha-quadrados">
+    <div class="quadrado-ac" id="quadrado_ac62" onclick="toggleSelection(62)"><img src="imagens/atencao/ac15.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac63" onclick="toggleSelection(63)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac64" onclick="toggleSelection(64)"><img src="imagens/atencao/ac12.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac65" onclick="toggleSelection(65)"><img src="imagens/atencao/ac4.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac66" onclick="toggleSelection(66)"><img src="imagens/atencao/ac7.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac67" onclick="toggleSelection(67)"><img src="imagens/atencao/ac9.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac68" onclick="toggleSelection(68)"><img src="imagens/atencao/ac5.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac69" onclick="toggleSelection(69)"><img src="imagens/atencao/ac8.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac70" onclick="toggleSelection(70)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac71" onclick="toggleSelection(71)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac72" onclick="toggleSelection(72)"><img src="imagens/atencao/ac11.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac73" onclick="toggleSelection(73)"><img src="imagens/atencao/ac13.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac74" onclick="toggleSelection(74)"><img src="imagens/atencao/ac14.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac75" onclick="toggleSelection(75)"><img src="imagens/atencao/ac3.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac76" onclick="toggleSelection(76)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac77" onclick="toggleSelection(77)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac78" onclick="toggleSelection(78)"><img src="imagens/atencao/ac16.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac79" onclick="toggleSelection(79)"><img src="imagens/atencao/ac10.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac80" onclick="toggleSelection(80)"><img src="imagens/atencao/ac2.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac81" onclick="toggleSelection(81)"><img src="imagens/atencao/ac6.png"></div>
+</div>
+<!-- Linha 5 -->
+<div class="linha-quadrados">
+    <div class="quadrado-ac" id="quadrado_ac82" onclick="toggleSelection(82)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac83" onclick="toggleSelection(83)"><img src="imagens/atencao/ac11.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac84" onclick="toggleSelection(84)"><img src="imagens/atencao/ac13.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac85" onclick="toggleSelection(85)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac86" onclick="toggleSelection(86)"><img src="imagens/atencao/ac2.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac87" onclick="toggleSelection(87)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac88" onclick="toggleSelection(88)"><img src="imagens/atencao/ac14.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac89" onclick="toggleSelection(89)"><img src="imagens/atencao/ac6.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac90" onclick="toggleSelection(90)"><img src="imagens/atencao/ac5.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac91" onclick="toggleSelection(91)"><img src="imagens/atencao/ac12.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac92" onclick="toggleSelection(92)"><img src="imagens/atencao/ac10.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac93" onclick="toggleSelection(93)"><img src="imagens/atencao/ac4.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac94" onclick="toggleSelection(94)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac95" onclick="toggleSelection(95)"><img src="imagens/atencao/ac15.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac96" onclick="toggleSelection(96)"><img src="imagens/atencao/ac9.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac97" onclick="toggleSelection(97)"><img src="imagens/atencao/ac8.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac98" onclick="toggleSelection(98)"><img src="imagens/atencao/ac7.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac99" onclick="toggleSelection(99)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac100" onclick="toggleSelection(100)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac101" onclick="toggleSelection(101)"><img src="imagens/atencao/ac1.png"></div>
+</div>
+<!-- Linha 6 -->
+<div class="linha-quadrados">
+    <div class="quadrado-ac" id="quadrado_ac102" onclick="toggleSelection(102)"><img src="imagens/atencao/ac6.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac103" onclick="toggleSelection(103)"><img src="imagens/atencao/ac2.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac104" onclick="toggleSelection(104)"><img src="imagens/atencao/ac15.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac105" onclick="toggleSelection(105)"><img src="imagens/atencao/ac10.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac106" onclick="toggleSelection(106)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac107" onclick="toggleSelection(107)"><img src="imagens/atencao/ac4.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac108" onclick="toggleSelection(108)"><img src="imagens/atencao/ac14.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac109" onclick="toggleSelection(109)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac110" onclick="toggleSelection(110)"><img src="imagens/atencao/ac13.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac111" onclick="toggleSelection(111)"><img src="imagens/atencao/ac9.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac112" onclick="toggleSelection(112)"><img src="imagens/atencao/ac8.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac113" onclick="toggleSelection(113)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac114" onclick="toggleSelection(114)"><img src="imagens/atencao/ac11.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac115" onclick="toggleSelection(115)"><img src="imagens/atencao/ac7.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac116" onclick="toggleSelection(116)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac117" onclick="toggleSelection(117)"><img src="imagens/atencao/ac16.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac118" onclick="toggleSelection(118)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac119" onclick="toggleSelection(119)"><img src="imagens/atencao/ac3.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac120" onclick="toggleSelection(120)"><img src="imagens/atencao/ac5.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac121" onclick="toggleSelection(121)"><img src="imagens/atencao/ac12.png"></div>
+</div>
+<!-- Linha 7 -->
+<div class="linha-quadrados">
+    <div class="quadrado-ac" id="quadrado_ac122" onclick="toggleSelection(122)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac123" onclick="toggleSelection(123)"><img src="imagens/atencao/ac8.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac124" onclick="toggleSelection(124)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac125" onclick="toggleSelection(125)"><img src="imagens/atencao/ac9.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac126" onclick="toggleSelection(126)"><img src="imagens/atencao/ac14.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac127" onclick="toggleSelection(127)"><img src="imagens/atencao/ac7.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac128" onclick="toggleSelection(128)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac129" onclick="toggleSelection(129)"><img src="imagens/atencao/ac6.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac130" onclick="toggleSelection(130)"><img src="imagens/atencao/ac13.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac131" onclick="toggleSelection(131)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac132" onclick="toggleSelection(132)"><img src="imagens/atencao/ac12.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac133" onclick="toggleSelection(133)"><img src="imagens/atencao/ac5.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac134" onclick="toggleSelection(134)"><img src="imagens/atencao/ac15.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac135" onclick="toggleSelection(135)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac136" onclick="toggleSelection(136)"><img src="imagens/atencao/ac2.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac137" onclick="toggleSelection(137)"><img src="imagens/atencao/ac4.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac138" onclick="toggleSelection(138)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac139" onclick="toggleSelection(139)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac140" onclick="toggleSelection(140)"><img src="imagens/atencao/ac10.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac141" onclick="toggleSelection(141)"><img src="imagens/atencao/ac11.png"></div>
+</div>
+<!-- Linha 8 -->
+<div class="linha-quadrados">
+    <div class="quadrado-ac" id="quadrado_ac142" onclick="toggleSelection(142)"><img src="imagens/atencao/ac7.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac143" onclick="toggleSelection(143)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac144" onclick="toggleSelection(144)"><img src="imagens/atencao/ac12.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac145" onclick="toggleSelection(145)"><img src="imagens/atencao/ac8.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac146" onclick="toggleSelection(146)"><img src="imagens/atencao/ac4.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac147" onclick="toggleSelection(147)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac148" onclick="toggleSelection(148)"><img src="imagens/atencao/ac15.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac149" onclick="toggleSelection(149)"><img src="imagens/atencao/ac6.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac150" onclick="toggleSelection(150)"><img src="imagens/atencao/ac2.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac151" onclick="toggleSelection(151)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac152" onclick="toggleSelection(152)"><img src="imagens/atencao/ac16.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac153" onclick="toggleSelection(153)"><img src="imagens/atencao/ac9.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac154" onclick="toggleSelection(154)"><img src="imagens/atencao/ac14.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac155" onclick="toggleSelection(155)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac156" onclick="toggleSelection(156)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac157" onclick="toggleSelection(157)"><img src="imagens/atencao/ac11.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac158" onclick="toggleSelection(158)"><img src="imagens/atencao/ac3.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac159" onclick="toggleSelection(159)"><img src="imagens/atencao/ac13.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac160" onclick="toggleSelection(160)"><img src="imagens/atencao/ac5.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac161" onclick="toggleSelection(161)"><img src="imagens/atencao/ac10.png"></div>
+</div>
+<!-- Linha 9 -->
+<div class="linha-quadrados">
+    <div class="quadrado-ac" id="quadrado_ac162" onclick="toggleSelection(162)"><img src="imagens/atencao/ac11.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac163" onclick="toggleSelection(163)"><img src="imagens/atencao/ac5.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac164" onclick="toggleSelection(164)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac165" onclick="toggleSelection(165)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac166" onclick="toggleSelection(166)"><img src="imagens/atencao/ac7.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac167" onclick="toggleSelection(167)"><img src="imagens/atencao/ac12.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac168" onclick="toggleSelection(168)"><img src="imagens/atencao/ac15.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac169" onclick="toggleSelection(169)"><img src="imagens/atencao/ac2.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac170" onclick="toggleSelection(170)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac171" onclick="toggleSelection(171)"><img src="imagens/atencao/ac13.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac172" onclick="toggleSelection(172)"><img src="imagens/atencao/ac10.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac173" onclick="toggleSelection(173)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac174" onclick="toggleSelection(174)"><img src="imagens/atencao/ac9.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac175" onclick="toggleSelection(175)"><img src="imagens/atencao/ac4.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac176" onclick="toggleSelection(176)"><img src="imagens/atencao/ac6.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac177" onclick="toggleSelection(177)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac178" onclick="toggleSelection(178)"><img src="imagens/atencao/ac14.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac179" onclick="toggleSelection(179)"><img src="imagens/atencao/ac8.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac180" onclick="toggleSelection(180)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac181" onclick="toggleSelection(181)"><img src="imagens/atencao/ac1.png"></div>
+</div>
+<!-- Linha 10 -->
+<div class="linha-quadrados">
+    <div class="quadrado-ac" id="quadrado_ac182" onclick="toggleSelection(182)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac183" onclick="toggleSelection(183)"><img src="imagens/atencao/ac6.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac184" onclick="toggleSelection(184)"><img src="imagens/atencao/ac10.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac185" onclick="toggleSelection(185)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac186" onclick="toggleSelection(186)"><img src="imagens/atencao/ac7.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac187" onclick="toggleSelection(187)"><img src="imagens/atencao/ac4.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac188" onclick="toggleSelection(188)"><img src="imagens/atencao/ac11.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac189" onclick="toggleSelection(189)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac190" onclick="toggleSelection(190)"><img src="imagens/atencao/ac13.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac191" onclick="toggleSelection(191)"><img src="imagens/atencao/ac9.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac192" onclick="toggleSelection(192)"><img src="imagens/atencao/ac14.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac193" onclick="toggleSelection(193)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac194" onclick="toggleSelection(194)"><img src="imagens/atencao/ac12.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac195" onclick="toggleSelection(195)"><img src="imagens/atencao/ac15.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac196" onclick="toggleSelection(196)"><img src="imagens/atencao/ac8.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac197" onclick="toggleSelection(197)"><img src="imagens/atencao/ac3.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac198" onclick="toggleSelection(198)"><img src="imagens/atencao/ac5.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac199" onclick="toggleSelection(199)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac200" onclick="toggleSelection(200)"><img src="imagens/atencao/ac16.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac201" onclick="toggleSelection(201)"><img src="imagens/atencao/ac2.png"></div>
+</div>
+
+<!-- Linha 11 -->
+<div class="linha-quadrados">
+    <div class="quadrado-ac" id="quadrado_ac202" onclick="toggleSelection(202)"><img src="imagens/atencao/ac9.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac203" onclick="toggleSelection(203)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac204" onclick="toggleSelection(204)"><img src="imagens/atencao/ac6.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac205" onclick="toggleSelection(205)"><img src="imagens/atencao/ac13.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac206" onclick="toggleSelection(206)"><img src="imagens/atencao/ac15.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac207" onclick="toggleSelection(207)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac208" onclick="toggleSelection(208)"><img src="imagens/atencao/ac12.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac209" onclick="toggleSelection(209)"><img src="imagens/atencao/ac14.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac210" onclick="toggleSelection(210)"><img src="imagens/atencao/ac5.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac211" onclick="toggleSelection(211)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac212" onclick="toggleSelection(212)"><img src="imagens/atencao/ac7.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac213" onclick="toggleSelection(213)"><img src="imagens/atencao/ac8.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac214" onclick="toggleSelection(214)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac215" onclick="toggleSelection(215)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac216" onclick="toggleSelection(216)"><img src="imagens/atencao/ac4.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac217" onclick="toggleSelection(217)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac218" onclick="toggleSelection(218)"><img src="imagens/atencao/ac10.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac219" onclick="toggleSelection(219)"><img src="imagens/atencao/ac11.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac220" onclick="toggleSelection(220)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac221" onclick="toggleSelection(221)"><img src="imagens/atencao/ac2.png"></div>
+</div>
+
+<!-- Linha 12 -->
+<div class="linha-quadrados">
+    <div class="quadrado-ac" id="quadrado_ac222" onclick="toggleSelection(222)"><img src="imagens/atencao/ac12.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac223" onclick="toggleSelection(223)"><img src="imagens/atencao/ac8.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac224" onclick="toggleSelection(224)"><img src="imagens/atencao/ac14.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac225" onclick="toggleSelection(225)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac226" onclick="toggleSelection(226)"><img src="imagens/atencao/ac9.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac227" onclick="toggleSelection(227)"><img src="imagens/atencao/ac16.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac228" onclick="toggleSelection(228)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac229" onclick="toggleSelection(229)"><img src="imagens/atencao/ac10.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac230" onclick="toggleSelection(230)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac231" onclick="toggleSelection(231)"><img src="imagens/atencao/ac5.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac232" onclick="toggleSelection(232)"><img src="imagens/atencao/ac6.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac233" onclick="toggleSelection(233)"><img src="imagens/atencao/ac2.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac234" onclick="toggleSelection(234)"><img src="imagens/atencao/ac11.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac235" onclick="toggleSelection(235)"><img src="imagens/atencao/ac3.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac236" onclick="toggleSelection(236)"><img src="imagens/atencao/ac13.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac237" onclick="toggleSelection(237)"><img src="imagens/atencao/ac15.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac238" onclick="toggleSelection(238)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac239" onclick="toggleSelection(239)"><img src="imagens/atencao/ac7.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac240" onclick="toggleSelection(240)"><img src="imagens/atencao/ac15.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac241" onclick="toggleSelection(241)"><img src="imagens/atencao/ac1.png"></div>
+</div>
+
+<!-- Linha 13 -->
+<div class="linha-quadrados">
+    <div class="quadrado-ac" id="quadrado_ac242" onclick="toggleSelection(242)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac243" onclick="toggleSelection(243)"><img src="imagens/atencao/ac6.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac244" onclick="toggleSelection(244)"><img src="imagens/atencao/ac15.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac245" onclick="toggleSelection(245)"><img src="imagens/atencao/ac2.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac246" onclick="toggleSelection(246)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac247" onclick="toggleSelection(247)"><img src="imagens/atencao/ac9.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac248" onclick="toggleSelection(248)"><img src="imagens/atencao/ac4.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac249" onclick="toggleSelection(249)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac250" onclick="toggleSelection(250)"><img src="imagens/atencao/ac5.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac251" onclick="toggleSelection(251)"><img src="imagens/atencao/ac12.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac252" onclick="toggleSelection(252)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac253" onclick="toggleSelection(253)"><img src="imagens/atencao/ac11.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac254" onclick="toggleSelection(254)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac255" onclick="toggleSelection(255)"><img src="imagens/atencao/ac14.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac256" onclick="toggleSelection(256)"><img src="imagens/atencao/ac13.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac257" onclick="toggleSelection(257)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac258" onclick="toggleSelection(258)"><img src="imagens/atencao/ac7.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac259" onclick="toggleSelection(259)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac260" onclick="toggleSelection(260)"><img src="imagens/atencao/ac10.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac261" onclick="toggleSelection(261)"><img src="imagens/atencao/ac8.png"></div>
+</div>
+
+<!-- Linha 14 -->
+<div class="linha-quadrados">
+    <div class="quadrado-ac" id="quadrado_ac262" onclick="toggleSelection(262)"><img src="imagens/atencao/ac15.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac263" onclick="toggleSelection(263)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac264" onclick="toggleSelection(264)"><img src="imagens/atencao/ac5.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac265" onclick="toggleSelection(265)"><img src="imagens/atencao/ac9.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac266" onclick="toggleSelection(266)"><img src="imagens/atencao/ac11.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac267" onclick="toggleSelection(267)"><img src="imagens/atencao/ac7.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac268" onclick="toggleSelection(268)"><img src="imagens/atencao/ac3.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac269" onclick="toggleSelection(269)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac270" onclick="toggleSelection(270)"><img src="imagens/atencao/ac2.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac271" onclick="toggleSelection(271)"><img src="imagens/atencao/ac13.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac272" onclick="toggleSelection(272)"><img src="imagens/atencao/ac16.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac273" onclick="toggleSelection(273)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac274" onclick="toggleSelection(274)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac275" onclick="toggleSelection(275)"><img src="imagens/atencao/ac6.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac276" onclick="toggleSelection(276)"><img src="imagens/atencao/ac8.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac277" onclick="toggleSelection(277)"><img src="imagens/atencao/ac10.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac278" onclick="toggleSelection(278)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac279" onclick="toggleSelection(279)"><img src="imagens/atencao/ac4.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac280" onclick="toggleSelection(280)"><img src="imagens/atencao/ac14.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac281" onclick="toggleSelection(281)"><img src="imagens/atencao/ac12.png"></div>
+</div>
+
+<!-- Linha 15 -->
+<div class="linha-quadrados">
+    <div class="quadrado-ac" id="quadrado_ac282" onclick="toggleSelection(282)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac283" onclick="toggleSelection(283)"><img src="imagens/atencao/ac11.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac284" onclick="toggleSelection(284)"><img src="imagens/atencao/ac8.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac285" onclick="toggleSelection(285)"><img src="imagens/atencao/ac13.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac286" onclick="toggleSelection(286)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac287" onclick="toggleSelection(287)"><img src="imagens/atencao/ac7.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac288" onclick="toggleSelection(288)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac289" onclick="toggleSelection(289)"><img src="imagens/atencao/ac6.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac290" onclick="toggleSelection(290)"><img src="imagens/atencao/ac10.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac291" onclick="toggleSelection(291)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac292" onclick="toggleSelection(292)"><img src="imagens/atencao/ac4.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac293" onclick="toggleSelection(293)"><img src="imagens/atencao/ac15.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac294" onclick="toggleSelection(294)"><img src="imagens/atencao/ac12.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac295" onclick="toggleSelection(295)"><img src="imagens/atencao/ac5.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac296" onclick="toggleSelection(296)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac297" onclick="toggleSelection(297)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac298" onclick="toggleSelection(298)"><img src="imagens/atencao/ac9.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac299" onclick="toggleSelection(299)"><img src="imagens/atencao/ac2.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac300" onclick="toggleSelection(300)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac301" onclick="toggleSelection(301)"><img src="imagens/atencao/ac14.png"></div>
+</div>
+
+<!-- Linha 16 -->
+<div class="linha-quadrados">
+    <div class="quadrado-ac" id="quadrado_ac302" onclick="toggleSelection(302)"><img src="imagens/atencao/ac6.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac303" onclick="toggleSelection(303)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac304" onclick="toggleSelection(304)"><img src="imagens/atencao/ac13.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac305" onclick="toggleSelection(305)"><img src="imagens/atencao/ac10.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac306" onclick="toggleSelection(306)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac307" onclick="toggleSelection(307)"><img src="imagens/atencao/ac12.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac308" onclick="toggleSelection(308)"><img src="imagens/atencao/ac14.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac309" onclick="toggleSelection(309)"><img src="imagens/atencao/ac8.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac310" onclick="toggleSelection(310)"><img src="imagens/atencao/ac7.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac311" onclick="toggleSelection(311)"><img src="imagens/atencao/ac5.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac312" onclick="toggleSelection(312)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac313" onclick="toggleSelection(313)"><img src="imagens/atencao/ac9.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac314" onclick="toggleSelection(314)"><img src="imagens/atencao/ac16.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac315" onclick="toggleSelection(315)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac316" onclick="toggleSelection(316)"><img src="imagens/atencao/ac3.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac317" onclick="toggleSelection(317)"><img src="imagens/atencao/ac11.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac318" onclick="toggleSelection(318)"><img src="imagens/atencao/ac2.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac319" onclick="toggleSelection(319)"><img src="imagens/atencao/ac4.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac320" onclick="toggleSelection(320)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac321" onclick="toggleSelection(321)"><img src="imagens/atencao/ac15.png"></div>
+</div>
+
+<!-- Linha 17 -->
+<div class="linha-quadrados">
+    <div class="quadrado-ac" id="quadrado_ac322" onclick="toggleSelection(322)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac323" onclick="toggleSelection(323)"><img src="imagens/atencao/ac12.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac324" onclick="toggleSelection(324)"><img src="imagens/atencao/ac7.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac325" onclick="toggleSelection(325)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac326" onclick="toggleSelection(326)"><img src="imagens/atencao/ac2.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac327" onclick="toggleSelection(327)"><img src="imagens/atencao/ac6.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac328" onclick="toggleSelection(328)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac329" onclick="toggleSelection(329)"><img src="imagens/atencao/ac9.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac330" onclick="toggleSelection(330)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac331" onclick="toggleSelection(331)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac332" onclick="toggleSelection(332)"><img src="imagens/atencao/ac10.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac333" onclick="toggleSelection(333)"><img src="imagens/atencao/ac13.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac334" onclick="toggleSelection(334)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac335" onclick="toggleSelection(335)"><img src="imagens/atencao/ac15.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac336" onclick="toggleSelection(336)"><img src="imagens/atencao/ac14.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac337" onclick="toggleSelection(337)"><img src="imagens/atencao/ac8.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac338" onclick="toggleSelection(338)"><img src="imagens/atencao/ac4.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac339" onclick="toggleSelection(339)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac340" onclick="toggleSelection(340)"><img src="imagens/atencao/ac5.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac341" onclick="toggleSelection(341)"><img src="imagens/atencao/ac11.png"></div>
+</div>
+<!-- Linha 18 -->
+<div class="linha-quadrados">
+    <div class="quadrado-ac" id="quadrado_ac342" onclick="toggleSelection(342)"><img src="imagens/atencao/ac6.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac343" onclick="toggleSelection(343)"><img src="imagens/atencao/ac2.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac344" onclick="toggleSelection(344)"><img src="imagens/atencao/ac10.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac345" onclick="toggleSelection(345)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac346" onclick="toggleSelection(346)"><img src="imagens/atencao/ac4.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac347" onclick="toggleSelection(347)"><img src="imagens/atencao/ac9.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac348" onclick="toggleSelection(348)"><img src="imagens/atencao/ac14.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac349" onclick="toggleSelection(349)"><img src="imagens/atencao/ac8.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac350" onclick="toggleSelection(350)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac351" onclick="toggleSelection(351)"><img src="imagens/atencao/ac7.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac352" onclick="toggleSelection(352)"><img src="imagens/atencao/ac12.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac353" onclick="toggleSelection(353)"><img src="imagens/atencao/ac13.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac354" onclick="toggleSelection(354)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac355" onclick="toggleSelection(355)"><img src="imagens/atencao/ac5.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac356" onclick="toggleSelection(356)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac357" onclick="toggleSelection(357)"><img src="imagens/atencao/ac11.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac358" onclick="toggleSelection(358)"><img src="imagens/atencao/ac3.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac359" onclick="toggleSelection(359)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac360" onclick="toggleSelection(360)"><img src="imagens/atencao/ac16.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac361" onclick="toggleSelection(361)"><img src="imagens/atencao/ac15.png"></div>
+</div>
+
+<!-- Linha 19 -->
+<div class="linha-quadrados">
+    <div class="quadrado-ac" id="quadrado_ac362" onclick="toggleSelection(362)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac363" onclick="toggleSelection(363)"><img src="imagens/atencao/ac9.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac364" onclick="toggleSelection(364)"><img src="imagens/atencao/ac8.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac365" onclick="toggleSelection(365)"><img src="imagens/atencao/ac10.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac366" onclick="toggleSelection(366)"><img src="imagens/atencao/ac13.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac367" onclick="toggleSelection(367)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac368" onclick="toggleSelection(368)"><img src="imagens/atencao/ac14.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac369" onclick="toggleSelection(369)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac370" onclick="toggleSelection(370)"><img src="imagens/atencao/ac11.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac371" onclick="toggleSelection(371)"><img src="imagens/atencao/ac5.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac372" onclick="toggleSelection(372)"><img src="imagens/atencao/ac12.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac373" onclick="toggleSelection(373)"><img src="imagens/atencao/ac4.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac374" onclick="toggleSelection(374)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac375" onclick="toggleSelection(375)"><img src="imagens/atencao/ac15.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac376" onclick="toggleSelection(376)"><img src="imagens/atencao/ac7.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac377" onclick="toggleSelection(377)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac378" onclick="toggleSelection(378)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac379" onclick="toggleSelection(379)"><img src="imagens/atencao/ac2.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac380" onclick="toggleSelection(380)"><img src="imagens/atencao/ac6.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac381" onclick="toggleSelection(381)"><img src="imagens/atencao/ac1.png"></div>
+</div>
+
+<!-- Linha 20 -->
+<div class="linha-quadrados">
+    <div class="quadrado-ac" id="quadrado_ac382" onclick="toggleSelection(382)"><img src="imagens/atencao/ac11.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac383" onclick="toggleSelection(383)"><img src="imagens/atencao/ac2.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac384" onclick="toggleSelection(384)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac385" onclick="toggleSelection(385)"><img src="imagens/atencao/ac4.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac386" onclick="toggleSelection(386)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac387" onclick="toggleSelection(387)"><img src="imagens/atencao/ac5.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac388" onclick="toggleSelection(388)"><img src="imagens/atencao/ac16.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac389" onclick="toggleSelection(389)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac390" onclick="toggleSelection(390)"><img src="imagens/atencao/ac3.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac391" onclick="toggleSelection(391)"><img src="imagens/atencao/ac13.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac392" onclick="toggleSelection(392)"><img src="imagens/atencao/ac9.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac393" onclick="toggleSelection(393)"><img src="imagens/atencao/ac8.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac394" onclick="toggleSelection(394)"><img src="imagens/atencao/ac6.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac395" onclick="toggleSelection(395)"><img src="imagens/atencao/ac15.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac396" onclick="toggleSelection(396)"><img src="imagens/atencao/ac1.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac397" onclick="toggleSelection(397)"><img src="imagens/atencao/ac14.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac398" onclick="toggleSelection(398)"><img src="imagens/atencao/ac10.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac399" onclick="toggleSelection(399)"><img src="imagens/atencao/ac12.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac400" onclick="toggleSelection(400)"><img src="imagens/atencao/ac7.png"></div>
+    <div class="quadrado-ac" id="quadrado_ac401" onclick="toggleSelection(401)"><img src="imagens/atencao/ac1.png"></div>
+</div>
+
+<div id="resultado">
+    <p>Acertos: <span id="acertos">0</span></p>
+    <p>Erros: <span id="erros">0</span></p>
+    <p>Omissões: <span id="omissoes">127</span></p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+ <!-- Firebase SDK -->
+ <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script> <!-- Adicionando o script do Firestore -->
+
+ <script src="js/config.js"></script> <!-- Inclui o arquivo de configuração do Firebase -->
+ <script src="js/script_menu.js"></script>
+
+<script>
+    var intervalo; // Variável para armazenar o intervalo do cronômetro
+    var selectedSquares = {}; // Objeto para armazenar os quadrados selecionados e seus valores
+
+        window.onload = function() {
+            var nomeUsuario = localStorage.getItem('nomeUsuario');
+            var nomeDiv = document.getElementById('nome-usuario');
+            if (nomeDiv && nomeUsuario) {
+                nomeDiv.textContent = nomeUsuario;
+            }
+        };
+        // Função para obter a data atual
+        function getDataAtual() {
+            var dataAtual = new Date();
+            var dia = dataAtual.getDate();
+            var mes = dataAtual.getMonth() + 1; // Os meses são indexados de 0 a 11, então é necessário adicionar 1
+            var ano = dataAtual.getFullYear();
+            var dataFormatada = dia + '/' + mes + '/' + ano;
+            return dataFormatada;
+        }
+    
+        // Exibir a data atual na página
+        var dataElements = document.querySelectorAll('.data');
+        dataElements.forEach(function(element) {
+            element.innerText = "Data atual: " + getDataAtual();
+        });
+        
+    function iniciarCronometro() {
+        var segundos = 120; // 2 minutos em segundos
+        document.getElementById('cronometro').textContent = '02:00'; // Define o cronômetro para 2 minutos
+        intervalo = setInterval(function() {
+            atualizarCronometro(segundos);
+            segundos--;
+            if (segundos < 0) {
+                clearInterval(intervalo);
+                alert('Tempo esgotado!');
+            }
+        }, 1000);
+        document.getElementById('btnIniciar').style.display = 'none';
+        document.getElementById('btnParar').style.display = 'inline-block';
+    }
+
+    function pararCronometro() {
+        clearInterval(intervalo);
+        document.getElementById('btnIniciar').style.display = 'inline-block';
+        document.getElementById('btnParar').style.display = 'none';
+    }
+
+    function atualizarCronometro(segundos) {
+    var cronometro = document.getElementById('cronometro');
+    var minutos = Math.floor(segundos / 60);
+    var segundosRestantes = segundos % 60;
+    var segundosFormatados = segundosRestantes < 10 ? '0' + segundosRestantes : segundosRestantes;
+    var minutosFormatados = minutos < 10 ? '0' + minutos : minutos;
+    cronometro.textContent = minutosFormatados + ':' + segundosFormatados;
+
+    if (segundos === 0) {
+        clearInterval(intervalo); // Para o cronômetro
+        capturarTelaERedirecionar(); // Função para capturar a tela e redirecionar o usuário
+    }
+}
+
+    function capturarTelaERedirecionar() {
+        html2canvas(document.body, {
+            onrendered: function(canvas) {
+                var image = canvas.toDataURL("image/jpeg"); // Convertendo para formato JPEG
+                var link = document.createElement('a');
+                link.href = image;
+                link.download = 'screenshot.jpeg'; // Definindo o nome do arquivo como screenshot.jpeg
+                link.click();
+            
+                // Redirecionar para configIT.html após salvar a captura de tela
+                window.location.href = 'test_atencao.html';
+            }
+        });
+    }
+
+    function voltar() {
+        html2canvas(document.body, {
+            onrendered: function(canvas) {
+                var image = canvas.toDataURL("image/jpeg"); // Convertendo para formato JPEG
+                var link = document.createElement('a');
+                link.href = image;
+                link.download = 'screenshot.jpeg'; // Definindo o nome do arquivo como screenshot.jpeg
+                link.click();
+                
+                // Redirecionar para configIT.html após salvar a captura de tela
+                window.location.href = 'fim_test.html';
+            }
+        });
+    }
+
+    function toggleSelection(id) {
+    // Verifica se o cronômetro está em execução antes de permitir a seleção
+    var cronometro = document.getElementById('cronometro');
+    if (cronometro.textContent !== '02:00') {
+        var square = document.getElementById('quadrado_ac' + id);
+        var value = 1; // Valor do quadrado
+        var acertos = document.getElementById('acertos');
+        var erros = document.getElementById('erros');
+        var omissoes = document.getElementById('omissoes');
+
+        // Verifica se o quadrado já está selecionado
+        if (selectedSquares[id]) {
+            // Se estiver selecionado, remove a marcação e subtrai o valor do total
+            square.removeChild(square.querySelector('.selected'));
+            delete selectedSquares[id];
+        } else {
+            // Se não estiver selecionado, adiciona a marcação e adiciona o valor ao total
+            var cross = document.createElement('span');
+            cross.textContent = '/';
+            cross.className = 'selected';
+            square.appendChild(cross);
+            selectedSquares[id] = value;
+        }
+
+        // Atualiza os valores de Acertos, Erros e Omissões
+        acertos.textContent = calculateHits();
+        erros.textContent = calculateErrors();
+        omissoes.textContent = calculateOmission();
+    } else {
+        // Se o cronômetro não estiver em execução, alerta o usuário para iniciar o cronômetro primeiro
+        alert('Por favor, inicie o cronômetro antes de iniciar o teste!');
+    }
+}
+
+
+    function calculateHits() {
+    var hits = 0;
+    // Conta o número de quadrados marcados como acertos
+    for (var key in selectedSquares) {
+        var id = parseInt(key);
+        // Verifica se o quadrado está na lista de quadrados corretos
+        if ([ 2,6,9,13,15,17,21,24,28,32,39,43,44,46,50,55,58,60,63,70,71,76,77,82,85,87,94,99,100,101,106,109,113,116,118,122,124,128,131,135,138,139,143,147,151,155,157,164,165,170,173,176,180,181,182,185,189,193,199,203,207,211,214,215,217,220,225,228,230,238,241,242,246,249,252,254,257,259,263,269,273,274,278,282,286,288,291,296,297,300,303,306,312,315,320,322,325,328,330,331,334,339,345,350,354,356,359,362,367,369,374,377,378,381,384,386,389,396,401].includes(id)) {
+            hits++;
+        }
+    }
+    return hits;
+}
+
+function calculateErrors() {
+    var errors = 0;
+    // Conta o número de quadrados marcados como erros
+    for (var key in selectedSquares) {
+        var id = parseInt(key);
+        // Verifica se o quadrado não está na lista de quadrados corretos
+        if (![2,6,9,13,15,17,21,24,28,32,39,43,44,46,50,55,58,60,63,70,71,76,77,82,85,87,94,99,100,101,106,109,113,116,118,122,124,128,131,135,138,139,143,147,151,155,157,164,165,170,173,176,180,181,182,185,189,193,199,203,207,211,214,215,217,220,225,228,230,238,241,242,246,249,252,254,257,259,263,269,273,274,278,282,286,288,291,296,297,300,303,306,312,315,320,322,325,328,330,331,334,339,345,350,354,356,359,362,367,369,374,377,378,381,384,386,389,396,401].includes(id)) {
+            errors++;
+        }
+    }
+    return errors;
+}
+
+
+function calculateOmission() {
+    // Lista dos quadrados que devem diminuir 1 da omissão se estiverem marcados
+    var subtractList = [2,6,9,13,15,17,21,24,28,32,39,43,44,46,50,55,58,60,63,70,71,76,77,82,85,87,94,99,100,101,106,109,113,116,118,122,124,128,131,135,138,139,143,147,151,155,157,164,165,170,173,176,180,181,182,185,189,193,199,203,207,211,214,215,217,220,225,228,230,238,241,242,246,249,252,254,257,259,263,269,273,274,278,282,286,288,291,296,297,300,303,306,312,315,320,322,325,328,330,331,334,339,345,350,354,356,359,362,367,379,374,377,378,381,384,386,389,396,401];
+
+    // Inicializa o valor total de omissões como 16
+    var totalOmissions = 127;
+
+    // Verifica se algum dos quadrados na lista de subtração está marcado e subtrai 1 da omissão total se estiver
+    for (var i = 0; i < subtractList.length; i++) {
+        var squareId = subtractList[i];
+        if (selectedSquares[squareId]) {
+            totalOmissions--;
+        }
+    }
+
+    return totalOmissions;
+}
+
+
+</script>
+</body>
+</html>

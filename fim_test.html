@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <link rel="icon" href="imagens/favicon.png" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIM TESTE</title>
+    <link rel="stylesheet" href="css/aula16.css" />
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80%; /* Definindo a largura do contêiner como 80% da largura da tela */
+            max-width: 400px; /* Definindo a largura máxima do contêiner */
+        }
+
+        #nome-usuario {
+            text-align: center;
+            font-size: 3vw; /* Tamanho da fonte em relação à largura da tela */
+            font-weight: bold;
+            margin-top: 5%; /* Margem superior em relação à altura da tela */
+            position: relative;
+        }
+        p {
+            font-size: 2vw; /* Tamanho da fonte em relação à largura da tela */
+            color: #666;
+            margin-bottom: 2%; /* Margem inferior em relação à altura da tela */
+        }
+        h2 {
+            text-align: center; 
+            color: rgb(91, 4, 252);
+            font-weight: bold;
+            white-space: nowrap;
+            font-size: 4vw; /* Tamanho da fonte em relação à largura da tela */
+            margin-bottom: 5%; /* Margem inferior em relação à altura da tela */
+        }
+    </style>    
+</head>
+<body>
+    <div id="container">
+        <div id="nome-usuario"></div>
+        <h2 id="titulo">FIM DO TESTE</h2>
+        <p class="data"></p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/script_menu.js"></script>
+
+    <script>
+        window.onload = function() {
+            var nomeUsuario = localStorage.getItem('nomeUsuario');
+            var nomeDiv = document.getElementById('nome-usuario');
+            if (nomeDiv && nomeUsuario) {
+                nomeDiv.textContent = nomeUsuario;
+            }
+            
+            // Obter hora atual em horário de Brasília
+            var horaAtual = new Date().toLocaleString('en-US', {timeZone: 'America/Sao_Paulo', hour: 'numeric', hour12: false});
+            horaAtual = parseInt(horaAtual);
+            
+            // Saudação baseada no horário
+            var saudacao;
+            if (horaAtual >= 6 && horaAtual < 12) {
+                saudacao = 'Bom dia';
+            } else if (horaAtual >= 12 && horaAtual < 18) {
+                saudacao = 'Boa tarde';
+            } else {
+                saudacao = 'Boa noite';
+            }
+
+            var titulo = document.getElementById('titulo');
+            titulo.innerText = 'FIM DO TESTE ' + '!!! ' + saudacao + '!!!';
+        };
+
+        // Função para obter a data atual
+        function getDataAtual() {
+            var dataAtual = new Date();
+            var dia = dataAtual.getDate();
+            var mes = dataAtual.getMonth() + 1;
+            var ano = dataAtual.getFullYear();
+            var dataFormatada = dia + '/' + mes + '/' + ano;
+            return dataFormatada;
+        }
+    
+        // Exibir a data atual na página
+        var dataElements = document.querySelectorAll('.data');
+        dataElements.forEach(function(element) {
+            element.innerText = "Data atual: " + getDataAtual();
+        });
+
+    </script>
+
+</body>
+</html>

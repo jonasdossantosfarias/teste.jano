@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <link rel="icon" href="imagens/favicon.png" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Quati</title>
+    <link rel="stylesheet" href="css/aula16.css" />
+    <style>
+        body {
+            margin: 0 auto; /* Centralizando o conteúdo na página */
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            position: relative;
+        }
+    
+        #tela-principal {
+            position: relative;
+        }
+    
+        #nome-usuario {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    
+        .selected {
+            position: absolute;
+            color: red;
+            font-size: 34px;
+            font-weight: bold;
+            /* Adicionando negrito */
+        }
+    
+        p {
+            font-size: 10px; /* Alteração no tamanho da fonte para 10 pixels */
+            color: #666;
+            margin-bottom: 10px;
+        }
+    
+        /* Estilos para o contêiner dos quadrados */
+        .quadros-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-left: auto; /* Centralizando o conteúdo */
+            margin-right: auto; /* Centralizando o conteúdo */
+        }
+    
+        /* Estilos para os quadrados */
+        .quadro {
+            width: 22%; /* Definindo largura total para os quadrados */
+            margin-bottom: 20px; /* Aumentando o espaço entre os quadrados */
+            padding: 20px; /* Aumentando o espaçamento interno */
+            border-radius: 10px; /* Arredondando as bordas */
+            background-color: #f9f9f9; /* Cor de fundo */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Adicionando uma sombra mais suave */
+            margin-left: auto; /* Centralizando o conteúdo */
+            margin-right: auto; /* Centralizando o conteúdo */
+        }
+    
+        .tituloquadro {
+            font-size: 1.4rem; /* Aumentando o tamanho do título */
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px; /* Ajustando o espaçamento inferior */
+        }
+    
+        /* Estilos para as opções */
+        .opcao {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px; /* Aumentando o espaço entre as opções */
+            width: 100%; /* Definindo largura total para as opções */
+        }
+    
+        .opcao label {
+            margin-right: 10px;
+            font-size: 18px; /* Aumentando o tamanho da fonte */
+        }
+    
+        .opcao input[type="checkbox"] {
+            margin-right: 8px; /* Ajustando o espaçamento do checkbox */
+            transform: scale(1.8); /* Aumentando o tamanho do checkbox */
+        }
+    
+        .coluna {
+            flex: 1;
+            margin-right: 20px;
+        }
+    
+        .quadro .coluna {
+            width: 100%; /* Definindo largura total para as colunas dentro dos quadrados */
+        }
+    
+        .opcoes-container {
+            display: flex;
+            flex-wrap: wrap; /* Permitindo que as opções quebrem para a próxima linha em telas menores */
+            margin-top: 30px; /* Aumentando a margem superior */
+            margin-left: auto; /* Centralizando o conteúdo */
+            margin-right: auto; /* Centralizando o conteúdo */
+        }
+    
+        .quadro-container-resposta {
+            display: flex;
+            margin-right: 20px;
+            margin-left: auto; /* Centralizando o conteúdo */
+            margin-right: auto; /* Centralizando o conteúdo */
+        }
+    
+        .quadro-resposta {
+            margin-right: 15px; /* Ajustando a margem direita */
+            font-weight: bold;
+        }
+    
+        .linha-resposta {
+            display: flex;
+            margin-bottom: 10px; /* Ajustando o espaçamento inferior */
+        }
+    
+        .celula-resposta {
+            padding: 8px; /* Ajustando o espaçamento interno */
+            border: 1px solid #ccc; /* Mudando a cor da borda */
+            border-radius: 5px; /* Arredondando as bordas */
+            background-color: #f0f0f0; /* Cor de fundo */
+        }
+    
+        /* Media query para ajustar o layout em telas menores */
+        @media screen and (max-width: 768px) {
+            .quadro {
+                width: calc(100% - 20px); /* Definindo largura total com margem de 10px em telas menores */
+            }
+    
+            .opcao {
+                width: 100%; /* Definindo largura total para as opções em telas menores */
+            }
+    
+            .coluna {
+                margin-right: 0; /* Removendo margem direita das colunas em telas menores */
+            }
+    
+            .opcao input[type="checkbox"] {
+                transform: scale(1.4); /* Reduzindo o tamanho do checkbox em telas menores */
+            }
+        }
+    </style>
+    
+    
+</head>
+
+<body>
+    <main id='tela-principal'>
+        <div id="nome-usuario"></div> <!-- Div para exibir o nome do usuário -->
+        <p class="data"></p> <!-- Alterado para classe -->
+        <button onclick="terminar()">Terminar</button>
+        
+    </main>
+
+    <div class="quadros-container">
+       
+        <div class="quadro">
+            <div class="tituloquadro">EAP</div>
+            <div class="opcoes-container">
+                <!-- Coluna 1 -->
+                <div class="coluna">
+                    <!-- Opção 1 -->
+                    <div class="opcao">
+                        <label for="opcao1">01)</label>
+                        <label for="opcao1-1">1</label>
+                        <input type="checkbox" id="opcao1-a" name="opcao1" value="a">
+                        <label for="opcao1-2">2</label>
+                        <input type="checkbox" id="opcao1-b" name="opcao1" value="b">
+                        <label for="opcao1-3">3</label>
+                        <input type="checkbox" id="opcao1-c" name="opcao1" value="c">
+                        <label for="opcao1-4">4</label>
+                        <input type="checkbox" id="opcao1-d" name="opcao1" value="d">
+                        <label for="opcao1-5">5</label>
+                        <input type="checkbox" id="opcao1-e" name="opcao1" value="e">
+                    </div>
+    
+                    <!-- Opção 2 -->
+                    <div class="opcao">
+                        <label for="opcao2">02)</label>
+                        <label for="opcao2-1">1</label>
+                        <input type="checkbox" id="opcao2-a" name="opcao2" value="a">
+                        <label for="opcao2-2">2</label>
+                        <input type="checkbox" id="opcao2-b" name="opcao2" value="b">
+                        <label for="opcao2-3">3</label>
+                        <input type="checkbox" id="opcao2-c" name="opcao2" value="c">
+                        <label for="opcao2-4">4</label>
+                        <input type="checkbox" id="opcao2-d" name="opcao2" value="d">
+                        <label for="opcao2-5">5</label>
+                        <input type="checkbox" id="opcao2-e" name="opcao2" value="e">
+                    </div>
+
+                    <!-- Opção 3 -->
+                    <div class="opcao">
+                        <label for="opcao3">03)</label>
+                        <label for="opcao3-1">1</label>
+                        <input type="checkbox" id="opcao3-a" name="opcao3" value="a">
+                        <label for="opcao3-2">2</label>
+                        <input type="checkbox" id="opcao3-b" name="opcao3" value="b">
+                        <label for="opcao3-3">3</label>
+                        <input type="checkbox" id="opcao3-c" name="opcao3" value="c">
+                        <label for="opcao3-4">4</label>
+                        <input type="checkbox" id="opcao3-d" name="opcao3" value="d">
+                        <label for="opcao3-5">5</label>
+                        <input type="checkbox" id="opcao3-e" name="opcao3" value="e">
+                    </div>
+
+                    <!-- Opção 4 -->
+                    <div class="opcao">
+                        <label for="opcao4">04)</label>
+                        <label for="opcao4-1">1</label>
+                        <input type="checkbox" id="opcao4-a" name="opcao4" value="a">
+                        <label for="opcao4-2">2</label>
+                        <input type="checkbox" id="opcao4-b" name="opcao4" value="b">
+                        <label for="opcao4-3">3</label>
+                        <input type="checkbox" id="opcao4-c" name="opcao4" value="c">
+                        <label for="opcao4-4">4</label>
+                        <input type="checkbox" id="opcao4-d" name="opcao4" value="d">
+                        <label for="opcao4-5">5</label>
+                        <input type="checkbox" id="opcao4-e" name="opcao4" value="e">
+                    </div>
+
+                    <!-- Opção 5 -->
+                    <div class="opcao">
+                        <label for="opcao5">05)</label>
+                        <label for="opcao5-1">1</label>
+                        <input type="checkbox" id="opcao5-a" name="opcao5" value="a">
+                        <label for="opcao5-2">2</label>
+                        <input type="checkbox" id="opcao5-b" name="opcao5" value="b">
+                        <label for="opcao5-3">3</label>
+                        <input type="checkbox" id="opcao5-c" name="opcao5" value="c">
+                        <label for="opcao5-4">4</label>
+                        <input type="checkbox" id="opcao5-d" name="opcao5" value="d">
+                        <label for="opcao5-5">5</label>
+                        <input type="checkbox" id="opcao5-e" name="opcao5" value="e">
+                    </div>
+
+                    <!-- Opção 6 -->
+                    <div class="opcao">
+                        <label for="opcao6">06)</label>
+                        <label for="opcao6-1">1</label>
+                        <input type="checkbox" id="opcao6-a" name="opcao6" value="a">
+                        <label for="opcao6-2">2</label>
+                        <input type="checkbox" id="opcao6-b" name="opcao6" value="b">
+                        <label for="opcao6-3">3</label>
+                        <input type="checkbox" id="opcao6-c" name="opcao6" value="c">
+                        <label for="opcao6-4">4</label>
+                        <input type="checkbox" id="opcao6-d" name="opcao6" value="d">
+                        <label for="opcao6-5">5</label>
+                        <input type="checkbox" id="opcao6-e" name="opcao6" value="e">
+                    </div>
+
+                    <!-- Opção 7 -->
+                    <div class="opcao">
+                        <label for="opcao7">07)</label>
+                        <label for="opcao7-1">1</label>
+                        <input type="checkbox" id="opcao7-a" name="opcao7" value="a">
+                        <label for="opcao7-2">2</label>
+                        <input type="checkbox" id="opcao7-b" name="opcao7" value="b">
+                        <label for="opcao7-3">3</label>
+                        <input type="checkbox" id="opcao7-c" name="opcao7" value="c">
+                        <label for="opcao7-4">4</label>
+                        <input type="checkbox" id="opcao7-d" name="opcao7" value="d">
+                        <label for="opcao7-5">5</label>
+                        <input type="checkbox" id="opcao7-e" name="opcao7" value="e">
+                    </div>
+
+                    <!-- Opção 8 -->
+                    <div class="opcao">
+                        <label for="opcao8">08)</label>
+                        <label for="opcao8-1">1</label>
+                        <input type="checkbox" id="opcao8-a" name="opcao8" value="a">
+                        <label for="opcao8-2">2</label>
+                        <input type="checkbox" id="opcao8-b" name="opcao8" value="b">
+                        <label for="opcao8-3">3</label>
+                        <input type="checkbox" id="opcao8-c" name="opcao8" value="c">
+                        <label for="opcao8-4">4</label>
+                        <input type="checkbox" id="opcao8-d" name="opcao8" value="d">
+                        <label for="opcao8-5">5</label>
+                        <input type="checkbox" id="opcao8-e" name="opcao8" value="e">
+                    </div>
+
+                    <!-- Opção 9 -->
+                    <div class="opcao">
+                        <label for="opcao9">09)</label>
+                        <label for="opcao9-1">1</label>
+                        <input type="checkbox" id="opcao9-a" name="opcao9" value="a">
+                        <label for="opcao9-2">2</label>
+                        <input type="checkbox" id="opcao9-b" name="opcao9" value="b">
+                        <label for="opcao9-3">3</label>
+                        <input type="checkbox" id="opcao9-c" name="opcao9" value="c">
+                        <label for="opcao9-4">4</label>
+                        <input type="checkbox" id="opcao9-d" name="opcao9" value="d">
+                        <label for="opcao9-5">5</label>
+                        <input type="checkbox" id="opcao9-e" name="opcao9" value="e">
+                    </div>
+
+                    <!-- Opção 10 -->
+                    <div class="opcao">
+                        <label for="opcao10">10)</label>
+                        <label for="opcao10-1">1</label>
+                        <input type="checkbox" id="opcao10-a" name="opcao10" value="a">
+                        <label for="opcao10-2">2</label>
+                        <input type="checkbox" id="opcao10-b" name="opcao10" value="b">
+                        <label for="opcao10-3">3</label>
+                        <input type="checkbox" id="opcao10-c" name="opcao10" value="c">
+                        <label for="opcao10-4">4</label>
+                        <input type="checkbox" id="opcao10-d" name="opcao10" value="d">
+                        <label for="opcao10-5">5</label>
+                        <input type="checkbox" id="opcao10-e" name="opcao10" value="e">
+                    </div>
+
+                    <!-- Opção 11 -->
+                    <div class="opcao">
+                        <label for="opcao11">11)</label>
+                        <label for="opcao11-1">1</label>
+                        <input type="checkbox" id="opcao11-a" name="opcao11" value="a">
+                        <label for="opcao11-2">2</label>
+                        <input type="checkbox" id="opcao11-b" name="opcao11" value="b">
+                        <label for="opcao11-3">3</label>
+                        <input type="checkbox" id="opcao11-c" name="opcao11" value="c">
+                        <label for="opcao11-4">4</label>
+                        <input type="checkbox" id="opcao11-d" name="opcao11" value="d">
+                        <label for="opcao11-5">5</label>
+                        <input type="checkbox" id="opcao11-e" name="opcao11" value="e">
+                    </div>
+
+                    <!-- Opção 12 -->
+                    <div class="opcao">
+                        <label for="opcao12">12)</label>
+                        <label for="opcao12-1">1</label>
+                        <input type="checkbox" id="opcao12-a" name="opcao12" value="a">
+                        <label for="opcao12-2">2</label>
+                        <input type="checkbox" id="opcao12-b" name="opcao12" value="b">
+                        <label for="opcao12-3">3</label>
+                        <input type="checkbox" id="opcao12-c" name="opcao12" value="c">
+                        <label for="opcao12-4">4</label>
+                        <input type="checkbox" id="opcao12-d" name="opcao12" value="d">
+                        <label for="opcao12-5">5</label>
+                        <input type="checkbox" id="opcao12-e" name="opcao12" value="e">
+                    </div>
+
+                    <!-- Opção 13 -->
+                    <div class="opcao">
+                        <label for="opcao13">13)</label>
+                        <label for="opcao13-1">1</label>
+                        <input type="checkbox" id="opcao13-a" name="opcao13" value="a">
+                        <label for="opcao13-2">2</label>
+                        <input type="checkbox" id="opcao13-b" name="opcao13" value="b">
+                        <label for="opcao13-3">3</label>
+                        <input type="checkbox" id="opcao13-c" name="opcao13" value="c">
+                        <label for="opcao13-4">4</label>
+                        <input type="checkbox" id="opcao13-d" name="opcao13" value="d">
+                        <label for="opcao13-5">5</label>
+                        <input type="checkbox" id="opcao13-e" name="opcao13" value="e">
+                    </div>
+
+                    <!-- Opção 14 -->
+                    <div class="opcao">
+                        <label for="opcao14">14)</label>
+                        <label for="opcao14-1">1</label>
+                        <input type="checkbox" id="opcao14-a" name="opcao14" value="a">
+                        <label for="opcao14-2">2</label>
+                        <input type="checkbox" id="opcao14-b" name="opcao14" value="b">
+                        <label for="opcao14-3">3</label>
+                        <input type="checkbox" id="opcao14-c" name="opcao14" value="c">
+                        <label for="opcao14-4">4</label>
+                        <input type="checkbox" id="opcao14-d" name="opcao14" value="d">
+                        <label for="opcao14-5">5</label>
+                        <input type="checkbox" id="opcao14-e" name="opcao14" value="e">
+                    </div>
+
+                    <!-- Opção 15 -->
+                    <div class="opcao">
+                        <label for="opcao15">15)</label>
+                        <label for="opcao15-1">1</label>
+                        <input type="checkbox" id="opcao15-a" name="opcao15" value="a">
+                        <label for="opcao15-2">2</label>
+                        <input type="checkbox" id="opcao15-b" name="opcao15" value="b">
+                        <label for="opcao15-3">3</label>
+                        <input type="checkbox" id="opcao15-c" name="opcao15" value="c">
+                        <label for="opcao15-4">4</label>
+                        <input type="checkbox" id="opcao15-d" name="opcao15" value="d">
+                        <label for="opcao15-5">5</label>
+                        <input type="checkbox" id="opcao15-e" name="opcao15" value="e">
+                    </div>
+
+                    <!-- Opção 16 -->
+                    <div class="opcao">
+                        <label for="opcao16">16)</label>
+                        <label for="opcao16-1">1</label>
+                        <input type="checkbox" id="opcao16-a" name="opcao16" value="a">
+                        <label for="opcao16-2">2</label>
+                        <input type="checkbox" id="opcao16-b" name="opcao16" value="b">
+                        <label for="opcao16-3">3</label>
+                        <input type="checkbox" id="opcao16-c" name="opcao16" value="c">
+                        <label for="opcao16-4">4</label>
+                        <input type="checkbox" id="opcao16-d" name="opcao16" value="d">
+                        <label for="opcao16-5">5</label>
+                        <input type="checkbox" id="opcao16-e" name="opcao16" value="e">
+                    </div>
+
+                    <!-- Opção 17 -->
+                    <div class="opcao">
+                        <label for="opcao17">17)</label>
+                        <label for="opcao17-1">1</label>
+                        <input type="checkbox" id="opcao17-a" name="opcao17" value="a">
+                        <label for="opcao17-2">2</label>
+                        <input type="checkbox" id="opcao17-b" name="opcao17" value="b">
+                        <label for="opcao17-3">3</label>
+                        <input type="checkbox" id="opcao17-c" name="opcao17" value="c">
+                        <label for="opcao17-4">4</label>
+                        <input type="checkbox" id="opcao17-d" name="opcao17" value="d">
+                        <label for="opcao17-5">5</label>
+                        <input type="checkbox" id="opcao17-e" name="opcao17" value="e">
+                    </div>
+
+                    <!-- Opção 18 -->
+                    <div class="opcao">
+                        <label for="opcao18">18)</label>
+                        <label for="opcao18-1">1</label>
+                        <input type="checkbox" id="opcao18-a" name="opcao18" value="a">
+                        <label for="opcao18-2">2</label>
+                        <input type="checkbox" id="opcao18-b" name="opcao18" value="b">
+                        <label for="opcao18-3">3</label>
+                        <input type="checkbox" id="opcao18-c" name="opcao18" value="c">
+                        <label for="opcao18-4">4</label>
+                        <input type="checkbox" id="opcao18-d" name="opcao18" value="d">
+                        <label for="opcao18-5">5</label>
+                        <input type="checkbox" id="opcao18-e" name="opcao18" value="e">
+                    </div>
+
+                    <!-- Opção 19 -->
+                    <div class="opcao">
+                        <label for="opcao19">19)</label>
+                        <label for="opcao19-1">1</label>
+                        <input type="checkbox" id="opcao19-a" name="opcao19" value="a">
+                        <label for="opcao19-2">2</label>
+                        <input type="checkbox" id="opcao19-b" name="opcao19" value="b">
+                        <label for="opcao19-3">3</label>
+                        <input type="checkbox" id="opcao19-c" name="opcao19" value="c">
+                        <label for="opcao19-4">4</label>
+                        <input type="checkbox" id="opcao19-d" name="opcao19" value="d">
+                        <label for="opcao19-5">5</label>
+                        <input type="checkbox" id="opcao19-e" name="opcao19" value="e">
+                    </div>
+
+                    <!-- Opção 20 -->
+                    <div class="opcao">
+                        <label for="opcao20">20)</label>
+                        <label for="opcao20-1">1</label>
+                        <input type="checkbox" id="opcao20-a" name="opcao20" value="a">
+                        <label for="opcao20-2">2</label>
+                        <input type="checkbox" id="opcao20-b" name="opcao20" value="b">
+                        <label for="opcao20-3">3</label>
+                        <input type="checkbox" id="opcao20-c" name="opcao20" value="c">
+                        <label for="opcao20-4">4</label>
+                        <input type="checkbox" id="opcao20-d" name="opcao20" value="d">
+                        <label for="opcao20-5">5</label>
+                        <input type="checkbox" id="opcao20-e" name="opcao20" value="e">
+                    </div>
+
+                    <!-- Opção 21 -->
+                    <div class="opcao">
+                        <label for="opcao21">21)</label>
+                        <label for="opcao21-1">1</label>
+                        <input type="checkbox" id="opcao21-a" name="opcao21" value="a">
+                        <label for="opcao21-2">2</label>
+                        <input type="checkbox" id="opcao21-b" name="opcao21" value="b">
+                        <label for="opcao21-3">3</label>
+                        <input type="checkbox" id="opcao21-c" name="opcao21" value="c">
+                        <label for="opcao21-4">4</label>
+                        <input type="checkbox" id="opcao21-d" name="opcao21" value="d">
+                        <label for="opcao21-5">5</label>
+                        <input type="checkbox" id="opcao21-e" name="opcao21" value="e">
+                    </div>
+
+                    <!-- Opção 22 -->
+                    <div class="opcao">
+                        <label for="opcao22">22)</label>
+                        <label for="opcao22-1">1</label>
+                        <input type="checkbox" id="opcao22-a" name="opcao22" value="a">
+                        <label for="opcao22-2">2</label>
+                        <input type="checkbox" id="opcao22-b" name="opcao22" value="b">
+                        <label for="opcao22-3">3</label>
+                        <input type="checkbox" id="opcao22-c" name="opcao22" value="c">
+                        <label for="opcao22-4">4</label>
+                        <input type="checkbox" id="opcao22-d" name="opcao22" value="d">
+                        <label for="opcao22-5">5</label>
+                        <input type="checkbox" id="opcao22-e" name="opcao22" value="e">
+                    </div>
+
+                    <!-- Opção 23 -->
+                    <div class="opcao">
+                        <label for="opcao23">23)</label>
+                        <label for="opcao23-1">1</label>
+                        <input type="checkbox" id="opcao23-a" name="opcao23" value="a">
+                        <label for="opcao23-2">2</label>
+                        <input type="checkbox" id="opcao23-b" name="opcao23" value="b">
+                        <label for="opcao23-3">3</label>
+                        <input type="checkbox" id="opcao23-c" name="opcao23" value="c">
+                        <label for="opcao23-4">4</label>
+                        <input type="checkbox" id="opcao23-d" name="opcao23" value="d">
+                        <label for="opcao23-5">5</label>
+                        <input type="checkbox" id="opcao23-e" name="opcao23" value="e">
+                    </div>
+
+                    <!-- Opção 24 -->
+                    <div class="opcao">
+                        <label for="opcao24">24)</label>
+                        <label for="opcao24-1">1</label>
+                        <input type="checkbox" id="opcao24-a" name="opcao24" value="a">
+                        <label for="opcao24-2">2</label>
+                        <input type="checkbox" id="opcao24-b" name="opcao24" value="b">
+                        <label for="opcao24-3">3</label>
+                        <input type="checkbox" id="opcao24-c" name="opcao24" value="c">
+                        <label for="opcao24-4">4</label>
+                        <input type="checkbox" id="opcao24-d" name="opcao24" value="d">
+                        <label for="opcao24-5">5</label>
+                        <input type="checkbox" id="opcao24-e" name="opcao24" value="e">
+                    </div>
+
+                    <!-- Opção 25 -->
+                    <div class="opcao">
+                        <label for="opcao25">25)</label>
+                        <label for="opcao25-1">1</label>
+                        <input type="checkbox" id="opcao25-a" name="opcao25" value="a">
+                        <label for="opcao25-2">2</label>
+                        <input type="checkbox" id="opcao25-b" name="opcao25" value="b">
+                        <label for="opcao25-3">3</label>
+                        <input type="checkbox" id="opcao25-c" name="opcao25" value="c">
+                        <label for="opcao25-4">4</label>
+                        <input type="checkbox" id="opcao25-d" name="opcao25" value="d">
+                        <label for="opcao25-5">5</label>
+                        <input type="checkbox" id="opcao25-e" name="opcao25" value="e">
+                    </div>
+
+                    <!-- Opção 26 -->
+                    <div class="opcao">
+                        <label for="opcao26">26)</label>
+                        <label for="opcao26-1">1</label>
+                        <input type="checkbox" id="opcao26-a" name="opcao26" value="a">
+                        <label for="opcao26-2">2</label>
+                        <input type="checkbox" id="opcao26-b" name="opcao26" value="b">
+                        <label for="opcao26-3">3</label>
+                        <input type="checkbox" id="opcao26-c" name="opcao26" value="c">
+                        <label for="opcao26-4">4</label>
+                        <input type="checkbox" id="opcao26-d" name="opcao26" value="d">
+                        <label for="opcao26-5">5</label>
+                        <input type="checkbox" id="opcao26-e" name="opcao26" value="e">
+                    </div>
+
+                    <!-- Opção 27 -->
+                    <div class="opcao">
+                        <label for="opcao27">27)</label>
+                        <label for="opcao27-1">1</label>
+                        <input type="checkbox" id="opcao27-a" name="opcao27" value="a">
+                        <label for="opcao27-2">2</label>
+                        <input type="checkbox" id="opcao27-b" name="opcao27" value="b">
+                        <label for="opcao27-3">3</label>
+                        <input type="checkbox" id="opcao27-c" name="opcao27" value="c">
+                        <label for="opcao27-4">4</label>
+                        <input type="checkbox" id="opcao27-d" name="opcao27" value="d">
+                        <label for="opcao27-5">5</label>
+                        <input type="checkbox" id="opcao27-e" name="opcao27" value="e">
+                    </div>
+
+                    <!-- Opção 28 -->
+                    <div class="opcao">
+                        <label for="opcao28">28)</label>
+                        <label for="opcao28-1">1</label>
+                        <input type="checkbox" id="opcao28-a" name="opcao28" value="a">
+                        <label for="opcao28-2">2</label>
+                        <input type="checkbox" id="opcao28-b" name="opcao28" value="b">
+                        <label for="opcao28-3">3</label>
+                        <input type="checkbox" id="opcao28-c" name="opcao28" value="c">
+                        <label for="opcao28-4">4</label>
+                        <input type="checkbox" id="opcao28-d" name="opcao28" value="d">
+                        <label for="opcao28-5">5</label>
+                        <input type="checkbox" id="opcao28-e" name="opcao28" value="e">
+                    </div>
+
+                    <!-- Opção 29 -->
+                    <div class="opcao">
+                        <label for="opcao29">29)</label>
+                        <label for="opcao29-1">1</label>
+                        <input type="checkbox" id="opcao29-a" name="opcao29" value="a">
+                        <label for="opcao29-2">2</label>
+                        <input type="checkbox" id="opcao29-b" name="opcao29" value="b">
+                        <label for="opcao29-3">3</label>
+                        <input type="checkbox" id="opcao29-c" name="opcao29" value="c">
+                        <label for="opcao29-4">4</label>
+                        <input type="checkbox" id="opcao29-d" name="opcao29" value="d">
+                        <label for="opcao29-5">5</label>
+                        <input type="checkbox" id="opcao29-e" name="opcao29" value="e">
+                    </div>
+
+                    <!-- Opção 30 -->
+                    <div class="opcao">
+                        <label for="opcao30">30)</label>
+                        <label for="opcao30-1">1</label>
+                        <input type="checkbox" id="opcao30-a" name="opcao30" value="a">
+                        <label for="opcao30-2">2</label>
+                        <input type="checkbox" id="opcao30-b" name="opcao30" value="b">
+                        <label for="opcao30-3">3</label>
+                        <input type="checkbox" id="opcao30-c" name="opcao30" value="c">
+                        <label for="opcao30-4">4</label>
+                        <input type="checkbox" id="opcao30-d" name="opcao30" value="d">
+                        <label for="opcao30-5">5</label>
+                        <input type="checkbox" id="opcao30-e" name="opcao30" value="e">
+                    </div>
+
+                    <!-- Opção 31 -->
+                    <div class="opcao">
+                        <label for="opcao31">31)</label>
+                        <label for="opcao31-1">1</label>
+                        <input type="checkbox" id="opcao31-a" name="opcao31" value="a">
+                        <label for="opcao31-2">2</label>
+                        <input type="checkbox" id="opcao31-b" name="opcao31" value="b">
+                        <label for="opcao31-3">3</label>
+                        <input type="checkbox" id="opcao31-c" name="opcao31" value="c">
+                        <label for="opcao31-4">4</label>
+                        <input type="checkbox" id="opcao31-d" name="opcao31" value="d">
+                        <label for="opcao31-5">5</label>
+                        <input type="checkbox" id="opcao31-e" name="opcao31" value="e">
+                    </div>
+
+                    <!-- Opção 32 -->
+                    <div class="opcao">
+                        <label for="opcao32">32)</label>
+                        <label for="opcao32-1">1</label>
+                        <input type="checkbox" id="opcao32-a" name="opcao32" value="a">
+                        <label for="opcao32-2">2</label>
+                        <input type="checkbox" id="opcao32-b" name="opcao32" value="b">
+                        <label for="opcao32-3">3</label>
+                        <input type="checkbox" id="opcao32-c" name="opcao32" value="c">
+                        <label for="opcao32-4">4</label>
+                        <input type="checkbox" id="opcao32-d" name="opcao32" value="d">
+                        <label for="opcao32-5">5</label>
+                        <input type="checkbox" id="opcao32-e" name="opcao32" value="e">
+                    </div>
+
+                    <!-- Opção 33 -->
+                    <div class="opcao">
+                        <label for="opcao33">33)</label>
+                        <label for="opcao33-1">1</label>
+                        <input type="checkbox" id="opcao33-a" name="opcao33" value="a">
+                        <label for="opcao33-2">2</label>
+                        <input type="checkbox" id="opcao33-b" name="opcao33" value="b">
+                        <label for="opcao33-3">3</label>
+                        <input type="checkbox" id="opcao33-c" name="opcao33" value="c">
+                        <label for="opcao33-4">4</label>
+                        <input type="checkbox" id="opcao33-d" name="opcao33" value="d">
+                        <label for="opcao33-5">5</label>
+                        <input type="checkbox" id="opcao33-e" name="opcao33" value="e">
+                    </div>
+
+                    <!-- Opção 34 -->
+                    <div class="opcao">
+                        <label for="opcao34">34)</label>
+                        <label for="opcao34-1">1</label>
+                        <input type="checkbox" id="opcao34-a" name="opcao34" value="a">
+                        <label for="opcao34-2">2</label>
+                        <input type="checkbox" id="opcao34-b" name="opcao34" value="b">
+                        <label for="opcao34-3">3</label>
+                        <input type="checkbox" id="opcao34-c" name="opcao34" value="c">
+                        <label for="opcao34-4">4</label>
+                        <input type="checkbox" id="opcao34-d" name="opcao34" value="d">
+                        <label for="opcao34-5">5</label>
+                        <input type="checkbox" id="opcao34-e" name="opcao34" value="e">
+                    </div>
+
+                    <!-- Opção 35 -->
+                    <div class="opcao">
+                        <label for="opcao35">35)</label>
+                        <label for="opcao35-1">1</label>
+                        <input type="checkbox" id="opcao35-a" name="opcao35" value="a">
+                        <label for="opcao35-2">2</label>
+                        <input type="checkbox" id="opcao35-b" name="opcao35" value="b">
+                        <label for="opcao35-3">3</label>
+                        <input type="checkbox" id="opcao35-c" name="opcao35" value="c">
+                        <label for="opcao35-4">4</label>
+                        <input type="checkbox" id="opcao35-d" name="opcao35" value="d">
+                        <label for="opcao35-5">5</label>
+                        <input type="checkbox" id="opcao35-e" name="opcao35" value="e">
+                    </div>
+
+                    <!-- Opção 36 -->
+                    <div class="opcao">
+                        <label for="opcao36">36)</label>
+                        <label for="opcao36-1">1</label>
+                        <input type="checkbox" id="opcao36-a" name="opcao36" value="a">
+                        <label for="opcao36-2">2</label>
+                        <input type="checkbox" id="opcao36-b" name="opcao36" value="b">
+                        <label for="opcao36-3">3</label>
+                        <input type="checkbox" id="opcao36-c" name="opcao36" value="c">
+                        <label for="opcao36-4">4</label>
+                        <input type="checkbox" id="opcao36-d" name="opcao36" value="d">
+                        <label for="opcao36-5">5</label>
+                        <input type="checkbox" id="opcao36-e" name="opcao36" value="e">
+                    </div>
+
+                    <!-- Opção 37 -->
+                    <div class="opcao">
+                        <label for="opcao37">37)</label>
+                        <label for="opcao37-1">1</label>
+                        <input type="checkbox" id="opcao37-a" name="opcao37" value="a">
+                        <label for="opcao37-2">2</label>
+                        <input type="checkbox" id="opcao37-b" name="opcao37" value="b">
+                        <label for="opcao37-3">3</label>
+                        <input type="checkbox" id="opcao37-c" name="opcao37" value="c">
+                        <label for="opcao37-4">4</label>
+                        <input type="checkbox" id="opcao37-d" name="opcao37" value="d">
+                        <label for="opcao37-5">5</label>
+                        <input type="checkbox" id="opcao37-e" name="opcao37" value="e">
+                    </div>
+
+                    <!-- Opção 38 -->
+                    <div class="opcao">
+                        <label for="opcao38">38)</label>
+                        <label for="opcao38-1">1</label>
+                        <input type="checkbox" id="opcao38-a" name="opcao38" value="a">
+                        <label for="opcao38-2">2</label>
+                        <input type="checkbox" id="opcao38-b" name="opcao38" value="b">
+                        <label for="opcao38-3">3</label>
+                        <input type="checkbox" id="opcao38-c" name="opcao38" value="c">
+                        <label for="opcao38-4">4</label>
+                        <input type="checkbox" id="opcao38-d" name="opcao38" value="d">
+                        <label for="opcao38-5">5</label>
+                        <input type="checkbox" id="opcao38-e" name="opcao38" value="e">
+                    </div>
+
+                    <!-- Opção 39 -->
+                    <div class="opcao">
+                        <label for="opcao39">39)</label>
+                        <label for="opcao39-1">1</label>
+                        <input type="checkbox" id="opcao39-a" name="opcao39" value="a">
+                        <label for="opcao39-2">2</label>
+                        <input type="checkbox" id="opcao39-b" name="opcao39" value="b">
+                        <label for="opcao39-3">3</label>
+                        <input type="checkbox" id="opcao39-c" name="opcao39" value="c">
+                        <label for="opcao39-4">4</label>
+                        <input type="checkbox" id="opcao39-d" name="opcao39" value="d">
+                        <label for="opcao39-5">5</label>
+                        <input type="checkbox" id="opcao39-e" name="opcao39" value="e">
+                    </div>
+
+                    <!-- Opção 40 -->
+                    <div class="opcao">
+                        <label for="opcao40">40)</label>
+                        <label for="opcao40-1">1</label>
+                        <input type="checkbox" id="opcao40-a" name="opcao40" value="a">
+                        <label for="opcao40-2">2</label>
+                        <input type="checkbox" id="opcao40-b" name="opcao40" value="b">
+                        <label for="opcao40-3">3</label>
+                        <input type="checkbox" id="opcao40-c" name="opcao40" value="c">
+                        <label for="opcao40-4">4</label>
+                        <input type="checkbox" id="opcao40-d" name="opcao40" value="d">
+                        <label for="opcao40-5">5</label>
+                        <input type="checkbox" id="opcao40-e" name="opcao40" value="e">
+                    </div>
+
+                    <!-- Opção 41 -->
+                    <div class="opcao">
+                        <label for="opcao41">41)</label>
+                        <label for="opcao41-1">1</label>
+                        <input type="checkbox" id="opcao41-a" name="opcao41" value="a">
+                        <label for="opcao41-2">2</label>
+                        <input type="checkbox" id="opcao41-b" name="opcao41" value="b">
+                        <label for="opcao41-3">3</label>
+                        <input type="checkbox" id="opcao41-c" name="opcao41" value="c">
+                        <label for="opcao41-4">4</label>
+                        <input type="checkbox" id="opcao41-d" name="opcao41" value="d">
+                        <label for="opcao41-5">5</label>
+                        <input type="checkbox" id="opcao41-e" name="opcao41" value="e">
+                    </div>
+
+                    <!-- Opção 42 -->
+                    <div class="opcao">
+                        <label for="opcao42">42)</label>
+                        <label for="opcao42-1">1</label>
+                        <input type="checkbox" id="opcao42-a" name="opcao42" value="a">
+                        <label for="opcao42-2">2</label>
+                        <input type="checkbox" id="opcao42-b" name="opcao42" value="b">
+                        <label for="opcao42-3">3</label>
+                        <input type="checkbox" id="opcao42-c" name="opcao42" value="c">
+                        <label for="opcao42-4">4</label>
+                        <input type="checkbox" id="opcao42-d" name="opcao42" value="d">
+                        <label for="opcao42-5">5</label>
+                        <input type="checkbox" id="opcao42-e" name="opcao42" value="e">
+                    </div>
+
+                    <!-- Opção 43 -->
+                    <div class="opcao">
+                        <label for="opcao43">43)</label>
+                        <label for="opcao43-1">1</label>
+                        <input type="checkbox" id="opcao43-a" name="opcao43" value="a">
+                        <label for="opcao43-2">2</label>
+                        <input type="checkbox" id="opcao43-b" name="opcao43" value="b">
+                        <label for="opcao43-3">3</label>
+                        <input type="checkbox" id="opcao43-c" name="opcao43" value="c">
+                        <label for="opcao43-4">4</label>
+                        <input type="checkbox" id="opcao43-d" name="opcao43" value="d">
+                        <label for="opcao43-5">5</label>
+                        <input type="checkbox" id="opcao43-e" name="opcao43" value="e">
+                    </div>
+
+                    <!-- Opção 44 -->
+                    <div class="opcao">
+                        <label for="opcao44">44)</label>
+                        <label for="opcao44-1">1</label>
+                        <input type="checkbox" id="opcao44-a" name="opcao44" value="a">
+                        <label for="opcao44-2">2</label>
+                        <input type="checkbox" id="opcao44-b" name="opcao44" value="b">
+                        <label for="opcao44-3">3</label>
+                        <input type="checkbox" id="opcao44-c" name="opcao44" value="c">
+                        <label for="opcao44-4">4</label>
+                        <input type="checkbox" id="opcao44-d" name="opcao44" value="d">
+                        <label for="opcao44-5">5</label>
+                        <input type="checkbox" id="opcao44-e" name="opcao44" value="e">
+                    </div>
+
+                    <!-- Opção 45 -->
+                    <div class="opcao">
+                        <label for="opcao45">45)</label>
+                        <label for="opcao45-1">1</label>
+                        <input type="checkbox" id="opcao45-a" name="opcao45" value="a">
+                        <label for="opcao45-2">2</label>
+                        <input type="checkbox" id="opcao45-b" name="opcao45" value="b">
+                        <label for="opcao45-3">3</label>
+                        <input type="checkbox" id="opcao45-c" name="opcao45" value="c">
+                        <label for="opcao45-4">4</label>
+                        <input type="checkbox" id="opcao45-d" name="opcao45" value="d">
+                        <label for="opcao45-5">5</label>
+                        <input type="checkbox" id="opcao45-e" name="opcao45" value="e">
+                    </div>
+
+                    <!-- Opção 46 -->
+                    <div class="opcao">
+                        <label for="opcao46">46)</label>
+                        <label for="opcao46-1">1</label>
+                        <input type="checkbox" id="opcao46-a" name="opcao46" value="a">
+                        <label for="opcao46-2">2</label>
+                        <input type="checkbox" id="opcao46-b" name="opcao46" value="b">
+                        <label for="opcao46-3">3</label>
+                        <input type="checkbox" id="opcao46-c" name="opcao46" value="c">
+                        <label for="opcao46-4">4</label>
+                        <input type="checkbox" id="opcao46-d" name="opcao46" value="d">
+                        <label for="opcao46-5">5</label>
+                        <input type="checkbox" id="opcao46-e" name="opcao46" value="e">
+                    </div>
+
+                    <!-- Opção 47 -->
+                    <div class="opcao">
+                        <label for="opcao47">47)</label>
+                        <label for="opcao47-1">1</label>
+                        <input type="checkbox" id="opcao47-a" name="opcao47" value="a">
+                        <label for="opcao47-2">2</label>
+                        <input type="checkbox" id="opcao47-b" name="opcao47" value="b">
+                        <label for="opcao47-3">3</label>
+                        <input type="checkbox" id="opcao47-c" name="opcao47" value="c">
+                        <label for="opcao47-4">4</label>
+                        <input type="checkbox" id="opcao47-d" name="opcao47" value="d">
+                        <label for="opcao47-5">5</label>
+                        <input type="checkbox" id="opcao47-e" name="opcao47" value="e">
+                    </div>
+
+                    <!-- Opção 48 -->
+                    <div class="opcao">
+                        <label for="opcao48">48)</label>
+                        <label for="opcao48-1">1</label>
+                        <input type="checkbox" id="opcao48-a" name="opcao48" value="a">
+                        <label for="opcao48-2">2</label>
+                        <input type="checkbox" id="opcao48-b" name="opcao48" value="b">
+                        <label for="opcao48-3">3</label>
+                        <input type="checkbox" id="opcao48-c" name="opcao48" value="c">
+                        <label for="opcao48-4">4</label>
+                        <input type="checkbox" id="opcao48-d" name="opcao48" value="d">
+                        <label for="opcao48-5">5</label>
+                        <input type="checkbox" id="opcao48-e" name="opcao48" value="e">
+                    </div>
+
+                    <!-- Opção 49 -->
+                    <div class="opcao">
+                        <label for="opcao49">49)</label>
+                        <label for="opcao49-1">1</label>
+                        <input type="checkbox" id="opcao49-a" name="opcao49" value="a">
+                        <label for="opcao49-2">2</label>
+                        <input type="checkbox" id="opcao49-b" name="opcao49" value="b">
+                        <label for="opcao49-3">3</label>
+                        <input type="checkbox" id="opcao49-c" name="opcao49" value="c">
+                        <label for="opcao49-4">4</label>
+                        <input type="checkbox" id="opcao49-d" name="opcao49" value="d">
+                        <label for="opcao49-5">5</label>
+                        <input type="checkbox" id="opcao49-e" name="opcao49" value="e">
+                    </div>
+
+                    <!-- Opção 50 -->
+                    <div class="opcao">
+                        <label for="opcao50">50)</label>
+                        <label for="opcao50-1">1</label>
+                        <input type="checkbox" id="opcao50-a" name="opcao50" value="a">
+                        <label for="opcao50-2">2</label>
+                        <input type="checkbox" id="opcao50-b" name="opcao50" value="b">
+                        <label for="opcao50-3">3</label>
+                        <input type="checkbox" id="opcao50-c" name="opcao50" value="c">
+                        <label for="opcao50-4">4</label>
+                        <input type="checkbox" id="opcao50-d" name="opcao50" value="d">
+                        <label for="opcao50-5">5</label>
+                        <input type="checkbox" id="opcao50-e" name="opcao50" value="e">
+                    </div>
+
+                    <!-- Opção 51 -->
+                    <div class="opcao">
+                        <label for="opcao51">51)</label>
+                        <label for="opcao51-1">1</label>
+                        <input type="checkbox" id="opcao51-a" name="opcao51" value="a">
+                        <label for="opcao51-2">2</label>
+                        <input type="checkbox" id="opcao51-b" name="opcao51" value="b">
+                        <label for="opcao51-3">3</label>
+                        <input type="checkbox" id="opcao51-c" name="opcao51" value="c">
+                        <label for="opcao51-4">4</label>
+                        <input type="checkbox" id="opcao51-d" name="opcao51" value="d">
+                        <label for="opcao51-5">5</label>
+                        <input type="checkbox" id="opcao51-e" name="opcao51" value="e">
+                    </div>
+
+                    <!-- Opção 52 -->
+                    <div class="opcao">
+                        <label for="opcao52">52)</label>
+                        <label for="opcao52-1">1</label>
+                        <input type="checkbox" id="opcao52-a" name="opcao52" value="a">
+                        <label for="opcao52-2">2</label>
+                        <input type="checkbox" id="opcao52-b" name="opcao52" value="b">
+                        <label for="opcao52-3">3</label>
+                        <input type="checkbox" id="opcao52-c" name="opcao52" value="c">
+                        <label for="opcao52-4">4</label>
+                        <input type="checkbox" id="opcao52-d" name="opcao52" value="d">
+                        <label for="opcao52-5">5</label>
+                        <input type="checkbox" id="opcao52-e" name="opcao52" value="e">
+                    </div>
+
+                    <!-- Opção 53 -->
+                    <div class="opcao">
+                        <label for="opcao53">53)</label>
+                        <label for="opcao53-1">1</label>
+                        <input type="checkbox" id="opcao53-a" name="opcao53" value="a">
+                        <label for="opcao53-2">2</label>
+                        <input type="checkbox" id="opcao53-b" name="opcao53" value="b">
+                        <label for="opcao53-3">3</label>
+                        <input type="checkbox" id="opcao53-c" name="opcao53" value="c">
+                        <label for="opcao53-4">4</label>
+                        <input type="checkbox" id="opcao53-d" name="opcao53" value="d">
+                        <label for="opcao53-5">5</label>
+                        <input type="checkbox" id="opcao53-e" name="opcao53" value="e">
+                    </div>
+
+                    <!-- Opção 54 -->
+                    <div class="opcao">
+                        <label for="opcao54">54)</label>
+                        <label for="opcao54-1">1</label>
+                        <input type="checkbox" id="opcao54-a" name="opcao54" value="a">
+                        <label for="opcao54-2">2</label>
+                        <input type="checkbox" id="opcao54-b" name="opcao54" value="b">
+                        <label for="opcao54-3">3</label>
+                        <input type="checkbox" id="opcao54-c" name="opcao54" value="c">
+                        <label for="opcao54-4">4</label>
+                        <input type="checkbox" id="opcao54-d" name="opcao54" value="d">
+                        <label for="opcao54-5">5</label>
+                        <input type="checkbox" id="opcao54-e" name="opcao54" value="e">
+                    </div>
+
+                    <!-- Opção 55 -->
+                    <div class="opcao">
+                        <label for="opcao55">55)</label>
+                        <label for="opcao55-1">1</label>
+                        <input type="checkbox" id="opcao55-a" name="opcao55" value="a">
+                        <label for="opcao55-2">2</label>
+                        <input type="checkbox" id="opcao55-b" name="opcao55" value="b">
+                        <label for="opcao55-3">3</label>
+                        <input type="checkbox" id="opcao55-c" name="opcao55" value="c">
+                        <label for="opcao55-4">4</label>
+                        <input type="checkbox" id="opcao55-d" name="opcao55" value="d">
+                        <label for="opcao55-5">5</label>
+                        <input type="checkbox" id="opcao55-e" name="opcao55" value="e">
+                    </div>
+
+                    <!-- Opção 56 -->
+                    <div class="opcao">
+                        <label for="opcao56">56)</label>
+                        <label for="opcao56-1">1</label>
+                        <input type="checkbox" id="opcao56-a" name="opcao56" value="a">
+                        <label for="opcao56-2">2</label>
+                        <input type="checkbox" id="opcao56-b" name="opcao56" value="b">
+                        <label for="opcao56-3">3</label>
+                        <input type="checkbox" id="opcao56-c" name="opcao56" value="c">
+                        <label for="opcao56-4">4</label>
+                        <input type="checkbox" id="opcao56-d" name="opcao56" value="d">
+                        <label for="opcao56-5">5</label>
+                        <input type="checkbox" id="opcao56-e" name="opcao56" value="e">
+                    </div>
+
+                    <!-- Opção 57 -->
+                    <div class="opcao">
+                        <label for="opcao57">57)</label>
+                        <label for="opcao57-1">1</label>
+                        <input type="checkbox" id="opcao57-a" name="opcao57" value="a">
+                        <label for="opcao57-2">2</label>
+                        <input type="checkbox" id="opcao57-b" name="opcao57" value="b">
+                        <label for="opcao57-3">3</label>
+                        <input type="checkbox" id="opcao57-c" name="opcao57" value="c">
+                        <label for="opcao57-4">4</label>
+                        <input type="checkbox" id="opcao57-d" name="opcao57" value="d">
+                        <label for="opcao57-5">5</label>
+                        <input type="checkbox" id="opcao57-e" name="opcao57" value="e">
+                    </div>
+
+                    <!-- Opção 58 -->
+                    <div class="opcao">
+                        <label for="opcao58">58)</label>
+                        <label for="opcao58-1">1</label>
+                        <input type="checkbox" id="opcao58-a" name="opcao58" value="a">
+                        <label for="opcao58-2">2</label>
+                        <input type="checkbox" id="opcao58-b" name="opcao58" value="b">
+                        <label for="opcao58-3">3</label>
+                        <input type="checkbox" id="opcao58-c" name="opcao58" value="c">
+                        <label for="opcao58-4">4</label>
+                        <input type="checkbox" id="opcao58-d" name="opcao58" value="d">
+                        <label for="opcao58-5">5</label>
+                        <input type="checkbox" id="opcao58-e" name="opcao58" value="e">
+                    </div>
+
+                    <!-- Opção 59 -->
+                    <div class="opcao">
+                        <label for="opcao59">59)</label>
+                        <label for="opcao59-1">1</label>
+                        <input type="checkbox" id="opcao59-a" name="opcao59" value="a">
+                        <label for="opcao59-2">2</label>
+                        <input type="checkbox" id="opcao59-b" name="opcao59" value="b">
+                        <label for="opcao59-3">3</label>
+                        <input type="checkbox" id="opcao59-c" name="opcao59" value="c">
+                        <label for="opcao59-4">4</label>
+                        <input type="checkbox" id="opcao59-d" name="opcao59" value="d">
+                        <label for="opcao59-5">5</label>
+                        <input type="checkbox" id="opcao59-e" name="opcao59" value="e">
+                    </div>
+
+                    <!-- Opção 60 -->
+                    <div class="opcao">
+                        <label for="opcao60">60)</label>
+                        <label for="opcao60-1">1</label>
+                        <input type="checkbox" id="opcao60-a" name="opcao60" value="a">
+                        <label for="opcao60-2">2</label>
+                        <input type="checkbox" id="opcao60-b" name="opcao60" value="b">
+                        <label for="opcao60-3">3</label>
+                        <input type="checkbox" id="opcao60-c" name="opcao60" value="c">
+                        <label for="opcao60-4">4</label>
+                        <input type="checkbox" id="opcao60-d" name="opcao60" value="d">
+                        <label for="opcao60-5">5</label>
+                        <input type="checkbox" id="opcao60-e" name="opcao60" value="e">
+                    </div>
+
+                    <!-- Opção 61 -->
+                    <div class="opcao">
+                        <label for="opcao61">61)</label>
+                        <label for="opcao61-1">1</label>
+                        <input type="checkbox" id="opcao61-a" name="opcao61" value="a">
+                        <label for="opcao61-2">2</label>
+                        <input type="checkbox" id="opcao61-b" name="opcao61" value="b">
+                        <label for="opcao61-3">3</label>
+                        <input type="checkbox" id="opcao61-c" name="opcao61" value="c">
+                        <label for="opcao61-4">4</label>
+                        <input type="checkbox" id="opcao61-d" name="opcao61" value="d">
+                        <label for="opcao61-5">5</label>
+                        <input type="checkbox" id="opcao61-e" name="opcao61" value="e">
+                    </div>
+
+                </div>
+            </div>
+
+            
+        </div>
+
+    </div>
+ 
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+     <!-- Firebase SDK -->
+     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script> <!-- Adicionando o script do Firestore -->
+ 
+     <script src="js/config.js"></script> <!-- Inclui o arquivo de configuração do Firebase -->
+     <script src="js/script_menu.js"></script>
+
+    <script>
+        var selectedSquares = {}; // Objeto para armazenar os quadrados selecionados e seus valores
+
+         // Verifica se o usuário está autenticado
+         firebase.auth().onAuthStateChanged(function(user) {
+            if (!user) {
+                // Se o usuário não estiver autenticado, redireciona para o index.html
+                window.location.href = "index2.html";
+            } else {
+                // Se o usuário estiver autenticado, recupera seu nome e exibe
+                firebase.firestore().collection("usuarios").doc(user.uid).get()
+                .then(function(doc) {
+                    if (doc.exists) {
+                        const userData = doc.data();
+                        const userName = userData.name;
+                        document.getElementById("nome-usuario").innerText = "Olá, " + userName;
+                    } else {
+                        console.log("Usuário não encontrado");
+                    }
+                })
+                .catch(function(error) {
+                    console.log("Erro ao recuperar o nome do usuário:", error);
+                });
+            }
+        });
+
+        // Função para obter a data atual
+        function getDataAtual() {
+            var dataAtual = new Date();
+            var dia = dataAtual.getDate();
+            var mes = dataAtual.getMonth() + 1; // Os meses são indexados de 0 a 11, então é necessário adicionar 1
+            var ano = dataAtual.getFullYear();
+            var dataFormatada = dia + '/' + mes + '/' + ano;
+            return dataFormatada;
+        }
+    
+        // Exibir a data atual na página
+        var dataElements = document.querySelectorAll('.data');
+        dataElements.forEach(function(element) {
+            element.innerText = "Data atual: " + getDataAtual();
+        });
+        
+
+        function terminar() {
+            
+            capturarTelaERedirecionar();
+        }
+
+        function capturarTelaERedirecionar() {
+            // Captura de tela
+            html2canvas(document.body, {
+                onrendered: function (canvas) {
+                    var image = canvas.toDataURL("image/jpeg"); // Convertendo para formato JPEG
+                    var link = document.createElement('a');
+                    link.href = image;
+                    link.download = 'screenshot.jpeg'; // Definindo o nome do arquivo como screenshot.jpeg
+                    link.click();
+
+                    // Redirecionar para test_ac_apl.html após salvar a captura de tela
+                    window.location.href = 'fim_test.html';
+                }
+            });
+        }
+
+        function toggleSelection(id) {
+            var square = document.getElementById('quadrado_ac' + id);
+            var value = 1; // Valor do quadrado
+
+            // Verifica se o quadrado já está selecionado
+            if (selectedSquares[id]) {
+                // Se estiver selecionado, remove a marcação e subtrai o valor do total
+                square.removeChild(square.querySelector('.selected'));
+                delete selectedSquares[id];
+            } else {
+                // Se não estiver selecionado, adiciona a marcação e adiciona o valor ao total
+                var cross = document.createElement('span');
+                cross.textContent = '/';
+                cross.className = 'selected';
+                square.appendChild(cross);
+                selectedSquares[id] = value;
+            }
+
+        }
+
+        
+    </script>
+</body>
+
+</html>
