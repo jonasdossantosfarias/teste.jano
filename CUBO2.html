@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <link rel="icon" href="imagens/favicon.png" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 16 de JS</title>
+    <link rel="stylesheet" href="css/aula16.css" />
+</head>
+<body>
+<main id='tela-principal'>
+    <h1>Dados</h1>
+    <!-- Cronômetro -->
+    <div id="cronometro">00:00</div>
+    <div class="linha">
+        <section class='conteudo' onclick="sortear(this)">
+            <p class='centro'><span class="numero"></span></p>
+            <figure>
+                <img src="imagens/dado/0.png" alt="Dado" class='imgDado' />
+            </figure>
+        </section>
+        <section class='conteudo' onclick="sortear(this)">
+            <p class='centro'><span class="numero"></span></p>
+            <figure>
+                <img src="imagens/dado/0.png" alt="Dado" class='imgDado' />
+            </figure>
+        </section>
+        <section class='conteudo' onclick="sortear(this)">
+            <p class='centro'><span class="numero"></span></p>
+            <figure>
+                <img src="imagens/dado/0.png" alt="Dado" class='imgDado' />
+            </figure>
+        </section>
+    </div>
+    <div class="linha">
+        <section class='conteudo' onclick="sortear(this)">
+            <p class='centro'><span class="numero"></span></p>
+            <figure>
+                <img src="imagens/dado/0.png" alt="Dado" class='imgDado' />
+            </figure>
+        </section>
+        <section class='conteudo' onclick="sortear(this)">
+            <p class='centro'><span class="numero"></span></p>
+            <figure>
+                <img src="imagens/dado/0.png" alt="Dado" class='imgDado' />
+            </figure>
+        </section>
+        <section class='conteudo' onclick="sortear(this)">
+            <p class='centro'><span class="numero"></span></p>
+            <figure>
+                <img src="imagens/dado/0.png" alt="Dado" class='imgDado' />
+            </figure>
+        </section>
+    </div>
+    <div class="linha">
+        <section class='conteudo' onclick="sortear(this)">
+            <p class='centro'><span class="numero"></span></p>
+            <figure>
+                <img src="imagens/dado/0.png" alt="Dado" class='imgDado' />
+            </figure>
+        </section>
+        <section class='conteudo' onclick="sortear(this)">
+            <p class='centro'><span class="numero"></span></p>
+            <figure>
+                <img src="imagens/dado/0.png" alt="Dado" class='imgDado' />
+            </figure>
+        </section>
+        <section class='conteudo' onclick="sortear(this)">
+            <p class='centro'><span class="numero"></span></p>
+            <figure>
+                <img src="imagens/dado/0.png" alt="Dado" class='imgDado' />
+            </figure>
+        </section>
+    </div>
+    <!-- Botão "Próximo" -->
+    <button onclick="goToCubo2()">Próximo</button>
+</main>
+
+<audio preload id='dadoRolando' src="assets/dado-rolando.mp3" type="audio/mpeg"></audio>
+
+<script src="js/aula16.js"></script>
+
+<script>
+    function goToCubo2() {
+        window.location.href = 'CUBO3.html';
+    }
+
+    // Cronômetro
+    var segundos = 0;
+    var minutos = 0;
+    var cronometro = document.getElementById('cronometro');
+
+    function atualizarCronometro() {
+        segundos++;
+        if (segundos == 60) {
+            minutos++;
+            segundos = 0;
+        }
+        var segundosFormatados = segundos < 10 ? '0' + segundos : segundos;
+        var minutosFormatados = minutos < 10 ? '0' + minutos : minutos;
+        cronometro.textContent = minutosFormatados + ':' + segundosFormatados;
+        if (minutos == 1) {
+            clearInterval(intervalo);
+        }
+    }
+
+    var intervalo = setInterval(atualizarCronometro, 1000); // Atualiza o cronômetro a cada segundo
+</script>
+</body>
+</html>

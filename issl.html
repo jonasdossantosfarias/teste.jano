@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <link rel="icon" href="imagens/favicon.png" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Estresse</title>
+    <link rel="stylesheet" href="css/issl.css">
+</head>
+<body>
+    <div id='tela-principal'>
+        <div class="container">
+            <h1>Teste de Estresse</h1>
+            <p id="nome-usuario"></p>
+            <p class="descricao">O Inventário de Sintomas de Estresse para Adultos (LIPP) é uma ferramenta utilizada na avaliação do estresse em adultos. Ele é composto por diferentes itens que avaliam sintomas físicos, emocionais e cognitivos relacionados ao estresse. Ao aplicar o inventário, é importante seguir uma sequência temporal. Primeiramente, são feitas perguntas sobre os sintomas experimentados nas últimas 24 horas, fornecendo uma visão imediata do estado de estresse. Em seguida, as perguntas abordam os sintomas ao longo da última semana, permitindo uma avaliação mais ampla. Por fim, são explorados os sintomas do último mês, fornecendo uma perspectiva mais abrangente do padrão de estresse do indivíduo. Essa abordagem sequencial ajuda a compreender a variação dos sintomas ao longo do tempo e a identificar padrões de estresse que podem exigir intervenções específicas.</p>
+            <!-- Botão para iniciar o teste -->
+            <button onclick="window.location.href = 'pfp1.html'">INICIAR</button>
+            <!-- Espaço para exibir avisos -->
+            <p id="aviso" class="aviso"></p>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <!-- Inclui o arquivo de configuração do Firebase -->
+    <script src="js/config.js"></script>
+    <!-- Inclui o arquivo de script do ISSL -->
+    <script src="js/issl.js"></script>
+</body>
+</html>

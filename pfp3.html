@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionário de Sintomas</title>
+    <link rel="stylesheet" href="css/pfp3.css">
+</head>
+<body>
+    <div class="container">
+        <h1><strong>Marque os sintomas que tem experimentado no último Mês</strong></h1>
+        <div class="date">
+            <script>
+                var today = new Date();
+                var date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+                document.write(date);
+            </script>
+        </div>
+        <form id="symptomForm">
+            <div class="checkbox-container">
+                <input type="checkbox" id="sintoma1" name="sintoma1" value="Diarréia Frequente">
+                <label for="sintoma1">Diarréia Frequente</label><br>
+                <input type="checkbox" id="sintoma2" name="sintoma2" value="Dificuldade Sexual">
+                <label for="sintoma2">Dificuldade Sexual</label><br>
+                <input type="checkbox" id="sintoma3" name="sintoma3" value="Insônia (Dificuldade para dormir)">
+                <label for="sintoma3">Insônia (Dificuldade para dormir)</label><br>
+                <input type="checkbox" id="sintoma4" name="sintoma4" value="Náusea">
+                <label for="sintoma4">Náusea</label><br>
+                <input type="checkbox" id="sintoma5" name="sintoma5" value="tiques">
+                <label for="sintoma5">tiques</label><br>
+                <input type="checkbox" id="sintoma6" name="sintoma6" value="Hipertensão Arterial Continuada (Pressão Alta)">
+                <label for="sintoma6">Hipertensão Arterial Continuada (Pressão Alta)</label><br>
+                <input type="checkbox" id="sintoma7" name="sintoma7" value="Problemas Dematológicos Prolongados ( Problema de Pele)">
+                <label for="sintoma7">Problemas Dematológicos Prolongados ( Problema de Pele)</label><br>
+                <input type="checkbox" id="sintoma8" name="sintoma8" value="Mudança extrema de Apetite">
+                <label for="sintoma8">Mudança extrema de Apetite</label><br>
+                <input type="checkbox" id="sintoma9" name="sintoma9" value="Excesso de Gases">
+                <label for="sintoma9">Excesso de Gases</label><br>
+                <input type="checkbox" id="sintoma10" name="sintoma10" value="Tontura Frequente">
+                <label for="sintoma10">Tontura Frequente</label><br>
+                <input type="checkbox" id="sintoma11" name="sintoma11" value="Úlcera">
+                <label for="sintoma11">Úlcera</label><br>
+                <input type="checkbox" id="sintoma12" name="sintoma12" value="Enfarto">
+                <label for="sintoma12">Enfarto</label><br>
+                <input type="checkbox" id="sintoma13" name="sintoma13" value="Impossibilidade de Trabalhar">
+                <label for="sintoma13">Impossibilidade de Trabalhar</label><br>
+                <input type="checkbox" id="sintoma14" name="sintoma14" value="Pesadelos">
+                <label for="sintoma14">Pesadelos</label><br>
+                <input type="checkbox" id="sintoma15" name="sintoma15" value="Sensação de incompetência em todas as áreas">
+                <label for="sintoma15">Sensação de incompetência em todas as áreas</label><br>
+                <input type="checkbox" id="sintoma16" name="sintoma16" value="Vontade de Fugir de Tudo">
+                <label for="sintoma16">Vontade de Fugir de Tudo</label><br>
+                <input type="checkbox" id="sintoma17" name="sintoma17" value="Apatia Depressão ou raiva Prolongada">
+                <label for="sintoma17">Apatia Depressão ou raiva Prolongada</label><br>
+                <input type="checkbox" id="sintoma18" name="sintoma18" value="Cansaço Excessivo">
+                <label for="sintoma18">Cansaço Excessivo</label><br>
+                <input type="checkbox" id="sintoma19" name="sintoma19" value="Pensar/Falar constantemente em um só assunto">
+                <label for="sintoma19">Pensar/Falar constantemente em um só assunto</label><br>
+                <input type="checkbox" id="sintoma20" name="sintoma20" value="Irritabilidade sem causa Aparente">
+                <label for="sintoma20">Irritabilidade sem causa Aparente</label><br>
+                <input type="checkbox" id="sintoma21" name="sintoma21" value="Angústia/Ansiedade Diária">
+                <label for="sintoma21">Angústia/Ansiedade Diária</label><br>
+                <input type="checkbox" id="sintoma22" name="sintoma22" value="Hipersensibilidade emotiva">
+                <label for="sintoma22">Hipersensibilidade emotiva</label><br>
+                <input type="checkbox" id="sintoma23" name="sintoma23" value="Perda do Senso de Humor">
+                <label for="sintoma23">Perda do Senso de Humor</label><br>
+            </div>
+        </form>
+
+        <div class="button-container">
+            <!-- Botão "Próximo" -->
+            <button class="next-button" onclick="window.location.href = 'respfp.html';">Próximo</button>
+        </div>
+        <span id="result" class="result">Resultado: 0</span>
+        <span id="physicalResult" class="result">Resultado físico: 0</span><br>
+        <span id="physicalPhase" class="result">FASE EXAUSTÃO FISICO = 0%</span><br>
+        <span id="psychologicalResult" class="result">Resultado psicológico: 0</span>
+        <span id="psychologicalPhase" class="result">FASE EXAUSTÃO PSICOLOGICO = 0%</span>
+        <!-- Novo texto para exibir o resultado do estresse -->
+        <span id="resStress">Resultado Stress: 0</span><br>
+        <span id="resStressf">SEM ESTRESS = 0%</span>
+    </div>
+
+    <script>
+
+        // Definir a contagem inicial como o resultado de resultadoPFP1
+        let sum = 0;
+    
+        // Atualizar o resultado na página
+        document.getElementById('result').innerText = `Resultado: ${sum}`;
+    
+        // Adicionar evento de mudança para cada caixa de seleção
+        const checkboxes = document.querySelectorAll('#symptomForm input[type="checkbox"]');
+        checkboxes.forEach((checkbox) => {
+            checkbox.addEventListener('change', () => {
+                if (checkbox.checked) {
+                    sum += 1;
+                } else {
+                    sum -= 1;
+                }
+                // Atualizar o resultado na página
+                document.getElementById('result').innerText = `Resultado: ${sum}`;
+                document.getElementById('resStress').innerText = `Resultado Stress: ${sum}`;
+                if (sum === 0) {
+                    document.getElementById('resStressf').innerText = `0`;
+                } else if (sum === 1){
+                    document.getElementById('resStressf').innerText = `0`;
+                } else if (sum === 2) {
+                    document.getElementById('resStressf').innerText = `0`;
+                } else if (sum === 3) {
+                    document.getElementById('resStressf').innerText = `0`;
+                } else if (sum === 4) {
+                    document.getElementById('resStressf').innerText = `0`;
+                } else if (sum === 5) {
+                    document.getElementById('resStressf').innerText = `0`;
+                } else if (sum === 6) {
+                    document.getElementById('resStressf').innerText = `0`;
+                } else if (sum === 7) {
+                    document.getElementById('resStressf').innerText = `0`;
+                } else if (sum === 8) {
+                    document.getElementById('resStressf').innerText = `0`;
+                } else if (sum === 9) {
+                    document.getElementById('resStressf').innerText = `7`;
+                } else if (sum === 10) {
+                    document.getElementById('resStressf').innerText = `13`;
+                } else if (sum === 11) {
+                    document.getElementById('resStressf').innerText = `20`;
+                } else if (sum === 12) {
+                    document.getElementById('resStressf').innerText = `27`;
+                } else if (sum === 13) {
+                    document.getElementById('resStressf').innerText = `33`;
+                } else if (sum === 14) {
+                    document.getElementById('resStressf').innerText = `40`;
+                } else if (sum === 15) {
+                    document.getElementById('resStressf').innerText = `47`;
+                } else if (sum === 16) {
+                    document.getElementById('resStressf').innerText = `53`;
+                } else if (sum === 17) {
+                    document.getElementById('resStressf').innerText = `60`;
+                } else if (sum === 18) {
+                    document.getElementById('resStressf').innerText = `67`;
+                } else if (sum === 19) {
+                    document.getElementById('resStressf').innerText = `73`;
+                } else if (sum === 20) {
+                    document.getElementById('resStressf').innerText = `80`;
+                } else if (sum === 21) {
+                    document.getElementById('resStressf').innerText = `87`;
+                } else if (sum === 22) {
+                    document.getElementById('resStressf').innerText = `93`;
+                } else if (sum === 23) {
+                    document.getElementById('resStressf').innerText = `100`;
+                }
+            });
+        });
+    
+        const physicalCheckboxes = Array.from(checkboxes).slice(0, 12);
+    const psychologicalCheckboxes = Array.from(checkboxes).slice(12);
+
+    let physicalSum = 0;
+    let psychologicalSum = 0;
+
+    physicalCheckboxes.forEach((checkbox) => {
+        checkbox.addEventListener('change', () => {
+            if (checkbox.checked) {
+                physicalSum += 1;
+            } else {
+                physicalSum -= 1;
+            }
+            document.getElementById('physicalResult').innerText = `Resultado físico: ${physicalSum}`;
+            if (physicalSum === 0) {
+                document.getElementById('physicalPhase').innerText = `0`;
+            } else if (physicalSum === 1) {
+                document.getElementById('physicalPhase').innerText = `8`;
+            } else if (physicalSum === 2) {
+                document.getElementById('physicalPhase').innerText = `16`;
+            } else if (physicalSum === 3) {
+                document.getElementById('physicalPhase').innerText = `25`;
+            } else if (physicalSum === 4) {
+                document.getElementById('physicalPhase').innerText = `33`;
+            } else if (physicalSum === 5) {
+                document.getElementById('physicalPhase').innerText = `41`;
+            } else if (physicalSum === 6) {
+                document.getElementById('physicalPhase').innerText = `50`;
+            } else if (physicalSum === 7) {
+                document.getElementById('physicalPhase').innerText = `58`;
+            } else if (physicalSum === 8) {
+                document.getElementById('physicalPhase').innerText = `66`;
+            } else if (physicalSum === 9) {
+                document.getElementById('physicalPhase').innerText = `75`;
+            } else if (physicalSum === 10) {
+                document.getElementById('physicalPhase').innerText = `83`;
+            } else if (physicalSum === 11) {
+                document.getElementById('physicalPhase').innerText = `91`;
+            } else if (physicalSum === 12) {
+                document.getElementById('physicalPhase').innerText = `100`;
+            }
+        });
+    });
+
+    psychologicalCheckboxes.forEach((checkbox) => {
+        checkbox.addEventListener('change', () => {
+            if (checkbox.checked) {
+                psychologicalSum += 1;
+            } else {
+                psychologicalSum -= 1;
+            }
+            document.getElementById('psychologicalResult').innerText = `Resultado psicológico: ${psychologicalSum}`;
+            if (psychologicalSum === 0) {
+                document.getElementById('psychologicalPhase').innerText = `0`;
+            } else if (psychologicalSum === 1) {
+                document.getElementById('psychologicalPhase').innerText = `9`;
+            } else if (psychologicalSum === 2) {
+                document.getElementById('psychologicalPhase').innerText = `18`;
+            } else if (psychologicalSum === 3) {
+                document.getElementById('psychologicalPhase').innerText = `27`;
+            } else if (psychologicalSum === 4) {
+                document.getElementById('psychologicalPhase').innerText = `36`;
+            } else if (psychologicalSum === 5) {
+                document.getElementById('psychologicalPhase').innerText = `45`;
+            } else if (psychologicalSum === 6) {
+                document.getElementById('psychologicalPhase').innerText = `54`;
+            } else if (psychologicalSum === 7) {
+                document.getElementById('psychologicalPhase').innerText = `63`;
+            } else if (psychologicalSum === 8) {
+                document.getElementById('psychologicalPhase').innerText = `72`;
+            } else if (psychologicalSum === 9) {
+                document.getElementById('psychologicalPhase').innerText = `81`;
+            } else if (psychologicalSum === 10) {
+                document.getElementById('psychologicalPhase').innerText = `90`;
+            } else if (psychologicalSum === 11) {
+                document.getElementById('psychologicalPhase').innerText = `100`;
+            }
+        });
+    });
+
+    document.querySelector('.next-button').addEventListener('click', () => {
+
+       // Armazenar os valores no localStorage
+       localStorage.setItem('physicalPhaseValue3', document.getElementById('physicalPhase').innerText);
+        localStorage.setItem('psychologicalPhaseValue3', document.getElementById('psychologicalPhase').innerText);
+        localStorage.setItem('psychologicalResultValue3', document.getElementById('resStressf').innerText);
+
+        // Redirecionar para a próxima página
+        window.location.href = 'respfp.html';
+    });
+
+</script>
+</body>
+
+</html>
