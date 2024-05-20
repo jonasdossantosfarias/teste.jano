@@ -1,0 +1,1943 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <link rel="icon" href="imagens/favicon.png" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste EPF-TDAH</title>
+    <link rel="stylesheet" href="css/aula16.css" />
+    <style>
+        body {
+            margin: 0 auto; /* Centralizando o conteúdo na página */
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            position: relative;
+        }
+    
+        #tela-principal {
+            position: relative;
+        }
+    
+        #nome-usuario {
+        text-align: center;
+        font-size: 2.5rem;
+        font-weight: 600;
+        margin-top: 20px;
+        position: relative;
+        color: #444;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        p {
+            font-size: 10px; /* Alteração no tamanho da fonte para 10 pixels */
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        q {
+            font-size: 14px; /* Alteração no tamanho da fonte para 10 pixels */
+            color: #666;
+            margin-bottom: 10px;
+        }
+    
+       /* Estilos para o contêiner dos quadrados */
+        .quadros-container {
+            width: 90%; 
+            background-color: #f4f4f4;
+            position: relative;
+            margin: 10px auto; /* Centraliza horizontalmente */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+    
+        /* Estilos para os quadrados */
+        .quadro {
+            width: 90%; /* Definindo largura total para os quadrados */
+            margin-bottom: 20px; /* Aumentando o espaço entre os quadrados */
+            padding: 20px; /* Aumentando o espaçamento interno */
+            border-radius: 10px; /* Arredondando as bordas */
+            background-color: #f9f9f9; /* Cor de fundo */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Adicionando uma sombra mais suave */
+            margin-left: auto; /* Centralizando o conteúdo */
+            margin-right: auto; /* Centralizando o conteúdo */
+        }
+    
+        .tituloquadro {
+            font-size: 1.4rem; /* Aumentando o tamanho do título */
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px; /* Ajustando o espaçamento inferior */
+        }
+    
+        /* Estilos para as opções */
+        .opcao {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px; /* Aumentando o espaço entre as opções */
+            width: 100%; /* Definindo largura total para as opções */
+        }
+    
+        .opcao label {
+            margin-right: 10px;
+            font-size: 18px; /* Aumentando o tamanho da fonte */
+        }
+    
+        .opcao input[type="checkbox"] {
+            margin-right: 8px; /* Ajustando o espaçamento do checkbox */
+            transform: scale(1.8); /* Aumentando o tamanho do checkbox */
+        }
+    
+        .coluna {
+            flex: 1;
+            margin-right: 20px;
+        }
+    
+        .quadro .coluna {
+            width: 100%; /* Definindo largura total para as colunas dentro dos quadrados */
+        }
+    
+        .opcoes-container {
+            background-color: #fbfbfc; 
+            border: 1px solid #ccc9c9;  /* Borda sólida cinza claro */
+            width: 90%; /* Define a largura dos elementos */
+            height: 90%;
+            margin-bottom: 10px; /* Adiciona espaço entre os elementos */
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+        }
+    
+        .quadro-container-resposta {
+            display: flex;
+            justify-content: center; /* Centraliza os itens horizontalmente */
+            align-items: center;    /* Centraliza os itens verticalmente (opcional) */
+            margin-right: 20px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+    
+        .quadro-resposta {
+            margin-right: 15px; /* Ajustando a margem direita */
+            font-weight: bold;
+        }
+    
+        .linha-resposta {
+            display: flex;
+            margin-bottom: 10px; /* Ajustando o espaçamento inferior */
+        }
+    
+        .celula-resposta {
+            padding: 8px; /* Ajustando o espaçamento interno */
+            border: 1px solid #ccc; /* Mudando a cor da borda */
+            border-radius: 5px; /* Arredondando as bordas */
+            background-color: #fff; /* Cor de fundo branca para os labels */
+        }
+    
+        /* Media query para ajustar o layout em telas menores */
+        @media screen and (max-width: 768px) {
+            .quadro {
+                width: calc(100% - 20px); /* Definindo largura total com margem de 10px em telas menores */
+            }
+    
+            .opcao {
+                width: 100%; /* Definindo largura total para as opções em telas menores */
+            }
+    
+            .coluna {
+                margin-right: 0; /* Removendo margem direita das colunas em telas menores */
+            }
+    
+            .opcao input[type="checkbox"] {
+                transform: scale(1.4); /* Reduzindo o tamanho do checkbox em telas menores */
+            }
+        }
+
+        .celula-resposta {
+            /* ... seus estilos existentes ... */
+            cursor: pointer; /* Torna as células clicáveis */
+        }
+
+        .celula-resposta.selected {
+            background-color: lightblue; /* Destaca a célula selecionada */
+        }
+
+        .celula-resposta input[type="radio"]:checked + span { /* Estiliza o texto após o radio button selecionado */
+            font-weight: bold;
+            color: #003366; /* Azul escuro */
+        }
+
+        #caixa-texto {
+            width: 90%; /* Largura da caixa de texto */
+            height: 100px; /* Altura da caixa de texto */
+            padding: 10px;
+            border: 1px solid #ccc; /* Borda cinza claro */
+            border-radius: 5px; /* Bordas arredondadas */
+            box-sizing: border-box; /* Inclui o padding e a borda no cálculo da largura total */
+            resize: vertical; /* Permite redimensionar apenas verticalmente */
+            margin-bottom: 20px;
+        }
+
+        #botao-container { 
+            display: flex;
+            justify-content: center; /* Centraliza horizontalmente */
+            align-items: center;    /* Centraliza verticalmente */
+            margin-bottom: 10px;
+        }
+
+        .input-field {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .btn-salvar {
+            background-color: #007bff; 
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+    </style>
+    
+    
+</head>
+
+<body>
+    <main id='tela-principal'>
+        <h1 id="titulo">EPF-TDAH</h1>
+        <div id="nome-usuario" class="input-container">
+            <input type="text" id="input-nome" class="input-field" placeholder="Insira seu Nome Completo">
+            <button onclick="salvarNome()" class="btn-salvar">
+                <i class="bi bi-floppy-fill" style="color: white;"></i>
+            </button>
+        </div>
+        <p class="data"></p> <!-- Alterado para classe -->
+    </main>
+
+    <div class="quadros-container">
+        <div class="quadro">
+            <div class="tituloquadro">Veja o Exemplo</div>
+            <div class="opcoes-container">
+                <div class="quadro-container-resposta">
+                    <div class="quadro-resposta">Não se Aplica (NA)</div>
+                    <div class="quadro-resposta">Nunca (N)</div>
+                    <div class="quadro-resposta">Raramente (R)</div>
+                    <div class="quadro-resposta">Algumas Vezes (AV)</div>
+                    <div class="quadro-resposta">Muitas Vezes (MV)</div>
+                    <div class="quadro-resposta">Sempre (S)</div>
+                </div>        
+                </div>
+
+                <q>Em se tratando de dinheiro, com que frequência nos últimos anos:</q>
+                <div class="linha-resposta">
+                    <div class="celula-resposta pergunta">Recebi avisos de pedências financeiras</div>
+                    <label class="celula-resposta">
+                        <input type="radio" name="perguntaex1" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="perguntaex1" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="perguntaex1" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="perguntaex1" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="perguntaex1" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="perguntaex1" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                    </label>
+                </div>
+
+                <q>No trânsito, com que frequência nos últimos anos:</q>
+                <div class="linha-resposta">
+                    <div class="celula-resposta pergunta">Fui advertido por outros motoristas.</div>
+                    <label class="celula-resposta">
+                        <input type="radio" name="perguntaex2" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="perguntaex2" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="perguntaex2" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="perguntaex2" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="perguntaex2" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="perguntaex2" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                    </label>
+                </div>
+
+            </div>
+            <div class="tituloquadro">Leia Cuidadosamente cada uma das frases e responda a todas elas.</div>
+        </div>
+    </div>
+ 
+    <div class="quadros-container">
+        <div class="quadro">
+            <div class="tituloquadro">1. Nos Estudos/ Cursos/ Treinamento, com que frequência nos Últimos Anos</div>
+            <div class="opcoes-container">
+                <div class="quadro-container-resposta">
+                    <div class="quadro-resposta">Não se Aplica (NA)</div>
+                    <div class="quadro-resposta">Nunca (N)</div>
+                    <div class="quadro-resposta">Raramente (R)</div>
+                    <div class="quadro-resposta">Algumas Vezes (AV)</div>
+                    <div class="quadro-resposta">Muitas Vezes (MV)</div>
+                    <div class="quadro-resposta">Sempre (S)</div>
+                </div>        
+                </div>
+                <div class="linha-resposta">
+                    <div class="celula-resposta pergunta">Recebi avisos de pedências financeiras</div>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta1" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta1" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta1" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta1" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta1" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta1" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                    </label>
+                </div>
+                <div class="linha-resposta">
+                    <div class="celula-resposta pergunta">Fui advertido por outros motoristas.</div>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta2" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta2" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta2" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta2" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta2" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta2" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                    </label>
+                </div>
+                <div class="linha-resposta">
+                    <div class="celula-resposta pergunta">Recebi avisos de pedências financeiras</div>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta3" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta3" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta3" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta3" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta3" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta3" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                    </label>
+                </div>
+                <div class="linha-resposta">
+                    <div class="celula-resposta pergunta">Fui advertido por outros motoristas.</div>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta4" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta4" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta4" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta4" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta4" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta4" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                    </label>
+                </div>
+                <div class="linha-resposta">
+                    <div class="celula-resposta pergunta">Recebi avisos de pedências financeiras</div>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta5" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta5" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta5" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta5" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta5" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta5" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                    </label>
+                </div>
+                <div class="linha-resposta">
+                    <div class="celula-resposta pergunta">Fui advertido por outros motoristas.</div>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta6" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta6" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta6" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta6" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta6" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta6" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                    </label>
+                </div>
+                <div class="linha-resposta">
+                    <div class="celula-resposta pergunta">Recebi avisos de pedências financeiras</div>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta7" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta7" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta7" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta7" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta7" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta7" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                    </label>
+                </div>
+                <div class="linha-resposta">
+                    <div class="celula-resposta pergunta">Fui advertido por outros motoristas.</div>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta8" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta8" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta8" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta8" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta8" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                    </label>
+                    <label class="celula-resposta">
+                        <input type="radio" name="pergunta8" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="quadros-container">
+            <div class="quadro">
+                <div class="tituloquadro">2. Nos Contexto Profissional, com que frequência nos últimos anos:</div>
+                <div class="opcoes-container">
+                    <div class="quadro-container-resposta">
+                        <div class="quadro-resposta">Não se Aplica (NA)</div>
+                        <div class="quadro-resposta">Nunca (N)</div>
+                        <div class="quadro-resposta">Raramente (R)</div>
+                        <div class="quadro-resposta">Algumas Vezes (AV)</div>
+                        <div class="quadro-resposta">Muitas Vezes (MV)</div>
+                        <div class="quadro-resposta">Sempre (S)</div>
+                    </div>        
+                    </div>
+                    <div class="linha-resposta">
+                        <div class="celula-resposta pergunta">As pessoas ficam insatisfeitas com o meu desempenho.</div>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta11" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta11" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta11" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta11" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta11" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta11" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                        </label>
+                    </div>
+                    <div class="linha-resposta">
+                        <div class="celula-resposta pergunta">Fui repreendido pelo meu superior.</div>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta12" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta12" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta12" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta12" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta12" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta12" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                        </label>
+                    </div>
+                    <div class="linha-resposta">
+                        <div class="celula-resposta pergunta">Perdi Oportunidades.</div>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta13" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta13" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta13" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta13" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta13" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta13" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                        </label>
+                    </div>
+                    <div class="linha-resposta">
+                        <div class="celula-resposta pergunta">Me Senti Fracassado.</div>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta14" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta14" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta14" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta14" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta14" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta14" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                        </label>
+                    </div>
+                    <div class="linha-resposta">
+                        <div class="celula-resposta pergunta">Me Senti Inseguro.</div>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta15" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta15" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta15" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta15" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta15" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta15" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                        </label>
+                    </div>
+                    <div class="linha-resposta">
+                        <div class="celula-resposta pergunta">As Pessoas Deixaram de confiar em mim.</div>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta16" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta16" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta16" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta16" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta16" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta16" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                        </label>
+                    </div>
+                    <div class="linha-resposta">
+                        <div class="celula-resposta pergunta">Fui Demitido.</div>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta17" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta17" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta17" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta17" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta17" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta17" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                        </label>
+                    </div>
+                    <div class="linha-resposta">
+                        <div class="celula-resposta pergunta">Ocupei Cargo Abaixo do Meu Potencial.</div>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta18" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta18" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta18" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta18" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta18" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta18" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                        </label>
+                    </div>
+                    <div class="linha-resposta">
+                        <div class="celula-resposta pergunta">A Minha Carreira ficou Parada.</div>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta19" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta19" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta19" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta19" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta19" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta19" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                        </label>
+                    </div>
+                    <div class="linha-resposta">
+                        <div class="celula-resposta pergunta">As Minhas Relações Com os Colegas de Trabalho Foram conflituosas.</div>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta20" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta20" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta20" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta20" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta20" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                        </label>
+                        <label class="celula-resposta">
+                            <input type="radio" name="pergunta20" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quadros-container">
+                <div class="quadro">
+                    <div class="tituloquadro">3. Nos Meus Relacionamentos Afetivos e Sexuais, Com Que Frequência Nos Últimos anos:</div>
+                    <div class="opcoes-container">
+                        <div class="quadro-container-resposta">
+                            <div class="quadro-resposta">Não se Aplica (NA)</div>
+                            <div class="quadro-resposta">Nunca (N)</div>
+                            <div class="quadro-resposta">Raramente (R)</div>
+                            <div class="quadro-resposta">Algumas Vezes (AV)</div>
+                            <div class="quadro-resposta">Muitas Vezes (MV)</div>
+                            <div class="quadro-resposta">Sempre (S)</div>
+                        </div>        
+                        </div>
+                        <div class="linha-resposta">
+                            <div class="celula-resposta pergunta">O Meu Parceiro Precisou Assumir Responsabilidades Que Eram Minhas.</div>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta21" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta21" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta21" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta21" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta21" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta21" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                            </label>
+                        </div>
+                        <div class="linha-resposta">
+                            <div class="celula-resposta pergunta">Os Téminos Foram Precipitados.</div>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta22" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta22" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta22" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta22" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta22" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta22" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                            </label>
+                        </div>
+                        <div class="linha-resposta">
+                            <div class="celula-resposta pergunta">Recebi queixas Sobre o Meu Modo de Ser.</div>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta23" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta23" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta23" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta23" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta23" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta23" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                            </label>
+                        </div>
+                        <div class="linha-resposta">
+                            <div class="celula-resposta pergunta">Vivenciei Conflitos Com o Meu Companheiro.</div>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta24" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta24" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta24" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta24" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta24" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta24" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                            </label>
+                        </div>
+                        <div class="linha-resposta">
+                            <div class="celula-resposta pergunta">Pequenos Desentendimentos Ganharam uma Grande Proporção.</div>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta25" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta25" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta25" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta25" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta25" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta25" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                            </label>
+                        </div>
+                        <div class="linha-resposta">
+                            <div class="celula-resposta pergunta">Meu Parceiro Ficou Insatisfeito comigo.</div>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta26" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta26" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta26" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta26" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta26" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta26" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                            </label>
+                        </div>
+                        <div class="linha-resposta">
+                            <div class="celula-resposta pergunta">Senti-me entediado.</div>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta27" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta27" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta27" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta27" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta27" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta27" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                            </label>
+                        </div>
+                        <div class="linha-resposta">
+                            <div class="celula-resposta pergunta">Tive dificuldade em Manter relações duradouras.</div>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta28" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta28" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta28" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta28" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta28" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                            </label>
+                            <label class="celula-resposta">
+                                <input type="radio" name="pergunta28" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quadros-container">
+                    <div class="quadro">
+                        <div class="tituloquadro">4. Em Casa, com que Frequência nos Últimos Anos:</div>
+                        <div class="opcoes-container">
+                            <div class="quadro-container-resposta">
+                                <div class="quadro-resposta">Não se Aplica (NA)</div>
+                                <div class="quadro-resposta">Nunca (N)</div>
+                                <div class="quadro-resposta">Raramente (R)</div>
+                                <div class="quadro-resposta">Algumas Vezes (AV)</div>
+                                <div class="quadro-resposta">Muitas Vezes (MV)</div>
+                                <div class="quadro-resposta">Sempre (S)</div>
+                            </div>        
+                            </div>
+                            <div class="linha-resposta">
+                                <div class="celula-resposta pergunta">Os Ambientes Ficaram Bagunçados Por um Grande Periodo de Tempo.</div>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta31" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta31" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta31" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta31" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta31" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta31" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                </label>
+                            </div>
+                            <div class="linha-resposta">
+                                <div class="celula-resposta pergunta">Meus Familiares Ficaram Chateados Pelo Meu Modo de Ser.</div>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta32" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta32" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta32" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta32" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta32" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta32" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                </label>
+                            </div>
+                            <div class="linha-resposta">
+                                <div class="celula-resposta pergunta">Ocorreram Pequenos Acidentes ( por Exemplo, Esqueci a Panela no Fogo, Me Cortei).</div>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta33" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta33" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta33" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta33" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta33" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta33" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                </label>
+                            </div>
+                            <div class="linha-resposta">
+                                <div class="celula-resposta pergunta">Senti-me incapaz Para Realizar os Afazeres Domésticos.</div>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta34" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta34" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta34" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta34" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta34" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta34" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                </label>
+                            </div>
+                            <div class="linha-resposta">
+                                <div class="celula-resposta pergunta">Vivenciei Conflitos com Meus Familiares.</div>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta35" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta35" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta35" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta35" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta35" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta35" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                </label>
+                            </div>
+                            <div class="linha-resposta">
+                                <div class="celula-resposta pergunta">Perdi o Prazo de Garantia de Eletrodomésticos que Precisavam de Troca ou Reparo.</div>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta36" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta36" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta36" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta36" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta36" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta36" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                </label>
+                            </div>
+                            <div class="linha-resposta">
+                                <div class="celula-resposta pergunta">Fui Chamado de Irresponsável.</div>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta37" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta37" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta37" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta37" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta37" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                </label>
+                                <label class="celula-resposta">
+                                    <input type="radio" name="pergunta37" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quadros-container">
+                        <div class="quadro">
+                            <div class="tituloquadro">5. Nas Minhas Relações Sociais, com que Frequência nos Últimos Anos:</div>
+                            <div class="opcoes-container">
+                                <div class="quadro-container-resposta">
+                                    <div class="quadro-resposta">Não se Aplica (NA)</div>
+                                    <div class="quadro-resposta">Nunca (N)</div>
+                                    <div class="quadro-resposta">Raramente (R)</div>
+                                    <div class="quadro-resposta">Algumas Vezes (AV)</div>
+                                    <div class="quadro-resposta">Muitas Vezes (MV)</div>
+                                    <div class="quadro-resposta">Sempre (S)</div>
+                                </div>        
+                                </div>
+                                <div class="linha-resposta">
+                                    <div class="celula-resposta pergunta">As Pessoas se Afastaram de Mim.</div>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta41" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta41" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta41" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta41" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta41" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta41" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                    </label>
+                                </div>
+                                <div class="linha-resposta">
+                                    <div class="celula-resposta pergunta">Me Senti Inseguro.</div>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta42" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta42" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta42" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta42" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta42" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta42" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                    </label>
+                                </div>
+                                <div class="linha-resposta">
+                                    <div class="celula-resposta pergunta">Fui chamado de Enrolado.</div>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta43" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta43" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta43" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta43" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta43" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta43" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                    </label>
+                                </div>
+                                <div class="linha-resposta">
+                                    <div class="celula-resposta pergunta">Fui Considerado Inconveniente.</div>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta44" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta44" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta44" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta44" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta44" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta44" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                    </label>
+                                </div>
+                                <div class="linha-resposta">
+                                    <div class="celula-resposta pergunta">Tive Dificuldade em Mater amizades duradouras.</div>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta45" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta45" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta45" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta45" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta45" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta45" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                    </label>
+                                </div>
+                                <div class="linha-resposta">
+                                    <div class="celula-resposta pergunta">Passei uma Impressão de Descaso.</div>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta46" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta46" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta46" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta46" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta46" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta46" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                    </label>
+                                </div>
+                                <div class="linha-resposta">
+                                    <div class="celula-resposta pergunta">Vivenciei Conflitos com as Pessoas.</div>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta47" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta47" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta47" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta47" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta47" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta47" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                    </label>
+                                </div>
+                                <div class="linha-resposta">
+                                    <div class="celula-resposta pergunta">As Pessoas Ficaram chateadas Comigo.</div>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta48" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta48" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta48" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta48" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta48" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta48" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                    </label>
+                                </div>
+                                <div class="linha-resposta">
+                                    <div class="celula-resposta pergunta">Fui Considerado Antipático.</div>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta49" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta49" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta49" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta49" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta49" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                    </label>
+                                    <label class="celula-resposta">
+                                        <input type="radio" name="pergunta49" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="quadros-container">
+                            <div class="quadro">
+                                <div class="tituloquadro">6. Em Relação ao dinheiro, com que Frequência nos Últimos anos:</div>
+                                <div class="opcoes-container">
+                                    <div class="quadro-container-resposta">
+                                        <div class="quadro-resposta">Não se Aplica (NA)</div>
+                                        <div class="quadro-resposta">Nunca (N)</div>
+                                        <div class="quadro-resposta">Raramente (R)</div>
+                                        <div class="quadro-resposta">Algumas Vezes (AV)</div>
+                                        <div class="quadro-resposta">Muitas Vezes (MV)</div>
+                                        <div class="quadro-resposta">Sempre (S)</div>
+                                    </div>        
+                                    </div>
+                                    <div class="linha-resposta">
+                                        <div class="celula-resposta pergunta">Tive Gastos Desnecessários.</div>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta51" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta51" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta51" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta51" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta51" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta51" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                        </label>
+                                    </div>
+                                    <div class="linha-resposta">
+                                        <div class="celula-resposta pergunta">Fiquei Endividado.</div>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta52" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta52" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta52" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta52" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta52" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta52" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                        </label>
+                                    </div>
+                                    <div class="linha-resposta">
+                                        <div class="celula-resposta pergunta">Tive Algum Serviço Cortado/Suspenso por Falta de Pagamento.</div>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta53" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta53" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta53" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta53" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta53" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta53" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                        </label>
+                                    </div>
+                                    <div class="linha-resposta">
+                                        <div class="celula-resposta pergunta">Dependi de Alguém Para controlar Minhas Finanças.</div>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta54" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta54" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta54" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta54" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta54" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta54" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                        </label>
+                                    </div>
+                                    <div class="linha-resposta">
+                                        <div class="celula-resposta pergunta">Tive Prejuízos Financeiros.</div>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta55" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta55" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta55" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta55" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta55" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta55" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                        </label>
+                                    </div>
+                                    <div class="linha-resposta">
+                                        <div class="celula-resposta pergunta">Tive Restrição de Crédito.</div>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta56" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta56" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta56" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta56" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta56" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta56" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                        </label>
+                                    </div>
+                                    <div class="linha-resposta">
+                                        <div class="celula-resposta pergunta">Tive Meu Nome Incluido em Algum Cadastro ( SERASA, SPC, BV) em Função de Dividas.</div>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta57" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta57" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta57" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta57" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta57" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                        </label>
+                                        <label class="celula-resposta">
+                                            <input type="radio" name="pergunta57" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="quadros-container">
+                                    <div class="quadro">
+                                        <div class="tituloquadro">7. No que se Refere á Minha Saúde, com que Frequência nos Últimos Anos:</div>
+                                        <div class="opcoes-container">
+                                            <div class="quadro-container-resposta">
+                                                <div class="quadro-resposta">Não se Aplica (NA)</div>
+                                                <div class="quadro-resposta">Nunca (N)</div>
+                                                <div class="quadro-resposta">Raramente (R)</div>
+                                                <div class="quadro-resposta">Algumas Vezes (AV)</div>
+                                                <div class="quadro-resposta">Muitas Vezes (MV)</div>
+                                                <div class="quadro-resposta">Sempre (S)</div>
+                                            </div>        
+                                            </div>
+                                            <div class="linha-resposta">
+                                                <div class="celula-resposta pergunta">Tive horários de alimentação Desregulados.</div>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta61" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                                </label>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta61" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                                </label>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta61" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                                </label>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta61" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                                </label>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta61" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                                </label>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta61" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                                </label>
+                                            </div>
+                                            <div class="linha-resposta">
+                                                <div class="celula-resposta pergunta">Adoeci por Falta de Prevenção.</div>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta62" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                                </label>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta62" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                                </label>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta62" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                                </label>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta62" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                                </label>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta62" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                                </label>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta62" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                                </label>
+                                            </div>
+                                            <div class="linha-resposta">
+                                                <div class="celula-resposta pergunta">A Minha Rotina de Sono foi Alterada.</div>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta63" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                                </label>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta63" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                                </label>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta63" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                                </label>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta63" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                                </label>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta63" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                                </label>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta63" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                                </label>
+                                            </div>
+                                            <div class="linha-resposta">
+                                                <div class="celula-resposta pergunta">Fiquei Sedentário.</div>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta64" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                                </label>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta64" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                                </label>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta64" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                                </label>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta64" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                                </label>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta64" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                                </label>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta64" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                                </label>
+                                            </div>
+                                            <div class="linha-resposta">
+                                                <div class="celula-resposta pergunta">Tive Doenças Agravadas por Falta de Cuidado.</div>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta65" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                                </label>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta65" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                                </label>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta65" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                                </label>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta65" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                                </label>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta65" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                                </label>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta65" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                                </label>
+                                            </div>
+                                            <div class="linha-resposta">
+                                                <div class="celula-resposta pergunta">Tive Problemas com Álcool, cigarro e/ou drogas.</div>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta66" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                                </label>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta66" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                                </label>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta66" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                                </label>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta66" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                                </label>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta66" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                                </label>
+                                                <label class="celula-resposta">
+                                                    <input type="radio" name="pergunta66" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                                </label>
+                                            </div>
+    
+                                        </div>
+                                    </div>
+    
+                                    <div class="quadros-container">
+                                        <div class="quadro">
+                                            <div class="tituloquadro">8. No Trânsito com que Frequência nos Últimos Anos:</div>
+                                            <div class="opcoes-container">
+                                                <div class="quadro-container-resposta">
+                                                    <div class="quadro-resposta">Não se Aplica (NA)</div>
+                                                    <div class="quadro-resposta">Nunca (N)</div>
+                                                    <div class="quadro-resposta">Raramente (R)</div>
+                                                    <div class="quadro-resposta">Algumas Vezes (AV)</div>
+                                                    <div class="quadro-resposta">Muitas Vezes (MV)</div>
+                                                    <div class="quadro-resposta">Sempre (S)</div>
+                                                </div>        
+                                                </div>
+                                                <div class="linha-resposta">
+                                                    <div class="celula-resposta pergunta">As Pessoas se Sentiram Inseguras em Andar comigo enquanto eu Dirigia o Carro.</div>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta71" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                                    </label>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta71" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                                    </label>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta71" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                                    </label>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta71" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                                    </label>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta71" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                                    </label>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta71" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                                    </label>
+                                                </div>
+                                                <div class="linha-resposta">
+                                                    <div class="celula-resposta pergunta">Me Envolvi em Acidentes.</div>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta72" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                                    </label>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta72" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                                    </label>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta72" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                                    </label>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta72" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                                    </label>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta72" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                                    </label>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta72" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                                    </label>
+                                                </div>
+                                                <div class="linha-resposta">
+                                                    <div class="celula-resposta pergunta">Recebi Multas de Trânsito.</div>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta73" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                                    </label>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta73" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                                    </label>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta73" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                                    </label>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta73" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                                    </label>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta73" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                                    </label>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta73" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                                    </label>
+                                                </div>
+                                                <div class="linha-resposta">
+                                                    <div class="celula-resposta pergunta">Coloquei-me em Situações de Risco.</div>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta74" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                                    </label>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta74" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                                    </label>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta74" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                                    </label>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta74" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                                    </label>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta74" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                                    </label>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta74" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                                    </label>
+                                                </div>
+                                                <div class="linha-resposta">
+                                                    <div class="celula-resposta pergunta">Me Envolvi em Conflitos com Outros Motoristas Quando dirigia meu Carro.</div>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta75" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                                    </label>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta75" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                                    </label>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta75" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                                    </label>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta75" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                                    </label>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta75" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                                    </label>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta75" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                                    </label>
+                                                </div>
+                                                <div class="linha-resposta">
+                                                    <div class="celula-resposta pergunta">Meu Veiculo Ficou Exposto a Danos e desgastes Mecânicos.</div>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta76" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                                    </label>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta76" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                                    </label>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta76" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                                    </label>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta76" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                                    </label>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta76" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                                    </label>
+                                                    <label class="celula-resposta">
+                                                        <input type="radio" name="pergunta76" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+    
+                                        <div class="quadros-container">
+                                            <div class="quadro">
+                                                <div class="tituloquadro">9. Com ue Frequência nos Últimos Anos:</div>
+                                                <div class="opcoes-container">
+                                                    <div class="quadro-container-resposta">
+                                                        <div class="quadro-resposta">Não se Aplica (NA)</div>
+                                                        <div class="quadro-resposta">Nunca (N)</div>
+                                                        <div class="quadro-resposta">Raramente (R)</div>
+                                                        <div class="quadro-resposta">Algumas Vezes (AV)</div>
+                                                        <div class="quadro-resposta">Muitas Vezes (MV)</div>
+                                                        <div class="quadro-resposta">Sempre (S)</div>
+                                                    </div>        
+                                                    </div>
+                                                    <div class="linha-resposta">
+                                                        <div class="celula-resposta pergunta">Vivenciei Momentos difíceis por Desacatar figuras de Autoridade ( Como Policiais, Professores e ou Chefe).</div>
+                                                        <label class="celula-resposta">
+                                                            <input type="radio" name="pergunta81" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                                        </label>
+                                                        <label class="celula-resposta">
+                                                            <input type="radio" name="pergunta81" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                                        </label>
+                                                        <label class="celula-resposta">
+                                                            <input type="radio" name="pergunta81" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                                        </label>
+                                                        <label class="celula-resposta">
+                                                            <input type="radio" name="pergunta81" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                                        </label>
+                                                        <label class="celula-resposta">
+                                                            <input type="radio" name="pergunta81" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                                        </label>
+                                                        <label class="celula-resposta">
+                                                            <input type="radio" name="pergunta81" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="linha-resposta">
+                                                        <div class="celula-resposta pergunta">Me envolvi em Situações Graves em que Poderia Ter Sido Preso.</div>
+                                                        <label class="celula-resposta">
+                                                            <input type="radio" name="pergunta82" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                                        </label>
+                                                        <label class="celula-resposta">
+                                                            <input type="radio" name="pergunta82" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                                        </label>
+                                                        <label class="celula-resposta">
+                                                            <input type="radio" name="pergunta82" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                                        </label>
+                                                        <label class="celula-resposta">
+                                                            <input type="radio" name="pergunta82" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                                        </label>
+                                                        <label class="celula-resposta">
+                                                            <input type="radio" name="pergunta82" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                                        </label>
+                                                        <label class="celula-resposta">
+                                                            <input type="radio" name="pergunta82" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="linha-resposta">
+                                                        <div class="celula-resposta pergunta">Me Expus à Situações Perigosas Por Fazer uso e/ou Transportar Substâncias Ilicitas.</div>
+                                                        <label class="celula-resposta">
+                                                            <input type="radio" name="pergunta83" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                                        </label>
+                                                        <label class="celula-resposta">
+                                                            <input type="radio" name="pergunta83" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                                        </label>
+                                                        <label class="celula-resposta">
+                                                            <input type="radio" name="pergunta83" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                                        </label>
+                                                        <label class="celula-resposta">
+                                                            <input type="radio" name="pergunta83" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                                        </label>
+                                                        <label class="celula-resposta">
+                                                            <input type="radio" name="pergunta83" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                                        </label>
+                                                        <label class="celula-resposta">
+                                                            <input type="radio" name="pergunta83" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="linha-resposta">
+                                                        <div class="celula-resposta pergunta">Corri o Risco de Ser Processado por constrager, Insultar e/ou Humilhar Outra Pessoa.</div>
+                                                        <label class="celula-resposta">
+                                                            <input type="radio" name="pergunta84" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                                        </label>
+                                                        <label class="celula-resposta">
+                                                            <input type="radio" name="pergunta84" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                                        </label>
+                                                        <label class="celula-resposta">
+                                                            <input type="radio" name="pergunta84" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                                        </label>
+                                                        <label class="celula-resposta">
+                                                            <input type="radio" name="pergunta84" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                                        </label>
+                                                        <label class="celula-resposta">
+                                                            <input type="radio" name="pergunta84" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                                        </label>
+                                                        <label class="celula-resposta">
+                                                            <input type="radio" name="pergunta84" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="linha-resposta">
+                                                        <div class="celula-resposta pergunta">Corri o Risco de ser Processado por Agredir Outra Pessoa.</div>
+                                                        <label class="celula-resposta">
+                                                            <input type="radio" name="pergunta85" value="0" onclick="toggleSelection(1, 'NA')"> <span>NA</span>
+                                                        </label>
+                                                        <label class="celula-resposta">
+                                                            <input type="radio" name="pergunta85" value="0" onclick="toggleSelection(1, 'N')"> <span>N</span>
+                                                        </label>
+                                                        <label class="celula-resposta">
+                                                            <input type="radio" name="pergunta85" value="1" onclick="toggleSelection(1, 'R')"> <span>R</span>
+                                                        </label>
+                                                        <label class="celula-resposta">
+                                                            <input type="radio" name="pergunta85" value="2" onclick="toggleSelection(1, 'AV')"> <span>AV</span>
+                                                        </label>
+                                                        <label class="celula-resposta">
+                                                            <input type="radio" name="pergunta85" value="3" onclick="toggleSelection(1, 'MV')"> <span>MV</span>
+                                                        </label>
+                                                        <label class="celula-resposta">
+                                                            <input type="radio" name="pergunta85" value="4" onclick="toggleSelection(1, 'S')"> <span>S</span>
+                                                        </label>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="quadros-container">
+        <div class="tituloquadro">Existe algum prejuízo que você vivencia, mas que não está relatado nessa escala?</div>
+        <textarea id="caixa-texto"></textarea>
+    </div>
+
+    <div id="botao-container">
+        <button onclick="terminar()">Terminar</button>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+     <!-- Firebase SDK -->
+     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script> <!-- Adicionando o script do Firestore -->
+ 
+     <script src="js/config.js"></script> <!-- Inclui o arquivo de configuração do Firebase -->
+     <script src="js/script_menu.js"></script>
+
+    <script>
+        var selectedSquares = {}; // Objeto para armazenar os quadrados selecionados e seus valores
+
+        function salvarNome() {
+            var nomeUsuario = document.getElementById('input-nome').value;
+            if (nomeUsuario.trim() === '') {
+                alert('Por favor, insira seu nome.');
+                return;
+            }
+            localStorage.setItem('nomeUsuario', nomeUsuario);
+            var nomeDiv = document.getElementById('nome-usuario');
+            if (nomeDiv) {
+                nomeDiv.textContent = nomeUsuario;
+            }
+        }
+
+        // Função para obter a data atual
+        function getDataAtual() {
+            var dataAtual = new Date();
+            var dia = dataAtual.getDate();
+            var mes = dataAtual.getMonth() + 1; // Os meses são indexados de 0 a 11, então é necessário adicionar 1
+            var ano = dataAtual.getFullYear();
+            var dataFormatada = dia + '/' + mes + '/' + ano;
+            return dataFormatada;
+        }
+    
+        // Exibir a data atual na página
+        var dataElements = document.querySelectorAll('.data');
+        dataElements.forEach(function(element) {
+            element.innerText = "Data atual: " + getDataAtual();
+        });
+        
+        var selectedSquares = {}; // Armazena as respostas selecionadas
+
+        function toggleSelection(questionId, answer) {
+            // Remove a seleção anterior para a mesma pergunta
+            for (var key in selectedSquares) {
+                if (key.startsWith(questionId + "_")) {
+                    delete selectedSquares[key];
+                    document.getElementById(key).classList.remove('selected');
+                }
+            }
+
+            // Adiciona a nova seleção
+            var cellId = questionId + "_" + answer;
+            selectedSquares[cellId] = true;
+            document.getElementById(cellId).classList.add('selected');
+        }
+
+        function toggleSelection(questionId, answerValue) {
+            // ... (seu código existente para remover a seleção anterior) ...
+
+            // Adiciona a nova seleção
+            var cellId = questionId + "_" + answerValue;
+            selectedSquares[questionId] = answerValue;
+
+            // Remove estilo de outras opções da mesma pergunta
+            var radios = document.querySelectorAll(`input[name="pergunta${questionId}"]`);
+            radios.forEach(radio => {
+                radio.nextElementSibling.style.fontWeight = 'normal';
+                radio.nextElementSibling.style.color = 'inherit'; // Volta para a cor padrão
+            });
+
+            // Aplica o estilo na opção selecionada
+            document.getElementById(cellId).classList.add('selected');
+            document.querySelector(`input[name="pergunta${questionId}"][value="${answerValue}"] + span`).style.fontWeight = 'bold';
+            document.querySelector(`input[name="pergunta${questionId}"][value="${answerValue}"] + span`).style.color = '#003366';
+        }
+
+        function terminar() {
+            var nomeUsuario = localStorage.getItem('nomeUsuario');
+            if (!nomeUsuario) {
+                alert('Por favor, insira seu nome completo antes de terminar.');
+                return; 
+            }
+
+            html2canvas(document.body, {
+                onrendered: function (canvas) {
+                    var image = canvas.toDataURL("image/jpeg"); 
+                    var link = document.createElement('a');
+                    link.href = image;
+                    link.download = 'screenshot.jpeg'; 
+                    link.click();
+
+                    window.location.href = 'fim_test.html';
+                }
+            });
+        }        
+        
+    </script>
+</body>
+
+</html>
