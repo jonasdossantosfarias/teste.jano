@@ -3,20 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <title>Questionário de Sintomas</title>
-    <link rel="stylesheet" href="css/pfp3.css">
+    <link rel="stylesheet" href="css/pfp1.css">
 </head>
 <body>
-    <div class="container">
+    <main id='tela-principal'>
+        <div id="nome-usuario"></div> <!-- Div para exibir o nome do usuário -->
+        <p class="data"></p>
+        <h1 id="titulo">Teste de estress</h1>
         <h1><strong>Marque os sintomas que tem experimentado no último Mês</strong></h1>
-        <div class="date">
-            <script>
-                var today = new Date();
-                var date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
-                document.write(date);
-            </script>
-        </div>
-        <form id="symptomForm">
+        <div class="exemplo-container">
             <div class="checkbox-container">
                 <input type="checkbox" id="sintoma1" name="sintoma1" value="Diarréia Frequente">
                 <label for="sintoma1">Diarréia Frequente</label><br>
@@ -65,186 +62,68 @@
                 <input type="checkbox" id="sintoma23" name="sintoma23" value="Perda do Senso de Humor">
                 <label for="sintoma23">Perda do Senso de Humor</label><br>
             </div>
-        </form>
+        </div>
 
         <div class="button-container">
-            <!-- Botão "Próximo" -->
-            <button class="next-button" onclick="window.location.href = 'respfp.html';">Próximo</button>
+            <button class="next-button">Terminar</button>
         </div>
-        <span id="result" class="result">Resultado: 0</span>
-        <span id="physicalResult" class="result">Resultado físico: 0</span><br>
-        <span id="physicalPhase" class="result">FASE EXAUSTÃO FISICO = 0%</span><br>
-        <span id="psychologicalResult" class="result">Resultado psicológico: 0</span>
-        <span id="psychologicalPhase" class="result">FASE EXAUSTÃO PSICOLOGICO = 0%</span>
-        <!-- Novo texto para exibir o resultado do estresse -->
-        <span id="resStress">Resultado Stress: 0</span><br>
-        <span id="resStressf">SEM ESTRESS = 0%</span>
-    </div>
 
-    <script>
+</main>
 
-        // Definir a contagem inicial como o resultado de resultadoPFP1
-        let sum = 0;
-    
-        // Atualizar o resultado na página
-        document.getElementById('result').innerText = `Resultado: ${sum}`;
-    
-        // Adicionar evento de mudança para cada caixa de seleção
-        const checkboxes = document.querySelectorAll('#symptomForm input[type="checkbox"]');
-        checkboxes.forEach((checkbox) => {
-            checkbox.addEventListener('change', () => {
-                if (checkbox.checked) {
-                    sum += 1;
-                } else {
-                    sum -= 1;
-                }
-                // Atualizar o resultado na página
-                document.getElementById('result').innerText = `Resultado: ${sum}`;
-                document.getElementById('resStress').innerText = `Resultado Stress: ${sum}`;
-                if (sum === 0) {
-                    document.getElementById('resStressf').innerText = `0`;
-                } else if (sum === 1){
-                    document.getElementById('resStressf').innerText = `0`;
-                } else if (sum === 2) {
-                    document.getElementById('resStressf').innerText = `0`;
-                } else if (sum === 3) {
-                    document.getElementById('resStressf').innerText = `0`;
-                } else if (sum === 4) {
-                    document.getElementById('resStressf').innerText = `0`;
-                } else if (sum === 5) {
-                    document.getElementById('resStressf').innerText = `0`;
-                } else if (sum === 6) {
-                    document.getElementById('resStressf').innerText = `0`;
-                } else if (sum === 7) {
-                    document.getElementById('resStressf').innerText = `0`;
-                } else if (sum === 8) {
-                    document.getElementById('resStressf').innerText = `0`;
-                } else if (sum === 9) {
-                    document.getElementById('resStressf').innerText = `7`;
-                } else if (sum === 10) {
-                    document.getElementById('resStressf').innerText = `13`;
-                } else if (sum === 11) {
-                    document.getElementById('resStressf').innerText = `20`;
-                } else if (sum === 12) {
-                    document.getElementById('resStressf').innerText = `27`;
-                } else if (sum === 13) {
-                    document.getElementById('resStressf').innerText = `33`;
-                } else if (sum === 14) {
-                    document.getElementById('resStressf').innerText = `40`;
-                } else if (sum === 15) {
-                    document.getElementById('resStressf').innerText = `47`;
-                } else if (sum === 16) {
-                    document.getElementById('resStressf').innerText = `53`;
-                } else if (sum === 17) {
-                    document.getElementById('resStressf').innerText = `60`;
-                } else if (sum === 18) {
-                    document.getElementById('resStressf').innerText = `67`;
-                } else if (sum === 19) {
-                    document.getElementById('resStressf').innerText = `73`;
-                } else if (sum === 20) {
-                    document.getElementById('resStressf').innerText = `80`;
-                } else if (sum === 21) {
-                    document.getElementById('resStressf').innerText = `87`;
-                } else if (sum === 22) {
-                    document.getElementById('resStressf').innerText = `93`;
-                } else if (sum === 23) {
-                    document.getElementById('resStressf').innerText = `100`;
-                }
-            });
-        });
-    
-        const physicalCheckboxes = Array.from(checkboxes).slice(0, 12);
-    const psychologicalCheckboxes = Array.from(checkboxes).slice(12);
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
 
-    let physicalSum = 0;
-    let psychologicalSum = 0;
+<script>
 
-    physicalCheckboxes.forEach((checkbox) => {
-        checkbox.addEventListener('change', () => {
-            if (checkbox.checked) {
-                physicalSum += 1;
-            } else {
-                physicalSum -= 1;
+    window.onload = function() {
+            var nomeUsuario = localStorage.getItem('nomeUsuario');
+            var nomeDiv = document.getElementById('nome-usuario');
+            if (nomeDiv && nomeUsuario) {
+                nomeDiv.textContent = nomeUsuario;
             }
-            document.getElementById('physicalResult').innerText = `Resultado físico: ${physicalSum}`;
-            if (physicalSum === 0) {
-                document.getElementById('physicalPhase').innerText = `0`;
-            } else if (physicalSum === 1) {
-                document.getElementById('physicalPhase').innerText = `8`;
-            } else if (physicalSum === 2) {
-                document.getElementById('physicalPhase').innerText = `16`;
-            } else if (physicalSum === 3) {
-                document.getElementById('physicalPhase').innerText = `25`;
-            } else if (physicalSum === 4) {
-                document.getElementById('physicalPhase').innerText = `33`;
-            } else if (physicalSum === 5) {
-                document.getElementById('physicalPhase').innerText = `41`;
-            } else if (physicalSum === 6) {
-                document.getElementById('physicalPhase').innerText = `50`;
-            } else if (physicalSum === 7) {
-                document.getElementById('physicalPhase').innerText = `58`;
-            } else if (physicalSum === 8) {
-                document.getElementById('physicalPhase').innerText = `66`;
-            } else if (physicalSum === 9) {
-                document.getElementById('physicalPhase').innerText = `75`;
-            } else if (physicalSum === 10) {
-                document.getElementById('physicalPhase').innerText = `83`;
-            } else if (physicalSum === 11) {
-                document.getElementById('physicalPhase').innerText = `91`;
-            } else if (physicalSum === 12) {
-                document.getElementById('physicalPhase').innerText = `100`;
-            }
-        });
+        };
+
+    function getDataAtual() {
+        var dataAtual = new Date();
+        var dia = dataAtual.getDate();
+        var mes = dataAtual.getMonth() + 1; 
+        var ano = dataAtual.getFullYear();
+        var dataFormatada = dia + '/' + mes + '/' + ano;
+        return dataFormatada;
+    }
+
+    var dataElements = document.querySelectorAll('.data');
+    dataElements.forEach(function(element) {
+        element.innerText = "Data atual: " + getDataAtual();
     });
 
-    psychologicalCheckboxes.forEach((checkbox) => {
-        checkbox.addEventListener('change', () => {
-            if (checkbox.checked) {
-                psychologicalSum += 1;
-            } else {
-                psychologicalSum -= 1;
-            }
-            document.getElementById('psychologicalResult').innerText = `Resultado psicológico: ${psychologicalSum}`;
-            if (psychologicalSum === 0) {
-                document.getElementById('psychologicalPhase').innerText = `0`;
-            } else if (psychologicalSum === 1) {
-                document.getElementById('psychologicalPhase').innerText = `9`;
-            } else if (psychologicalSum === 2) {
-                document.getElementById('psychologicalPhase').innerText = `18`;
-            } else if (psychologicalSum === 3) {
-                document.getElementById('psychologicalPhase').innerText = `27`;
-            } else if (psychologicalSum === 4) {
-                document.getElementById('psychologicalPhase').innerText = `36`;
-            } else if (psychologicalSum === 5) {
-                document.getElementById('psychologicalPhase').innerText = `45`;
-            } else if (psychologicalSum === 6) {
-                document.getElementById('psychologicalPhase').innerText = `54`;
-            } else if (psychologicalSum === 7) {
-                document.getElementById('psychologicalPhase').innerText = `63`;
-            } else if (psychologicalSum === 8) {
-                document.getElementById('psychologicalPhase').innerText = `72`;
-            } else if (psychologicalSum === 9) {
-                document.getElementById('psychologicalPhase').innerText = `81`;
-            } else if (psychologicalSum === 10) {
-                document.getElementById('psychologicalPhase').innerText = `90`;
-            } else if (psychologicalSum === 11) {
-                document.getElementById('psychologicalPhase').innerText = `100`;
-            }
+    const checkboxes = document.querySelectorAll('.checkbox-container input[type="checkbox"]');
+
+    checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', () => {
+        const label = checkbox.nextElementSibling;
+        if (checkbox.checked) {
+        label.style.fontWeight = 'bold';
+        label.style.color = '#004080'; // Azul escuro
+        } else {
+        label.style.fontWeight = 'normal';
+        label.style.color = '#343a40'; // Cor original do texto
+        }
         });
     });
-
+   
     document.querySelector('.next-button').addEventListener('click', () => {
-
-       // Armazenar os valores no localStorage
-       localStorage.setItem('physicalPhaseValue3', document.getElementById('physicalPhase').innerText);
-        localStorage.setItem('psychologicalPhaseValue3', document.getElementById('psychologicalPhase').innerText);
-        localStorage.setItem('psychologicalResultValue3', document.getElementById('resStressf').innerText);
-
-        // Redirecionar para a próxima página
-        window.location.href = 'respfp.html';
+        html2canvas(document.body, {
+            onrendered: function (canvas) {
+                var image = canvas.toDataURL("image/jpeg"); 
+                var link = document.createElement('a');
+                link.href = image;
+                link.download = 'screenshot.jpeg'; 
+                link.click();
+                window.location.href = 'fim_test.html';
+            }
+        });
     });
 
 </script>
 </body>
-
 </html>

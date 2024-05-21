@@ -1,56 +1,117 @@
+/* Estilos Gerais */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f8f9fa;
+    color: #343a40;
 }
 
-h1 {
-    text-align: center;
-    font-weight: bold;
+main {
+    flex: 1; 
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.date {
-    font-size: 16px;
-    color: cornflowerblue;
-    text-align: center;
-    font-weight: bold;
-}
-
-.checkbox-container {
-    text-align: left;
-}
-
-.checkbox-container input[type="checkbox"] {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #ccc;
-    border-radius: 50%;
-    outline: none;
-    cursor: pointer;
+#tela-principal {
+    display: flex; /* Ativa o Flexbox para melhor controle */
+    flex-direction: column; /* Organiza os elementos em coluna */
+    justify-content: flex-end; /* Alinha os elementos no final do container */
+    max-width: 100%;
+    max-height: 100%;
     background-color: #fff;
-    vertical-align: middle;
-    margin-right: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.checkbox-container input[type="checkbox"]:checked {
-    background-color: #00BFFF;
-    border: none;
+h1, h2 {
+    text-align: center;
+    font-size: 1.5rem;
 }
 
-label {
+p {
+    font-size: 10px; /* Alteração no tamanho da fonte para 10 pixels */
+    color: #666;
+}
+
+#nome-usuario {
+    text-align: center;
+    font-size: 1.5rem;
     font-weight: bold;
-    vertical-align: middle;
+}
+
+#nome-usuario, .data, #titulo {
+    margin-bottom: 5px; /* Adiciona uma pequena margem inferior a cada elemento */
+    margin-top: 5px; /* Remove a margem superior do segundo título */
+  }
+  
+
+/* Estilo para o botão de salvar */
+.btn-salvar {
+    background-color: #4CAF50; /* Cor de fundo verde */
+    color: white;
+    padding: 12px 12px;
+    border: none;
+    border-radius: 30px; /* Bordas arredondadas */
+    cursor: pointer;
+    transition: background-color 0.3s; /* Transição suave de cor ao passar o mouse */
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase; /* Transforma o texto em maiúsculas */
+    letter-spacing: 1px; /* Espaçamento entre as letras */
+}
+
+/* Estilo para o ícone dentro do botão */
+.btn-salvar i {
+    margin-right: 0px;
+}
+
+/* Estilo para o botão de salvar ao passar o mouse */
+.btn-salvar:hover {
+    background-color: #45a049; /* Cor de fundo verde ligeiramente mais escura */
+}
+
+#symptomForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+    accent-color: #007bff;
 }
 
 .button-container {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 30px;
 }
 
+.checkbox-container label {
+    font-weight: normal;
+    color: #343a40; /* Cor original do texto */
+  }  
+
 .next-button {
-    padding: 10px 20px;
-    background-color: #00BFFF;
+    padding: 12px 25px;
+    background-color: #007bff;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -58,23 +119,3 @@ label {
     font-size: 16px;
 }
 
-.result {
-    margin-top: 10px;
-    font-weight: bold;
-}
-
-#symptomForm {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-}
-
-#result,
-#physicalResult,
-#psychologicalResult,
-#physicalPhase,
-#psychologicalPhase {
-    text-align: center;
-    margin-top: 10px;
-    font-weight: bold;
-}
