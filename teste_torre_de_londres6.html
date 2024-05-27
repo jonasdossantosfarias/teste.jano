@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>Torre de Londres</title>
+    <link rel="stylesheet" href="css/aula16.css" />
+    <style>
+         /* General Styling */
+        body {
+            display: flex;
+            flex-direction: column; /* Stack header, game, and info panel vertically */
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f0f8ff, #e6f2ff);
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            perspective: 1200px; 
+        }
+
+        #tela-principal {
+            position: relative;
+            margin-bottom: 60px;
+        }
+        #nome-usuario {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        p {
+            font-size: 10px; /* Alteração no tamanho da fonte para 10 pixels */
+            color: #666;
+            margin-bottom: 10px;
+        }
+        #game-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        #base {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        width: 45%;  /* Slightly adjusted width */
+        height: 250px;
+        background: linear-gradient(135deg, #ddd, #eee);
+        border: none;          /* Removed border for a cleaner look */
+        border-radius: 20px;   /* Increased border radius */
+        box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.4); /* Softer, more modern shadow */
+        transform-style: preserve-3d;
+        }
+
+        #game-container {
+        display: grid;           /* Use grid for better spacing and alignment */
+        grid-template-columns: repeat(3, 1fr); /* Three equal columns */
+        gap: 25px;             /* Spacing between columns */
+        width: 90%;             /* Increased width */
+        position: relative;
+        }
+
+        .peg-container {
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: center;
+        position: relative;
+        }
+
+        .peg {
+        width: 18px; 
+        height: 180px;
+        background: linear-gradient(180deg, #666, #333); /* Darker gradient for contrast */
+        border-radius: 8px;       /* Slightly more rounded corners */
+        box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.6), /* More pronounced inset shadow */
+                    0 2px 4px rgba(0, 0, 0, 0.3);    /* Subtle outer shadow */
+        position: absolute;
+        bottom: 0;
+        transition: transform 0.2s ease; /* Add subtle transition on hover */
+        }
+
+        .peg:hover {
+        transform: translateY(-2px); /* Lift up slightly on hover */
+        }
+
+        /* Adjusted peg heights for better visual balance */
+        .short-peg { height: 50px; }
+        .medium-peg { height: 100px; }
+        .tall-peg { height: 150px; }
+
+        .ball {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        margin-bottom: 2px;
+        cursor: pointer;
+        position: relative;
+        box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5); /* More defined ball shadow */
+        transition: transform 0.2s ease; 
+        }
+
+        .ball:hover {
+        transform: scale(1.1); /* Increase size slightly on hover */
+        }
+
+        /* Brighter, more vibrant gradients for the balls */
+        #ball-red { 
+        background: radial-gradient(circle, #ff3333, #cc0000); 
+        }
+        #ball-green { 
+        background: radial-gradient(circle, #33ff33, #00cc00); 
+        }
+        #ball-blue { 
+        background: radial-gradient(circle, #3333ff, #0000cc); 
+        }
+
+        #header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;   /* Centraliza os itens horizontalmente */
+            padding: 20px;
+            background: linear-gradient(135deg, #fff, #f2f2f2);
+            position: absolute;
+            top: 10px; 
+            right: 10px;
+            width: auto;
+        }
+
+        #logo { 
+            width: 220px;
+            height: 150px;
+        }
+
+        #title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        #contador-movimentos {
+            position: absolute;
+            top: 10px;
+            left: 10px; /* Ou qualquer outra posição desejada */
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px;
+            background-color: #c4c1c1; /* Dark gray background */
+            border-radius: 5px;
+            color: bla; /* Set text color to white */
+        }
+        #contador-tentativas {
+            top: 10px;
+            left: 10px; /* Or any other desired position */
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px;
+            background-color: #807e7e; /* Dark gray background */
+            border-radius: 5px;
+            color: white; /* Set text color to white */
+        }
+        #game-info {
+            display: flex;
+            justify-content: space-around;
+            width: 90%;
+            margin: 20px auto;
+            font-size: 18px;
+        }
+
+        #game-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        #problema-atual, #movimentos-realizados, #movimentos-permitidos {
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px 20px; /* Aumenta o padding para melhor legibilidade */
+            margin: 5px 0; /* Adiciona um pequeno espaço entre os elementos */
+            border-radius: 5px;
+            background-color: #f0f0f0; /* Cinza claro */
+            color: #333; /* Cinza escuro */
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+        }
+
+        #proximo-problema-button-container,
+        #reset-button-container {
+            display: none; /* Esconde os containers dos botões */
+        }
+
+        #proximo-problema-button-container { /* Estiliza o container do botão */
+            position: absolute;
+            top: 10px; /* Distância do topo da base */
+            left: 50%;
+            transform: translateX(-50%); /* Centraliza horizontalmente */
+        }
+
+        #proximo-problema-button { /* Estiliza o botão em si */
+            background-color: #e04f5f; /* Cor de fundo vermelha */
+            color: white; /* Cor do texto branca */
+            padding: 10px 20px; /* Espaçamento interno */
+            border: none; /* Remove a borda padrão */
+            border-radius: 25px; /* Bordas arredondadas */
+            cursor: pointer; /* Muda o cursor para indicar que é clicável */
+            font-size: 16px; /* Aumenta o tamanho da fonte */
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Adiciona uma sombra sutil */
+            transition: background-color 0.3s ease; /* Adiciona uma transição suave na cor de fundo */
+        }
+
+        #proximo-problema-button:hover { /* Efeito hover */
+            background-color: #cc0000; /* Cor de fundo mais escura ao passar o mouse */
+        }
+
+        #reset-button-container { /* Estiliza o container do botão */
+            position: absolute;
+            top: 10px; /* Distância do topo da base */
+            left: 50%;
+            transform: translateX(-50%); /* Centraliza horizontalmente */
+        }
+
+        #reset-button { /* Estiliza o botão em si */
+            background-color: #e04f5f; /* Cor de fundo vermelha */
+            color: white; /* Cor do texto branca */
+            padding: 10px 20px; /* Espaçamento interno */
+            border: none; /* Remove a borda padrão */
+            border-radius: 25px; /* Bordas arredondadas */
+            cursor: pointer; /* Muda o cursor para indicar que é clicável */
+            font-size: 16px; /* Aumenta o tamanho da fonte */
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Adiciona uma sombra sutil */
+            transition: background-color 0.3s ease; /* Adiciona uma transição suave na cor de fundo */
+        }
+
+        #reset-button:hover { /* Efeito hover */
+            background-color: #cc0000; /* Cor de fundo mais escura ao passar o mouse */
+        }
+
+        #mensagem-vitoria {
+            /* ... (outras propriedades) */
+            color: #000080; /* Azul escuro */
+        }
+
+        #mensagem-vitoria strong { /* Estiliza a tag strong dentro da mensagem */
+            font-weight: bold; /* Negrito */
+        }
+
+
+    </style>
+</head>
+<body>
+    <main id='tela-principal'>
+        <div id="nome-usuario"></div> <!-- Div para exibir o nome do usuário -->
+        <p class="data"></p> <!-- Alterado para classe -->
+    </main>
+    <div id="header">
+        <img id="logo" src="imagens/testetorrelondres/testetorrelondres7.png" alt="Logo Torre de Londres">
+        <div id="title">Objetivo</div>
+    </div>
+    <div id="contador-movimentos">Movimentos Restantes: 4</div>
+    <div id="game-area">
+        <div id="base">
+            <div id="game-container">
+                <div class="peg-container" data-max-balls="3">
+                    <div class="peg tall-peg"></div> 
+                </div>
+                <div class="peg-container" data-max-balls="2">
+                    <div class="peg medium-peg"></div>
+                </div>
+                <div class="peg-container" data-max-balls="1">
+                    <div class="peg short-peg"></div>
+                    <div class="ball" id="ball-red" draggable="true"></div>
+                    <div class="ball" id="ball-green" draggable="true"></div>
+                    <div class="ball" id="ball-blue" draggable="true"></div>
+                </div>
+            </div>
+        </div>
+        <div id="pegs">
+            </div>
+    </div>
+    
+    <div id="contador-tentativas">Tentativa: 1</div>
+    <div id="game-info">
+        <div id="problema-atual">Problema: 7</div>
+        <div id="movimentos-realizados">Movimentos: 0</div>
+        <div id="movimentos-permitidos">Movimentos Permitidos: 4</div>
+    </div>
+    <div id="reset-button-container"> 
+        <button id="reset-button">Nova Tentativa</button>
+      </div>
+      <div id="proximo-problema-button-container"> 
+        <button id="proximo-problema-button">Próximo Problema</button> 
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <script src="js/script_menu.js"></script>
+    <script src="script.js"></script> 
+    
+    <script>
+        window.onload = function() {
+            var nomeUsuario = localStorage.getItem('nomeUsuario');
+            var nomeDiv = document.getElementById('nome-usuario');
+            if (nomeDiv && nomeUsuario) {
+                nomeDiv.textContent = nomeUsuario;
+            }
+        };
+        // Função para obter a data atual
+        function getDataAtual() {
+            var dataAtual = new Date();
+            var dia = dataAtual.getDate();
+            var mes = dataAtual.getMonth() + 1; // Os meses são indexados de 0 a 11, então é necessário adicionar 1
+            var ano = dataAtual.getFullYear();
+            var dataFormatada = dia + '/' + mes + '/' + ano;
+            return dataFormatada;
+        }
+
+        // Exibir a data atual na página
+        var dataElements = document.querySelectorAll('.data');
+        dataElements.forEach(function(element) {
+            element.innerText = "Data atual: " + getDataAtual();
+        });
+        // Variáveis para controlar o estado do jogo
+    let problemaAtual = 1;
+    let movimentosPermitidos = 4; 
+    let movimentosRealizados = 0;
+    let bolaArrastada = null;
+    let movimentosRestantes = 4;
+    let tentativas = 0;
+
+    // Elementos do DOM
+    const gameContainer = document.getElementById('game-container');
+    const problemaAtualDisplay = document.getElementById('problema-atual');
+    const movimentosPermitidosDisplay = document.getElementById('movimentos-permitidos');
+    const pinos = document.querySelectorAll('.peg-container');
+    const contadorMovimentos = document.getElementById('contador-movimentos');
+    const contadorTentativas = document.getElementById('contador-tentativas');
+    const proximoProblemaButtonContainer = document.getElementById('proximo-problema-button-container');
+    const resetButtonContainer = document.getElementById('reset-button-container');
+
+    // Elemento para a mensagem de vitória
+    const mensagemVitoria = document.createElement('div');
+    mensagemVitoria.id = 'mensagem-vitoria';
+    document.body.appendChild(mensagemVitoria);
+
+    function atualizarContadorMovimentos() {
+        contadorMovimentos.textContent = `Movimentos Restantes: ${movimentosRestantes}`;
+    }
+
+    function atualizarContadorTentativas() {
+        contadorTentativas.textContent = `Tentativa: ${tentativas}`;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        atualizarContadorMovimentos();
+        atualizarContadorTentativas();
+        resetJogo();
+        proximoProblemaButtonContainer.style.display = 'none'; // Esconde o botão "Próximo Problema"
+        resetButtonContainer.style.display = 'none'; // Esconde o botão "Nova Tentativa"
+    });
+
+    function mostrarAviso() {
+        alert("Não pode mover essa esfera!!!");
+    }
+
+    document.querySelectorAll('.ball').forEach(bola => {
+        bola.addEventListener('dragstart', (e) => {
+            if (verificarVitoria()) { // Verifica se o jogador já venceu
+            e.preventDefault(); // Impede o arrasto se já venceu
+            return;
+        }
+
+        const pino = bola.parentNode;
+            if (bola !== pino.lastElementChild) {
+                mostrarAviso();
+                e.preventDefault(); 
+                return;
+            }
+            bolaArrastada = bola;
+        });
+
+        bola.addEventListener('dragend', (e) => {
+            bolaArrastada = null;
+        });
+    });
+
+    pinos.forEach(pino => {
+        pino.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            if (pino.querySelectorAll('.ball').length >= parseInt(pino.dataset.maxBalls)) {
+                e.dataTransfer.dropEffect = 'none'; 
+            } else {
+                e.dataTransfer.dropEffect = 'move'; 
+            }
+            if (bolaArrastada && bolaArrastada.parentNode === pino) {
+                e.dataTransfer.dropEffect = 'none';
+                return; 
+            }
+        });
+
+        pino.addEventListener('drop', (e) => {
+            if (bolaArrastada && pino.querySelectorAll('.ball').length < parseInt(pino.dataset.maxBalls) && movimentosRestantes > 0) {
+                pino.appendChild(bolaArrastada);
+                bolaArrastada.style.position = 'relative';
+                atualizarPosicaoBolas(pino);
+
+                movimentosRestantes--;
+                movimentosRealizados++; 
+
+                document.getElementById('movimentos-realizados').textContent = `Movimentos: ${movimentosRealizados}`;
+
+                atualizarContadorMovimentos(); 
+
+                if (verificarVitoria()) {
+                    return; // Se vencer, não faz mais nada
+                }
+
+                // Verificar derrota após o movimento
+                if (movimentosRestantes === 0 && !verificarVitoria()) {
+                    
+                    resetButtonContainer.style.display = 'block'; // Mostra o botão "Nova Tentativa"
+                }
+            }
+        });
+    });
+
+        // Função para verificar se o jogador venceu
+        function verificarVitoria() {
+    const pinoMenor = document.querySelector('.peg-container[data-max-balls="1"]');
+    const pinoMaior = document.querySelector('.peg-container[data-max-balls="3"]');
+    const bolaVermelha = document.getElementById('ball-red');
+    const bolaAzul = document.getElementById('ball-blue');
+    const bolaVerde = document.getElementById('ball-green');
+
+    // Verifica se a bola verde está no pino menor
+    if (pinoMenor.contains(bolaVerde)) {
+
+        // Verifica se a bola azul e a bola vermelha estão no pino maior
+        if (pinoMaior.contains(bolaAzul) && pinoMaior.contains(bolaVermelha)) {
+
+            // Pega todas as bolas do pino maior
+            const bolasPinoMaior = pinoMaior.querySelectorAll('.ball');
+
+            // Verifica se a bola azul está em cima da vermelha
+            const indiceBolaAzul = Array.from(bolasPinoMaior).indexOf(bolaAzul);
+            const indiceBolaVermelha = Array.from(bolasPinoMaior).indexOf(bolaVermelha);
+
+            if (indiceBolaAzul > indiceBolaVermelha) {
+                mensagemVitoria.innerHTML = "<strong>CERTO!!</strong>";
+                mensagemVitoria.style.display = 'block';
+                proximoProblemaButtonContainer.style.display = 'block';
+
+                // Remove o atributo draggable de todas as bolas
+                document.querySelectorAll('.ball').forEach(bola => {
+                    bola.draggable = false;
+                });
+
+                terminar(); // Chama a função para avançar para o próximo problema
+                return true;
+            }
+        }
+    }
+    return false; 
+}
+
+// Chama a função verificarVitoria() ao carregar a página
+document.addEventListener('DOMContentLoaded', function() {
+    // ... (seu código existente)
+
+    verificarVitoria(); // Verifica a vitória ao carregar a página
+});
+
+function terminar() {
+            // Verifica se o nome do usuário foi salvo
+            var nomeUsuario = localStorage.getItem('nomeUsuario');
+            if (!nomeUsuario) {
+                alert('Por favor, insira seu nome completo antes de terminar.');
+                return; // Retorna para evitar que o código continue executando
+            }
+
+            // Captura de tela...
+            html2canvas(document.body, {
+                onrendered: function (canvas) {
+                    var image = canvas.toDataURL("image/jpeg"); // Convertendo para formato JPEG
+                    var link = document.createElement('a');
+                    link.href = image;
+                    link.download = 'screenshot.jpeg'; // Definindo o nome do arquivo como screenshot.jpeg
+                    link.click();
+
+                    // Redirecionar para test_ac_apl.html após salvar a captura de tela
+                    window.location.href = 'teste_torre_de_londres7.html';
+                }
+            });
+        }
+
+        function atualizarPosicaoBolas(pino) {
+            const bolas = pino.querySelectorAll('.ball');
+
+            // Verifica se há bolas no pino
+            if (bolas.length > 0) {
+                const alturaBola = bolas[0].offsetHeight;
+                const fatorEspaco = 0.1; 
+
+                bolas.forEach((bola, index) => {
+                    bola.style.bottom = `${index * alturaBola * fatorEspaco}px`; 
+                });
+            }
+        }
+
+        // Adiciona o evento de clique ao botão de reset
+        document.getElementById('reset-button').addEventListener('click', resetJogo);
+
+        function resetJogo() {
+            // Configuração inicial (coloca as bolas nas posições corretas)
+            const pino1 = document.querySelector('.peg-container[data-max-balls="3"]'); // Pino maior
+            const pino2 = document.querySelector('.peg-container[data-max-balls="2"]'); // Pino médio
+            const pino3 = document.querySelector('.peg-container[data-max-balls="1"]'); // Pino menor
+
+            pino1.appendChild(document.getElementById("ball-green")); // Bola verde no pino maior
+            pino1.appendChild(document.getElementById("ball-red"));   // Bola vermelha no pino maior
+            pino2.appendChild(document.getElementById("ball-blue"));  // Bola azul no pino médio 
+            
+            movimentosRestantes = 4;
+            movimentosRealizados = 0;
+            tentativas++;
+            atualizarContadorMovimentos();
+            atualizarContadorTentativas();
+            mensagemVitoria.style.display = 'none'; // Esconde a mensagem de vitória
+            proximoProblemaButtonContainer.style.display = 'none'; // Esconde o botão "Próximo Problema"
+            resetButtonContainer.style.display = 'none'; // Esconde o botão "Nova Tentativa"
+        }
+
+
+    </script>
+</body>
+</html>
