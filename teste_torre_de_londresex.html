@@ -7,203 +7,199 @@
     <title>Torre de Londres</title>
     <link rel="stylesheet" href="css/aula16.css" />
     <style>
-         /* General Styling */
-        body {
-            display: flex;
-            flex-direction: column; /* Stack header, game, and info panel vertically */
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #f0f8ff, #e6f2ff);
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            perspective: 1200px; 
-        }
+        /* Estilização Geral */
+body {
+    display: flex;
+    flex-direction: column; /* Organiza header, jogo e painel de informações verticalmente */
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f0f8ff, #e6f2ff);
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    perspective: 1200px; /* Adiciona perspectiva para efeitos 3D */
+}
 
-         /* Estilos adicionais podem ser colocados aqui */
-         #tela-principal {
-            position: relative;
-        }
+/* Estilos específicos para elementos */
+#tela-principal {
+    position: relative; /* Permite posicionamento relativo de elementos filhos */
+}
 
-        #nome-usuario {
-            text-align: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-top: 20px;
-        }
+#nome-usuario { /* Campo de entrada do nome do usuário */
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 20px;
+}
 
-        p {
-            font-size: 10px; /* Alteração no tamanho da fonte para 10 pixels */
-            color: #666;
-            margin-bottom: 10px;
-        }
+p { /* Parágrafo com informações */
+    font-size: 10px;
+    color: #666; /* Cinza escuro */
+    margin-bottom: 10px;
+}
 
-        /* Estilo para o contêiner do campo de nome e do botão */
-        .input-container {
-            display: flex;
-            align-items: center;
-        }
+/* Estilização do contêiner de input e botão */
+.input-container {
+    display: flex;
+    align-items: center; /* Alinha verticalmente os itens no container */
+}
 
-        /* Estilo para o campo de entrada de texto */
-        .input-field {
-            padding: 10px;
-            border-radius: 20px; /* Bordas arredondadas */
-            border: 1px solid #ccc;
-            font-size: 16px;
-            outline: none;
-            flex: 1; /* Ocupa o espaço restante */
-        }
+.input-field { /* Campo de entrada de texto */
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    outline: none; /* Remove o contorno padrão do input ao focar */
+    flex: 1; /* Ocupa o espaço restante disponível no container */
+}
 
-        /* Estilo para o botão de salvar */
-            .btn-salvar {
-                background-color: #4CAF50; /* Cor de fundo verde */
-                color: white;
-                padding: 12px 12px;
-                border: none;
-                border-radius: 30px; /* Bordas arredondadas */
-                cursor: pointer;
-                transition: background-color 0.3s; /* Transição suave de cor ao passar o mouse */
-                font-size: 16px;
-                font-weight: bold;
-                text-transform: uppercase; /* Transforma o texto em maiúsculas */
-                letter-spacing: 1px; /* Espaçamento entre as letras */
-            }
+.btn-salvar { /* Botão de salvar */
+    background-color: #4CAF50; /* Verde */
+    color: white;
+    padding: 12px 12px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Transição suave da cor de fundo */
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
 
-            /* Estilo para o ícone dentro do botão */
-            .btn-salvar i {
-                margin-right: 0px;
-            }
+.btn-salvar i { /* Ícone dentro do botão */
+    margin-right: 0px;
+}
 
-            /* Estilo para o botão de salvar ao passar o mouse */
-            .btn-salvar:hover {
-                background-color: #45a049; /* Cor de fundo verde ligeiramente mais escura */
-            }
+.btn-salvar:hover { /* Efeito hover no botão */
+    background-color: #45a049; /* Verde mais escuro */
+}
 
-        #game-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
+/* Estilização do jogo */
+#game-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Três colunas de largura igual */
+    gap: 25px; /* Espaçamento entre as colunas */
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+}
 
-        #base {
-        display: flex;
-        justify-content: center;
-        align-items: flex-end;
-        width: 45%;  /* Slightly adjusted width */
-        height: 250px;
-        background: linear-gradient(135deg, #ddd, #eee);
-        border: none;          /* Removed border for a cleaner look */
-        border-radius: 20px;   /* Increased border radius */
-        box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.4); /* Softer, more modern shadow */
-        transform-style: preserve-3d;
-        }
+.peg-container { /* Container dos pinos */
+    display: flex;
+    flex-direction: column-reverse; /* Inverte a ordem dos elementos filhos */
+    align-items: center;
+    position: relative;
+}
 
-        #game-container {
-        display: grid;           /* Use grid for better spacing and alignment */
-        grid-template-columns: repeat(3, 1fr); /* Three equal columns */
-        gap: 25px;             /* Spacing between columns */
-        width: 90%;             /* Increased width */
-        position: relative;
-        }
+.peg { /* Pinos */
+    width: 18px;
+    height: 180px;
+    background: linear-gradient(180deg, #666, #333); /* Gradiente de cinza escuro */
+    border-radius: 8px;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.6), /* Sombra interna */
+                0 2px 4px rgba(0, 0, 0, 0.3); /* Sombra externa */
+    position: absolute;
+    bottom: 0;
+    transition: transform 0.2s ease; /* Transição suave para o efeito hover */
+}
 
-        .peg-container {
-        display: flex;
-        flex-direction: column-reverse;
-        align-items: center;
-        position: relative;
-        }
+.peg:hover { /* Efeito hover nos pinos */
+    transform: translateY(-2px); /* Move o pino 2px para cima */
+}
 
-        .peg {
-        width: 18px; 
-        height: 180px;
-        background: linear-gradient(180deg, #666, #333); /* Darker gradient for contrast */
-        border-radius: 8px;       /* Slightly more rounded corners */
-        box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.6), /* More pronounced inset shadow */
-                    0 2px 4px rgba(0, 0, 0, 0.3);    /* Subtle outer shadow */
-        position: absolute;
-        bottom: 0;
-        transition: transform 0.2s ease; /* Add subtle transition on hover */
-        }
+/* Alturas dos pinos */
+.short-peg { height: 50px; }
+.medium-peg { height: 100px; }
+.tall-peg { height: 150px; }
 
-        .peg:hover {
-        transform: translateY(-2px); /* Lift up slightly on hover */
-        }
+/* Bolas */
+.ball {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%; /* Forma circular */
+    margin-bottom: 2px;
+    cursor: pointer;
+    position: relative;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5); /* Sombra */
+    transition: transform 0.2s ease; /* Transição suave para o efeito hover */
+}
 
-        /* Adjusted peg heights for better visual balance */
-        .short-peg { height: 50px; }
-        .medium-peg { height: 100px; }
-        .tall-peg { height: 150px; }
+.ball:hover { /* Efeito hover nas bolas */
+    transform: scale(1.1); /* Aumenta a escala em 10% */
+}
 
-        .ball {
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        margin-bottom: 2px;
-        cursor: pointer;
-        position: relative;
-        box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5); /* More defined ball shadow */
-        transition: transform 0.2s ease; 
-        }
+/* Gradientes das bolas */
+#ball-red {
+    background: radial-gradient(circle, #ff3333, #cc0000); /* Vermelho */
+}
+#ball-green {
+    background: radial-gradient(circle, #33ff33, #00cc00); /* Verde */
+}
+#ball-blue {
+    background: radial-gradient(circle, #3333ff, #0000cc); /* Azul */
+}
 
-        .ball:hover {
-        transform: scale(1.1); /* Increase size slightly on hover */
-        }
+/* Base do jogo */
+#base {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    width: 45%;
+    height: 250px;
+    background: linear-gradient(135deg, #ddd, #eee); /* Gradiente de cinza claro */
+    border: none;
+    border-radius: 20px;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.4); /* Sombra */
+    transform-style: preserve-3d; /* Preserva o estilo 3D dos elementos filhos */
+}
 
-        /* Brighter, more vibrant gradients for the balls */
-        #ball-red { 
-        background: radial-gradient(circle, #ff3333, #cc0000); 
-        }
-        #ball-green { 
-        background: radial-gradient(circle, #33ff33, #00cc00); 
-        }
-        #ball-blue { 
-        background: radial-gradient(circle, #3333ff, #0000cc); 
-        }
+/* Cabeçalho */
+#header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #fff, #f2f2f2); /* Gradiente branco */
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: auto; 
+}
 
-        #header {
-            display: flex;
-            flex-direction: column;
-            align-items: center;   /* Centraliza os itens horizontalmente */
-            padding: 20px;
-            background: linear-gradient(135deg, #fff, #f2f2f2);
-            position: absolute;
-            top: 10px; 
-            right: 10px;
-            width: auto;
-        }
+#logo { /* Logo */
+    width: 220px;
+    height: 150px;
+}
 
-        #logo { 
-            width: 220px;
-            height: 150px;
-        }
+#title { /* Título */
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
 
-        #title {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
+/* Contadores */
+#contador-movimentos, #contador-tentativas {
+    position: absolute;
+    top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+}
 
-        #contador-movimentos {
-            position: absolute;
-            top: 10px;
-            left: 10px; /* Ou qualquer outra posição desejada */
-            font-size: 18px;
-            font-weight: bold;
-            padding: 10px;
-            background-color: #c4c1c1; /* Dark gray background */
-            border-radius: 5px;
-            color: bla; /* Set text color to white */
-        }
-        #contador-tentativas {
-            top: 10px;
-            left: 10px; /* Or any other desired position */
-            font-size: 18px;
-            font-weight: bold;
-            padding: 10px;
-            background-color: #807e7e; /* Dark gray background */
-            border-radius: 5px;
-            color: white; /* Set text color to white */
-        }
+#contador-movimentos {
+    left: 10px;
+    background-color: #c4c1c1; /* Cinza claro */
+    color: black;
+}
+
+#contador-tentativas {
+    left: 180px;
+    background-color: #807e7e; /* Cinza escuro */
+}
+
         #game-info {
             display: flex;
             justify-content: space-around;
