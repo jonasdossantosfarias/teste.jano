@@ -345,7 +345,7 @@
     <script src="script.js"></script> 
     
     <script>
-
+        
         function getDataAtual() {
             var dataAtual = new Date();
             var dia = dataAtual.getDate();
@@ -361,23 +361,83 @@
              element.innerText = "Data atual: " + getDataAtual();
          });
 
-        // Variáveis para controlar o estado do jogo
-        let problemaAtual = 1;
-        let movimentosPermitidos = 2; 
-        let movimentosRealizados = 0;
-        let bolaArrastada = null;
-        let movimentosRestantes = 2;
-        let tentativas = 0;
+       // Variáveis para controlar o estado do jogo
+    let problemaAtual = 1;
+    let movimentosPermitidos = 2; 
+    let movimentosRealizados = 0;
+    let bolaArrastada = null;
+    let movimentosRestantes = 2;
+    let tentativas = 0;
 
-        // Elementos do DOM
-        const gameContainer = document.getElementById('game-container');
-        const problemaAtualDisplay = document.getElementById('problema-atual');
-        const movimentosPermitidosDisplay = document.getElementById('movimentos-permitidos');
-        const pinos = document.querySelectorAll('.peg-container');
-        const contadorMovimentos = document.getElementById('contador-movimentos');
-        const contadorTentativas = document.getElementById('contador-tentativas');
-        const proximoProblemaButtonContainer = document.getElementById('proximo-problema-button-container');
-        const resetButtonContainer = document.getElementById('reset-button-container');
+    // Elementos do DOM
+    const gameContainer = document.getElementById('game-container');
+    const problemaAtualDisplay = document.getElementById('problema-atual');
+    const movimentosPermitidosDisplay = document.getElementById('movimentos-permitidos');
+    const pinos = document.querySelectorAll('.peg-container');
+    const contadorMovimentos = document.getElementById('contador-movimentos');
+    const contadorTentativas = document.getElementById('contador-tentativas');
+    const proximoProblemaButtonContainer = document.getElementById('proximo-problema-button-container');
+    const resetButtonContainer = document.getElementById('reset-button-container');
+    const mensagemVitoria = document.createElement('div');
+    mensagemVitoria.id = 'mensagem-vitoria';
+    document.body.appendChild(mensagemVitoria);
+
+    // Funções auxiliares
+    function iniciarArrasto(event) {
+        // Impede o arrasto se o jogo já foi vencido
+        if (verificarVitoria()) {
+            event.preventDefault();
+            return;
+        }
+
+        // Obtém o elemento pai (pino) da bola arrastada
+        const pinoOrigem = event.target.parentNode;
+
+        // Impede o arrasto se a bola não for a última do pino
+        if (event.target !== pinoOrigem.lastElementChild) {
+            mostrarAviso("Não pode mover essa esfera!");
+            event.preventDefault();
+            return;
+        }
+
+        // Armazena a referência da bola sendo arrastada
+        bolaArrastada = event.target;
+
+        // Normaliza o objeto DataTransfer para compatibilidade entre mouse e toque
+        event.dataTransfer = event.dataTransfer || {};
+
+        // Define o efeito permitido para a operação de arrastar e soltar
+        event.dataTransfer.effectAllowed = 'move';
+
+        // Armazena o ID da bola arrastada nos dados da operação
+        event.dataTransfer.setData('text/plain', event.target.id);
+    }
+
+    function moverBola(event) {
+        if (bolaArrastada) {
+            event.preventDefault();
+
+            // Obtém as coordenadas do ponteiro (mouse ou toque)
+            const touch = event.touches ? event.touches[0] : event;
+            const x = touch.clientX;
+            const y = touch.clientY;
+
+            // Calcula a posição da bola em relação ao pino de origem
+            const rectPinoOrigem = bolaArrastada.parentNode.getBoundingClientRect();
+            let bolaX = x - rectPinoOrigem.left - bolaArrastada.offsetWidth / 2;
+            let bolaY = rectPinoOrigem.bottom - y - bolaArrastada.offsetHeight / 2;
+
+            // Limita o movimento da bola dentro do pino de origem
+            const maxX = rectPinoOrigem.width - bolaArrastada.offsetWidth;
+            const maxY = rectPinoOrigem.height - bolaArrastada.offsetHeight;
+            bolaX = Math.min(Math.max(bolaX, 0), maxX);
+            bolaY = Math.min(Math.max(bolaY, 0), maxY);
+
+            // Atualiza a posição da bola
+            bolaArrastada.style.left = `${bolaX}px`;
+            bolaArrastada.style.top = `${bolaY}px`;
+        }
+    }
 
         // Elemento para a mensagem de vitória
         const mensagemVitoria = document.createElement('div');
@@ -514,11 +574,13 @@
                 // Verifica se há bolas no pino
                 if (bolas.length > 0) {
                     const alturaBola = bolas[0].offsetHeight;
-                    const fatorEspaco = 0.1; 
+                    const fatorEspaco = 1.2; // Ajuste conforme necessário
 
                     bolas.forEach((bola, index) => {
-                        bola.style.bottom = `${index * alturaBola * fatorEspaco}px`; 
-                    });
+                    bola.style.position = 'absolute';
+                    bola.style.left = '0';
+                    bola.style.bottom = `${index * alturaBola * fatorEspaco}px`;
+                });
                 }
             }
 
