@@ -6,342 +6,288 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <title>Torre de Londres</title>
     <style>
-        /* Estilização Geral */
-body {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #f0f8ff, #e6f2ff);
-    margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    perspective: 1200px;
-}
+         /* General Styling */
+        body {
+            display: flex;
+            flex-direction: column; /* Stack header, game, and info panel vertically */
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f0f8ff, #e6f2ff);
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            perspective: 1200px; 
+        }
 
-/* Estilos específicos para elementos */
-#tela-principal {
-    position: relative;
-}
+         /* Estilos adicionais podem ser colocados aqui */
+         #tela-principal {
+            position: relative;
+        }
 
-#nome-usuario {
-    text-align: center;
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-top: 20px;
-}
+        #nome-usuario {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 20px;
+        }
 
-p {
-    font-size: 10px;
-    color: #666;
-    margin-bottom: 10px;
-}
+        p {
+            font-size: 10px; /* Alteração no tamanho da fonte para 10 pixels */
+            color: #666;
+            margin-bottom: 10px;
+        }
 
-/* Estilização do contêiner de input e botão */
-.input-container {
-    display: flex;
-    align-items: center;
-}
+        /* Estilo para o contêiner do campo de nome e do botão */
+        .input-container {
+            display: flex;
+            align-items: center;
+        }
 
-.input-field {
-    padding: 10px;
-    border-radius: 20px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-    outline: none;
-    flex: 1;
-}
+        /* Estilo para o campo de entrada de texto */
+        .input-field {
+            padding: 10px;
+            border-radius: 20px; /* Bordas arredondadas */
+            border: 1px solid #ccc;
+            font-size: 16px;
+            outline: none;
+            flex: 1; /* Ocupa o espaço restante */
+        }
 
-.btn-salvar {
-    background-color: #4CAF50;
-    color: white;
-    padding: 12px 12px;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-size: 16px;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
+        /* Estilo para o botão de salvar */
+            .btn-salvar {
+                background-color: #4CAF50; /* Cor de fundo verde */
+                color: white;
+                padding: 12px 12px;
+                border: none;
+                border-radius: 30px; /* Bordas arredondadas */
+                cursor: pointer;
+                transition: background-color 0.3s; /* Transição suave de cor ao passar o mouse */
+                font-size: 16px;
+                font-weight: bold;
+                text-transform: uppercase; /* Transforma o texto em maiúsculas */
+                letter-spacing: 1px; /* Espaçamento entre as letras */
+            }
 
-.btn-salvar i {
-    margin-right: 0px;
-}
+            /* Estilo para o ícone dentro do botão */
+            .btn-salvar i {
+                margin-right: 0px;
+            }
 
-.btn-salvar:hover {
-    background-color: #45a049;
-}
+            /* Estilo para o botão de salvar ao passar o mouse */
+            .btn-salvar:hover {
+                background-color: #45a049; /* Cor de fundo verde ligeiramente mais escura */
+            }
 
-/* Estilização do jogo */
-#game-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 25px;
-    width: 90%;
-    max-width: 600px;
-    position: relative;
-}
+        #game-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
 
-.peg-container {
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
-    position: relative;
-}
+        #base {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        width: 45%;  /* Slightly adjusted width */
+        height: 250px;
+        background: linear-gradient(135deg, #ddd, #eee);
+        border: none;          /* Removed border for a cleaner look */
+        border-radius: 20px;   /* Increased border radius */
+        box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.4); /* Softer, more modern shadow */
+        transform-style: preserve-3d;
+        }
 
-.peg {
-    width: 18px;
-    height: 180px;
-    background: linear-gradient(180deg, #666, #333);
-    border-radius: 8px;
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.6),
-                0 2px 4px rgba(0, 0, 0, 0.3);
-    position: absolute;
-    bottom: 0;
-    transition: transform 0.2s ease;
-}
+        #game-container {
+        display: grid;           /* Use grid for better spacing and alignment */
+        grid-template-columns: repeat(3, 1fr); /* Three equal columns */
+        gap: 25px;             /* Spacing between columns */
+        width: 90%;             /* Increased width */
+        position: relative;
+        }
 
-.peg:hover {
-    transform: translateY(-2px);
-}
+        .peg-container {
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: center;
+        position: relative;
+        }
 
-/* Alturas dos pinos */
-.short-peg { height: 50px; }
-.medium-peg { height: 100px; }
-.tall-peg { height: 150px; }
+        .peg {
+        width: 18px; 
+        height: 180px;
+        background: linear-gradient(180deg, #666, #333); /* Darker gradient for contrast */
+        border-radius: 8px;       /* Slightly more rounded corners */
+        box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.6), /* More pronounced inset shadow */
+                    0 2px 4px rgba(0, 0, 0, 0.3);    /* Subtle outer shadow */
+        position: absolute;
+        bottom: 0;
+        transition: transform 0.2s ease; /* Add subtle transition on hover */
+        }
 
-/* Bolas */
-.ball {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    margin-bottom: 2px;
-    cursor: pointer;
-    position: relative;
-    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5);
-    transition: transform 0.2s ease;
-}
+        .peg:hover {
+        transform: translateY(-2px); /* Lift up slightly on hover */
+        }
 
-.ball:hover {
-    transform: scale(1.1);
-}
+        /* Adjusted peg heights for better visual balance */
+        .short-peg { height: 50px; }
+        .medium-peg { height: 100px; }
+        .tall-peg { height: 150px; }
 
-/* Gradientes das bolas */
-#ball-red {
-    background: radial-gradient(circle, #ff3333, #cc0000);
-}
-#ball-green {
-    background: radial-gradient(circle, #33ff33, #00cc00);
-}
-#ball-blue {
-    background: radial-gradient(circle, #3333ff, #0000cc);
-}
+        .ball {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        margin-bottom: 2px;
+        cursor: pointer;
+        position: relative;
+        box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5); /* More defined ball shadow */
+        transition: transform 0.2s ease; 
+        }
 
-/* Base do jogo */
-#base {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    width: 45%;
-    height: 250px;
-    background: linear-gradient(135deg, #ddd, #eee);
-    border: none;
-    border-radius: 20px;
-    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.4);
-    transform-style: preserve-3d;
-}
+        .ball:hover {
+        transform: scale(1.1); /* Increase size slightly on hover */
+        }
 
-/* Cabeçalho */
-#header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    background: linear-gradient(135deg, #fff, #f2f2f2);
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: auto; 
-}
+        /* Brighter, more vibrant gradients for the balls */
+        #ball-red { 
+        background: radial-gradient(circle, #ff3333, #cc0000); 
+        }
+        #ball-green { 
+        background: radial-gradient(circle, #33ff33, #00cc00); 
+        }
+        #ball-blue { 
+        background: radial-gradient(circle, #3333ff, #0000cc); 
+        }
 
-#logo {
-    width: 220px;
-    height: 150px;
-}
+        #header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;   /* Centraliza os itens horizontalmente */
+            padding: 20px;
+            background: linear-gradient(135deg, #fff, #f2f2f2);
+            position: absolute;
+            top: 10px; 
+            right: 10px;
+            width: auto;
+        }
 
-#title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
+        #logo { 
+            width: 220px;
+            height: 150px;
+        }
 
-/* Contadores */
-#contador-movimentos, #contador-tentativas {
-    position: absolute;
-    top: 10px;
-    font-size: 18px;
-    font-weight: bold;
-    padding: 10px;
-    border-radius: 5px;
-    color: white;
-}
+        #title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
 
-#contador-movimentos {
-    left: 10px;
-    background-color: #c4c1c1;
-    color: black;
-}
+        #contador-movimentos {
+            position: absolute;
+            top: 10px;
+            left: 10px; /* Ou qualquer outra posição desejada */
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px;
+            background-color: #c4c1c1; /* Dark gray background */
+            border-radius: 5px;
+            color: bla; /* Set text color to white */
+        }
+        #contador-tentativas {
+            top: 10px;
+            left: 10px; /* Or any other desired position */
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px;
+            background-color: #807e7e; /* Dark gray background */
+            border-radius: 5px;
+            color: white; /* Set text color to white */
+        }
+        #game-info {
+            display: flex;
+            justify-content: space-around;
+            width: 90%;
+            margin: 20px auto;
+            font-size: 18px;
+        }
 
-#contador-tentativas {
-    left: 180px;
-    background-color: #807e7e;
-}
+        #game-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
 
-/* Informações do jogo */
-#game-info {
-    display: flex;
-    justify-content: space-around;
-    width: 90%;
-    margin: 20px auto;
-    font-size: 18px;
-}
+        #problema-atual, #movimentos-realizados, #movimentos-permitidos {
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px 20px; /* Aumenta o padding para melhor legibilidade */
+            margin: 5px 0; /* Adiciona um pequeno espaço entre os elementos */
+            border-radius: 5px;
+            background-color: #f0f0f0; /* Cinza claro */
+            color: #333; /* Cinza escuro */
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+        }
 
-#game-area {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-}
+        #proximo-problema-button-container,
+        #reset-button-container {
+            display: none; /* Esconde os containers dos botões */
+        }
 
-#problema-atual, #movimentos-realizados, #movimentos-permitidos {
-    font-size: 18px;
-    font-weight: bold;
-    padding: 10px 20px;
-    margin: 5px 0;
-    border-radius: 5px;
-    background-color: #f0f0f0;
-    color: #333;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-}
+        #proximo-problema-button-container { /* Estiliza o container do botão */
+            position: absolute;
+            top: 10px; /* Distância do topo da base */
+            left: 50%;
+            transform: translateX(-50%); /* Centraliza horizontalmente */
+        }
 
-/* Botões */
-#proximo-problema-button-container,
-#reset-button-container {
-    display: none; /* Escondidos por padrão */
-}
+        #proximo-problema-button { /* Estiliza o botão em si */
+            background-color: #e04f5f; /* Cor de fundo vermelha */
+            color: white; /* Cor do texto branca */
+            padding: 10px 20px; /* Espaçamento interno */
+            border: none; /* Remove a borda padrão */
+            border-radius: 25px; /* Bordas arredondadas */
+            cursor: pointer; /* Muda o cursor para indicar que é clicável */
+            font-size: 16px; /* Aumenta o tamanho da fonte */
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Adiciona uma sombra sutil */
+            transition: background-color 0.3s ease; /* Adiciona uma transição suave na cor de fundo */
+        }
 
-#proximo-problema-button-container,
-#reset-button-container {
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-}
+        #proximo-problema-button:hover { /* Efeito hover */
+            background-color: #cc0000; /* Cor de fundo mais escura ao passar o mouse */
+        }
 
-#proximo-problema-button,
-#reset-button {
-    background-color: #e04f5f;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 16px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-    transition: background-color 0.3s ease;
-}
+        #reset-button-container { /* Estiliza o container do botão */
+            position: absolute;
+            top: 10px; /* Distância do topo da base */
+            left: 50%;
+            transform: translateX(-50%); /* Centraliza horizontalmente */
+        }
 
-#proximo-problema-button:hover,
-#reset-button:hover {
-    background-color: #cc0000;
-}
+        #reset-button { /* Estiliza o botão em si */
+            background-color: #e04f5f; /* Cor de fundo vermelha */
+            color: white; /* Cor do texto branca */
+            padding: 10px 20px; /* Espaçamento interno */
+            border: none; /* Remove a borda padrão */
+            border-radius: 25px; /* Bordas arredondadas */
+            cursor: pointer; /* Muda o cursor para indicar que é clicável */
+            font-size: 16px; /* Aumenta o tamanho da fonte */
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Adiciona uma sombra sutil */
+            transition: background-color 0.3s ease; /* Adiciona uma transição suave na cor de fundo */
+        }
 
-#mensagem-vitoria {
-    /* ... (outras propriedades) */
-    color: #000080; /* Azul escuro */
-}
+        #reset-button:hover { /* Efeito hover */
+            background-color: #cc0000; /* Cor de fundo mais escura ao passar o mouse */
+        }
 
-#mensagem-vitoria strong {
-    font-weight: bold;
-}
+        #mensagem-vitoria {
+            /* ... (outras propriedades) */
+            color: #000080; /* Azul escuro */
+        }
 
-/* Media Queries para Responsividade */
-
-/* Para tablets */
-@media (max-width 768px) {
-    #game-container {
-        grid-template-columns: 1fr; /* Uma coluna em tablets */
-        width: 95%; 
-    }
-
-    .peg { 
-        height: 150px; /* Ajusta altura dos pinos */
-    }
-
-    .short-peg { height: 45px; }
-    .medium-peg { height: 90px; }
-    .tall-peg { height: 135px; }
-
-    .ball {
-        width: 40px; /* Ajusta tamanho das bolas */
-        height: 40px;
-    }
-
-    #header {
-        position: relative; /* Reposiciona o cabeçalho */
-        width: 100%;
-        top: 0;
-        right: 0;
-        text-align: center;
-    }
-}
-
-/* Para celulares */
-@media (max-width: 480px) {
-    #game-container {
-        width: 100%; 
-        gap: 15px;
-    }
-
-    .peg {
-        height: 120px; 
-    }
-
-    .short-peg { height: 36px; }
-    .medium-peg { height: 72px; }
-    .tall-peg { height: 108px; }
-
-    .ball {
-        width: 35px; 
-        height: 35px;
-    }
-
-    #contador-movimentos, #contador-tentativas {
-        font-size: 14px; 
-        padding: 8px;
-    }
-}
-
-/* Para telas muito pequenas (menos de 360px) */
-@media (max-width: 360px) {
-    #game-container {
-        gap: 10px; /* Diminui o espaçamento entre as colunas */
-    }
-
-    .peg { 
-        height: 90px;  
-    }
-
-    .short-peg { height: 27px; }
-    .medium-peg { height: 54px; }
-    .tall-peg { height: 81px; }
-
-    .ball {
-        width: 30px; 
-        height: 30px;
-    }
+        #mensagem-vitoria strong { /* Estiliza a tag strong dentro da mensagem */
+            font-weight: bold; /* Negrito */
+        }
 
 
     </style>
