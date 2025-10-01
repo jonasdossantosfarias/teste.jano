@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gerador de Prompt para Estilizar Pessoas</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: "Inter", "Segoe UI", sans-serif;
+      background-color: #0f172a;
+      color: #e2e8f0;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: radial-gradient(circle at top, #1e293b 0%, #0f172a 45%, #020617 100%);
+    }
+
+    header {
+      padding: 32px 24px 16px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: clamp(1.8rem, 3vw + 1rem, 2.75rem);
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    header p {
+      margin: 12px auto 0;
+      max-width: 780px;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #cbd5f5;
+    }
+
+    main {
+      display: grid;
+      gap: 24px;
+      padding: 0 24px 32px;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    }
+
+    .panel {
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 18px;
+      padding: 24px;
+      backdrop-filter: blur(14px);
+      background: linear-gradient(145deg, rgba(30, 41, 59, 0.88), rgba(15, 23, 42, 0.82));
+      box-shadow: 0 20px 45px rgba(2, 6, 23, 0.6);
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .panel:focus-within,
+    .panel:hover {
+      transform: translateY(-4px);
+      border-color: rgba(94, 234, 212, 0.65);
+      box-shadow: 0 30px 60px rgba(45, 212, 191, 0.08);
+    }
+
+    .panel h2 {
+      margin-top: 0;
+      font-size: 1.3rem;
+      letter-spacing: 0.02em;
+    }
+
+    .drop-zone {
+      margin-top: 18px;
+      border: 2px dashed rgba(148, 163, 184, 0.45);
+      border-radius: 16px;
+      padding: 32px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s ease, background 0.2s ease;
+      background: rgba(15, 23, 42, 0.45);
+    }
+
+    .drop-zone.active {
+      border-color: rgba(94, 234, 212, 0.9);
+      background: rgba(20, 33, 61, 0.75);
+    }
+
+    .drop-zone p {
+      margin: 0;
+      line-height: 1.6;
+      font-size: 0.98rem;
+      color: #cbd5f5;
+    }
+
+    .hint {
+      font-size: 0.85rem;
+      margin-top: 12px;
+      color: rgba(148, 163, 184, 0.75);
+    }
+
+    .preview-grid {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+      gap: 12px;
+    }
+
+    .preview-item {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      aspect-ratio: 1/1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .preview-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .remove-btn {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      border: none;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.82);
+      color: #f8fafc;
+      width: 26px;
+      height: 26px;
+      cursor: pointer;
+      font-size: 0.78rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease;
+    }
+
+    .remove-btn:hover {
+      background: rgba(248, 113, 113, 0.9);
+    }
+
+    .options {
+      padding: 0 24px 32px;
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+      color: rgba(226, 232, 240, 0.82);
+    }
+
+    input[type="text"],
+    input[type="password"],
+    select,
+    textarea {
+      width: 100%;
+      box-sizing: border-box;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      background: rgba(15, 23, 42, 0.55);
+      color: inherit;
+      padding: 12px;
+      font-size: 0.98rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      resize: vertical;
+    }
+
+    textarea {
+      min-height: 130px;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: rgba(94, 234, 212, 0.7);
+      box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.15);
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: flex-end;
+      padding: 0 24px 16px;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 12px 24px;
+      font-size: 0.98rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: #0f172a;
+      background: linear-gradient(135deg, #5eead4 0%, #22d3ee 100%);
+      box-shadow: 0 12px 28px rgba(34, 211, 238, 0.25);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 30px rgba(94, 234, 212, 0.32);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: wait;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .status {
+      padding: 0 24px 16px;
+      color: rgba(148, 163, 184, 0.9);
+      font-size: 0.92rem;
+      min-height: 24px;
+    }
+
+    .result-wrapper {
+      padding: 0 24px 48px;
+    }
+
+    #result {
+      min-height: 220px;
+      white-space: pre-wrap;
+    }
+
+    .copy-area {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
+    }
+
+    .secondary {
+      background: rgba(15, 23, 42, 0.7);
+      color: #e2e8f0;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow: none;
+    }
+
+    @media (max-width: 720px) {
+      header {
+        padding: 24px 18px 12px;
+      }
+
+      main,
+      .options,
+      .result-wrapper {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Gerador de Prompt Visual Assistido por IA</h1>
+    <p>
+      Combine uma pessoa de até 10 imagens de referência com um cenário de destino ou descrição textual.
+      Este assistente envia tudo para o ChatGPT e retorna um prompt refinado para gerar a arte na sua IA favorita.
+    </p>
+  </header>
+  <main>
+    <section class="panel" id="person-panel">
+      <h2>Referências da pessoa</h2>
+      <div class="drop-zone" id="person-drop" tabindex="0" data-target="person">
+        <p>Arraste, cole ou clique para escolher até 10 imagens (PNG/JPG/WebP)</p>
+      </div>
+      <p class="hint">Dica: use fotos com expressões e ângulos variados para descrever melhor o rosto e o corpo.</p>
+      <div class="preview-grid" id="person-preview" aria-live="polite"></div>
+    </section>
+
+    <section class="panel" id="style-panel">
+      <h2>Estilo / Cena de destino</h2>
+      <div class="drop-zone" id="style-drop" tabindex="0" data-target="style">
+        <p>Arraste, cole ou clique para adicionar a imagem de destino (opcional)</p>
+      </div>
+      <p class="hint">Se não tiver imagem, descreva o estilo e cenário desejados abaixo.</p>
+      <textarea id="style-text" placeholder="Descreva aqui o estilo, cenário, iluminação ou outros detalhes que a imagem final deve seguir"></textarea>
+      <div class="preview-grid" id="style-preview" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <section class="options">
+    <div>
+      <label for="api-key">Chave da API OpenAI</label>
+      <input type="password" id="api-key" placeholder="sk-..." autocomplete="off" />
+    </div>
+    <div>
+      <label for="model">Modelo</label>
+      <select id="model">
+        <option value="gpt-4.1-mini">gpt-4.1-mini</option>
+        <option value="gpt-4o-mini">gpt-4o-mini</option>
+        <option value="gpt-4.1">gpt-4.1</option>
+      </select>
+    </div>
+    <div>
+      <label for="extra-notes">Notas adicionais para o prompt</label>
+      <textarea id="extra-notes" placeholder="Detalhes extras, referências de estilo, palavras-chave obrigatórias, etc."></textarea>
+    </div>
+    <div>
+      <label for="paste-target">Destino padrão para colar imagens</label>
+      <select id="paste-target">
+        <option value="person">Referências da pessoa</option>
+        <option value="style">Estilo / Cena</option>
+      </select>
+    </div>
+  </section>
+
+  <div class="controls">
+    <button id="generate-btn">Gerar prompt com ChatGPT</button>
+    <button id="clear-btn" class="secondary" type="button">Limpar tudo</button>
+  </div>
+
+  <div class="status" id="status" role="status" aria-live="polite"></div>
+
+  <div class="result-wrapper">
+    <label for="result">Prompt sugerido</label>
+    <textarea id="result" readonly placeholder="O prompt aparecerá aqui"></textarea>
+    <div class="copy-area">
+      <button id="copy-btn" class="secondary" type="button">Copiar prompt</button>
+    </div>
+  </div>
+
+  <script>
+    const personImages = [];
+    const styleImages = [];
+    const MAX_PERSON_IMAGES = 10;
+    let activeDropZone = null;
+
+    const personDrop = document.getElementById('person-drop');
+    const styleDrop = document.getElementById('style-drop');
+    const personPreview = document.getElementById('person-preview');
+    const stylePreview = document.getElementById('style-preview');
+    const generateBtn = document.getElementById('generate-btn');
+    const clearBtn = document.getElementById('clear-btn');
+    const copyBtn = document.getElementById('copy-btn');
+    const statusEl = document.getElementById('status');
+
+    const pasteTargetSelect = document.getElementById('paste-target');
+
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    function highlight(zone) {
+      zone.classList.add('active');
+      activeDropZone = zone.dataset.target;
+      pasteTargetSelect.value = zone.dataset.target;
+    }
+
+    function unhighlight(zone) {
+      zone.classList.remove('active');
+    }
+
+    function setupDropZone(zone, type) {
+      ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        zone.addEventListener(eventName, preventDefaults, false);
+      });
+
+      ['dragenter', 'dragover'].forEach(eventName => {
+        zone.addEventListener(eventName, () => highlight(zone));
+      });
+
+      ['dragleave', 'drop'].forEach(eventName => {
+        zone.addEventListener(eventName, () => unhighlight(zone));
+      });
+
+      zone.addEventListener('drop', (e) => {
+        handleFiles(e.dataTransfer.files, type);
+      });
+
+      zone.addEventListener('click', () => {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.multiple = type === 'person';
+        input.onchange = () => {
+          handleFiles(input.files, type);
+        };
+        input.click();
+      });
+
+      zone.addEventListener('focus', () => {
+        activeDropZone = zone.dataset.target;
+        pasteTargetSelect.value = zone.dataset.target;
+      });
+    }
+
+    setupDropZone(personDrop, 'person');
+    setupDropZone(styleDrop, 'style');
+
+    function handleFiles(fileList, type) {
+      const files = Array.from(fileList).filter(file => file.type.startsWith('image/'));
+      if (!files.length) return;
+
+      if (type === 'person' && personImages.length + files.length > MAX_PERSON_IMAGES) {
+        updateStatus(`Você pode adicionar no máximo ${MAX_PERSON_IMAGES} imagens da pessoa.`, true);
+        return;
+      }
+
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const dataUrl = event.target.result;
+          if (type === 'person') {
+            personImages.push({ name: file.name, dataUrl });
+            renderPreview(personImages, personPreview, 'person');
+          } else {
+            styleImages.length = 0;
+            styleImages.push({ name: file.name, dataUrl });
+            renderPreview(styleImages, stylePreview, 'style');
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function renderPreview(list, container, type) {
+      container.innerHTML = '';
+      list.forEach((item, index) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'preview-item';
+
+        const img = document.createElement('img');
+        img.src = item.dataUrl;
+        img.alt = type === 'person' ? `Referência ${index + 1}` : 'Imagem de estilo';
+        wrapper.appendChild(img);
+
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'remove-btn';
+        removeBtn.innerHTML = '&times;';
+        removeBtn.addEventListener('click', () => {
+          list.splice(index, 1);
+          renderPreview(list, container, type);
+        });
+
+        wrapper.appendChild(removeBtn);
+        container.appendChild(wrapper);
+      });
+    }
+
+    document.addEventListener('paste', (event) => {
+      const items = event.clipboardData.items;
+      const files = [];
+      for (const item of items) {
+        if (item.kind === 'file' && item.type.startsWith('image/')) {
+          files.push(item.getAsFile());
+        }
+      }
+
+      if (files.length) {
+        const target = pasteTargetSelect.value;
+        handleFiles(files, target);
+      }
+    });
+
+    pasteTargetSelect.addEventListener('change', () => {
+      activeDropZone = pasteTargetSelect.value;
+    });
+
+    clearBtn.addEventListener('click', () => {
+      personImages.length = 0;
+      styleImages.length = 0;
+      personPreview.innerHTML = '';
+      stylePreview.innerHTML = '';
+      document.getElementById('style-text').value = '';
+      document.getElementById('extra-notes').value = '';
+      document.getElementById('result').value = '';
+      updateStatus('Todos os campos foram limpos.');
+    });
+
+    copyBtn.addEventListener('click', async () => {
+      const text = document.getElementById('result').value;
+      if (!text.trim()) {
+        updateStatus('Não há prompt para copiar.', true);
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(text);
+        updateStatus('Prompt copiado para a área de transferência!');
+      } catch (error) {
+        updateStatus('Não foi possível copiar automaticamente. Copie manualmente.', true);
+      }
+    });
+
+    function updateStatus(message, isError = false) {
+      statusEl.textContent = message;
+      statusEl.style.color = isError ? 'rgb(248, 113, 113)' : 'rgba(148, 163, 184, 0.9)';
+    }
+
+    async function generatePrompt() {
+      const apiKey = document.getElementById('api-key').value.trim();
+      const styleText = document.getElementById('style-text').value.trim();
+      const extraNotes = document.getElementById('extra-notes').value.trim();
+      const model = document.getElementById('model').value;
+
+      if (!apiKey) {
+        updateStatus('Informe sua chave da API OpenAI para continuar.', true);
+        return;
+      }
+
+      if (!personImages.length) {
+        updateStatus('Adicione pelo menos uma imagem da pessoa para começar.', true);
+        return;
+      }
+
+      const instructions = `Você é um assistente especializado em criar prompts hiper detalhados para geração de imagens.` +
+        ` Analise as imagens fornecidas, descrevendo com precisão fisionomia, expressões, cabelo, roupas e proporções corporais.` +
+        ` Combine essas informações com o estilo e cenário descritos pelo usuário para gerar um prompt único, com máximo de fidelidade.` +
+        ` Liste também algumas palavras-chave negativas recomendadas para evitar distorções.`;
+
+      const userParts = [{ type: 'text', text: 'Descreva completamente a pessoa dessas imagens para ser usada como personagem principal da cena:' }];
+
+      personImages.forEach((img, index) => {
+        userParts.push({ type: 'text', text: `Referência ${index + 1}: ${img.name}` });
+        userParts.push({ type: 'input_image', image_url: img.dataUrl });
+      });
+
+      if (styleImages.length) {
+        userParts.push({ type: 'text', text: 'Esta é a imagem de estilo/cenário desejado:' });
+        userParts.push({ type: 'input_image', image_url: styleImages[0].dataUrl });
+      }
+
+      if (styleText) {
+        userParts.push({ type: 'text', text: `Descrição adicional de estilo/cena: ${styleText}` });
+      }
+
+      if (extraNotes) {
+        userParts.push({ type: 'text', text: `Notas adicionais do usuário: ${extraNotes}` });
+      }
+
+      userParts.push({ type: 'text', text: 'Entregue o resultado em português com as seções: "Resumo visual", "Prompt final" e "Palavras negativas".' });
+
+      const payload = {
+        model,
+        input: [
+          {
+            role: 'system',
+            content: [
+              { type: 'text', text: instructions }
+            ]
+          },
+          {
+            role: 'user',
+            content: userParts
+          }
+        ],
+        max_output_tokens: 800
+      };
+
+      try {
+        generateBtn.disabled = true;
+        updateStatus('Enviando imagens para o ChatGPT, aguarde...');
+
+        const response = await fetch('https://api.openai.com/v1/responses', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error?.message || `Erro ${response.status}`);
+        }
+
+        const data = await response.json();
+        const text = data.output?.[0]?.content?.map(item => item.text || '').join('\n')
+          || data.choices?.[0]?.message?.content
+          || 'Não foi possível interpretar a resposta. Confira o console para mais detalhes.';
+
+        document.getElementById('result').value = text;
+        updateStatus('Prompt pronto! Confira abaixo.');
+      } catch (error) {
+        console.error(error);
+        updateStatus(`Erro ao gerar prompt: ${error.message}`, true);
+      } finally {
+        generateBtn.disabled = false;
+      }
+    }
+
+    generateBtn.addEventListener('click', () => {
+      generatePrompt();
+    });
+  </script>
+</body>
+</html>
